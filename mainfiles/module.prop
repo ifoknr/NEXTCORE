@@ -1,8 +1,6 @@
-id=AZenith
-name=AZenith火
-version=
-versionCode=
-author=ArchHaven Developers
-description=One, Two, Three! AZenith has arrived!
-updateJson=https://raw.githubusercontent.com/Liliya2727/Antares/main/update.json
-banner=module.banner.jpg
+id=nextcore
+name=NEXTCORE
+version=v2.0.0
+versionCode=2000
+author=Turki & Collaborators
+description=محرك أداء عتادي متقدم ومفتوح المصدر لمعالجات MediaTek (Dimensity 9300+) و Snapdragon. يدعم حاكم sugov_ext، وعزل الشحن (Bypass Charging)، وإدارة خيوط الرندرة ومعدلات الإطارات عبر KernelSU WebUI.

@@ -1,62 +1,51 @@
 #!/system/bin/sh
+MODDIR=${0%/*}
+[ -z "$MODDIR" ] || [ "$MODDIR" = "." ] && MODDIR="/data/adb/modules/nextcore"
 
-#
-# Copyright (C) 2026-2027 Zexshia
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# 1. صمام الأمان (Failsafe)
+[ -f "/data/local/tmp/nextcore_abort" ] && exit 0
 
-readonly MODDIR="${0%/*}"
-readonly MODULE_CONFIG="/data/adb/.config/AZenith"
-readonly BIN_SVC="$MODDIR/system/bin/sys.azenith-service"
-readonly APK_COMP="$MODDIR/AZenith.apk"
-
-# Wait boot to complete
-until [ "$(getprop sys.boot_completed)" = "1" ]; do 
-    sleep 1
+# 2. حلقة انتظار اكتمال الإقلاع مع Timeout آمن (حد أقصى 90 ثانية)
+BOOT_TIMEOUT=90
+COUNTER=0
+while [ "$(getprop sys.boot_completed)" != "1" ]; do
+    sleep 2
+    COUNTER=$((COUNTER + 2))
+    if [ $COUNTER -ge $BOOT_TIMEOUT ]; then
+        break
+    fi
 done
 
-# Reset anti bootloop
-echo "BOOTCOUNT=0" > "$MODDIR/count.sh"
+# تأخير إضافي لضمان استقرار السطح الرسومي وخدمات النظام
+sleep 5
 
-# Clear Old Logs
-"$BIN_SVC" --clearlogs
+# 3. تفعيل أذونات الملفات الثنائية
+chmod 0755 "$MODDIR/system/bin/"* 2>/dev/null
+chmod 0755 "$MODDIR/archdaemon" 2>/dev/null
+chmod 0755 "$MODDIR/binprofiles" 2>/dev/null
+chmod 0755 "$MODDIR/binpreferenced" 2>/dev/null
+chmod 0755 "$MODDIR/action.sh" 2>/dev/null
 
-# Remove reboot flag
-if [ -f "$MODDIR/reboot" ]; then
-    rm -f "$MODDIR/reboot"
+# 4. تطبيق حاكم المعالج مع التحقق التلقائي والبديل الآمن
+for policy in /sys/devices/system/cpu/cpufreq/policy*; do
+    [ -d "$policy" ] || continue
+    if grep -q "sugov_ext" "$policy/scaling_available_governors" 2>/dev/null; then
+        echo "sugov_ext" > "$policy/scaling_governor" 2>/dev/null
+    elif grep -q "schedutil" "$policy/scaling_available_governors" 2>/dev/null; then
+        echo "schedutil" > "$policy/scaling_governor" 2>/dev/null
+    fi
+done
+
+# 5. تشغيل خادم الرصد الدائم (archdaemon) في الخلفية
+if [ -f "$MODDIR/system/bin/archdaemon" ]; then
+    nohup "$MODDIR/system/bin/archdaemon" >/dev/null 2>&1 &
+elif [ -f "$MODDIR/archdaemon" ]; then
+    nohup "$MODDIR/archdaemon" >/dev/null 2>&1 &
 fi
 
-# Create Cleanup Files
-if [ ! -f /data/adb/service.d/.azenith_cleanup.sh ]; then
-  mkdir -p /data/adb/service.d
-  cat "$MODDIR/cleanup.sh" > /data/adb/service.d/.azenith_cleanup.sh
-  chmod +x /data/adb/service.d/.azenith_cleanup.sh
+# 6. تطبيق ملف التوازن التلقائي الافتراضي عند الإقلاع
+if [ -f "$MODDIR/system/bin/binprofiles" ]; then
+    "$MODDIR/system/bin/binprofiles" set balanced >/dev/null 2>&1
+elif [ -f "$MODDIR/binprofiles" ]; then
+    "$MODDIR/binprofiles" set balanced >/dev/null 2>&1
 fi
-
-# Refresh AZenith daemon state
-STATE=$(getprop persist.sys.azenith.state)
-{ [ -z "$STATE" ] || { [ "$STATE" = "running" ] && [ -z "$(/system/bin/toybox pidof sys.azenith-service)" ]; }; } && {
-    setprop persist.sys.azenith.state stopped
-    setprop persist.sys.azenith.service ""
-}
-
-# Exec Java Companion Daemon
-nohup app_process -Djava.class.path="$APK_COMP" / \
-    --nice-name=sys.azenith-appmonitoring zx.azenith.AppMonitor \
-    "$MODULE_CONFIG/app_status" \
-    "$MODULE_CONFIG/background_apps" \
-    "$MODULE_CONFIG/java.lock" >"$MODULE_CONFIG/sysmon.log" 2>&1 &
-
-# Run AZenith service
-sleep 1 && exec "$BIN_SVC" --run
