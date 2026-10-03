@@ -11,9 +11,10 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_CFLAGS := -DNDEBUG -Wall -Wextra -Werror \
                 -pedantic-errors -Wpedantic \
+                -Wno-newline-eof \
                 -O2 -std=c23 -fPIC -flto
 
 LOCAL_LDFLAGS := -flto
-LOCAL_LDLIBS  += -llog  
+LOCAL_LDLIBS  += -llog
 
 include $(BUILD_EXECUTABLE)
