@@ -1,9 +1,26 @@
+#include "AZenith.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+
+/* تعريف مسارات العزل للملفات القديمة (BypassCompatibility.c) */
+const char *bypass_list[] = {
+    "/sys/class/power_supply/battery/input_suspend",
+    "/sys/class/qcom-battery/input_suspend",
+    "/sys/devices/platform/charger/bypass_charge",
+    "/sys/class/power_supply/battery/charging_enabled",
+    "/sys/class/power_supply/battery/battery_charging_enabled",
+    "/sys/class/power_supply/battery/charge_control_limit_max",
+    "/sys/class/power_supply/battery/mmi_charging_enable",
+    "/sys/class/power_supply/battery/charge_control_limit",
+    "/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit",
+    "/sys/class/power_supply/battery/batt_slate_mode"
+};
+
+const size_t bypass_list_size = sizeof(bypass_list) / sizeof(bypass_list[0]);
 
 typedef struct {
     const char *node_path;
@@ -12,24 +29,15 @@ typedef struct {
 } ChargingNodeInfo;
 
 static const ChargingNodeInfo SUPPORTED_NODES[] = {
-    // 1. كوالكوم وشاومي (HyperOS / MIUI)
     {"/sys/class/power_supply/battery/input_suspend", "1", "0"},
     {"/sys/class/qcom-battery/input_suspend", "1", "0"},
-    
-    // 2. ميديا تيك وأجهزة Transsion (Infinix / Tecno Gaming)
     {"/sys/devices/platform/charger/bypass_charge", "1", "0"},
     {"/sys/class/power_supply/battery/charging_enabled", "0", "1"},
     {"/sys/class/power_supply/battery/battery_charging_enabled", "0", "1"},
-    
-    // 3. Asus ROG / BlackShark
     {"/sys/class/power_supply/battery/charge_control_limit_max", "1", "0"},
     {"/sys/class/power_supply/battery/mmi_charging_enable", "0", "1"},
-    
-    // 4. Google Pixel و AOSP القياسي
     {"/sys/class/power_supply/battery/charge_control_limit", "0", "1"},
     {"/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit", "0", "1"},
-
-    // 5. سامسونج
     {"/sys/class/power_supply/battery/batt_slate_mode", "1", "0"}
 };
 
@@ -45,7 +53,7 @@ static int is_node_writable(const char *path) {
     return (access(path, W_OK) == 0);
 }
 
-int detect_bypass_node() {
+int detect_bypass_node(void) {
     if (g_active_node_index != -1) {
         return g_active_node_index;
     }
@@ -59,7 +67,7 @@ int detect_bypass_node() {
     return -1;
 }
 
-int enable_bypass_charging() {
+int enable_bypass_charging(void) {
     int idx = detect_bypass_node();
     if (idx < 0) return 0;
 
@@ -72,7 +80,7 @@ int enable_bypass_charging() {
     return 1;
 }
 
-int disable_bypass_charging() {
+int disable_bypass_charging(void) {
     int idx = detect_bypass_node();
     if (idx < 0) return 0;
 
@@ -85,7 +93,7 @@ int disable_bypass_charging() {
     return 1;
 }
 
-const char* get_current_bypass_path() {
+const char* get_current_bypass_path(void) {
     int idx = detect_bypass_node();
     if (idx >= 0) {
         return SUPPORTED_NODES[idx].node_path;
