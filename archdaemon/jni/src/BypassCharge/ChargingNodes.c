@@ -6,30 +6,29 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-/* تعريف المصفوفة بنوع BypassNode المطابق لـ AZenith.h */
+/* تعريف العقد بـ 4 حقول مطابقة لـ AZenith.h: (device, path, on_val, off_val) */
 BypassNode bypass_list[] = {
     // 1. كوالكوم وشاومي (HyperOS / MIUI)
-    {"/sys/class/power_supply/battery/input_suspend", "1", "0"},
-    {"/sys/class/qcom-battery/input_suspend", "1", "0"},
+    {"Xiaomi / Qualcomm", "/sys/class/power_supply/battery/input_suspend", "1", "0"},
+    {"Qualcomm Secondary", "/sys/class/qcom-battery/input_suspend", "1", "0"},
     
-    // 2. ميديا تيك Dimensity وأجهزة الألعاب
-    {"/sys/devices/platform/charger/bypass_charge", "1", "0"},
-    {"/sys/class/power_supply/battery/charging_enabled", "0", "1"},
-    {"/sys/class/power_supply/battery/battery_charging_enabled", "0", "1"},
+    // 2. ميديا تيك وأجهزة Transsion (Infinix / Tecno Gaming)
+    {"MediaTek / Transsion", "/sys/devices/platform/charger/bypass_charge", "1", "0"},
+    {"Generic Battery", "/sys/class/power_supply/battery/charging_enabled", "0", "1"},
+    {"Generic Battery Alt", "/sys/class/power_supply/battery/battery_charging_enabled", "0", "1"},
     
     // 3. Asus ROG / BlackShark
-    {"/sys/class/power_supply/battery/charge_control_limit_max", "1", "0"},
-    {"/sys/class/power_supply/battery/mmi_charging_enable", "0", "1"},
+    {"Asus ROG / BlackShark", "/sys/class/power_supply/battery/charge_control_limit_max", "1", "0"},
+    {"Motorola", "/sys/class/power_supply/battery/mmi_charging_enable", "0", "1"},
     
     // 4. Google Pixel و AOSP القياسي
-    {"/sys/class/power_supply/battery/charge_control_limit", "0", "1"},
-    {"/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit", "0", "1"},
+    {"Google Pixel", "/sys/class/power_supply/battery/charge_control_limit", "0", "1"},
+    {"Google Pixel Platform", "/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit", "0", "1"},
 
     // 5. سامسونج
-    {"/sys/class/power_supply/battery/batt_slate_mode", "1", "0"}
+    {"Samsung", "/sys/class/power_supply/battery/batt_slate_mode", "1", "0"}
 };
 
-/* مطابق لـ extern const int bypass_list_size في AZenith.h */
 const int bypass_list_size = (int)(sizeof(bypass_list) / sizeof(bypass_list[0]));
 
 static int g_active_node_index = -1;
@@ -63,7 +62,7 @@ int enable_bypass_charging(void) {
     FILE *fp = fopen(bypass_list[idx].path, "w");
     if (!fp) return 0;
 
-    fputs(bypass_list[idx].disable, fp);
+    fputs(bypass_list[idx].on_val, fp);
     fclose(fp);
     return 1;
 }
@@ -75,7 +74,7 @@ int disable_bypass_charging(void) {
     FILE *fp = fopen(bypass_list[idx].path, "w");
     if (!fp) return 0;
 
-    fputs(bypass_list[idx].enable, fp);
+    fputs(bypass_list[idx].off_val, fp);
     fclose(fp);
     return 1;
 }
