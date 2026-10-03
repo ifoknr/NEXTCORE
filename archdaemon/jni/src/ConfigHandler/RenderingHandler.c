@@ -48,6 +48,11 @@ bool apply_smart_renderer(const char* target_type, char* saved_ref, char* saved_
     if (strlen(saved_sys) == 0)
         strncpy(saved_sys, current_sys_renderer, PROP_VALUE_MAX - 1);
 
+    if (!is_shell_safe(target_type)) {
+        log_zenith(LOG_WARN, "RenderHandler: Invalid renderer value, skipping.");
+        return false;
+    }
+
     if (strcmp(current_renderer, target_type) != 0) {
         log_zenith(LOG_INFO, "RenderHandler: Renderer mismatch! Current: %s | Target: %s. Switching...",
                    current_renderer, target_type);

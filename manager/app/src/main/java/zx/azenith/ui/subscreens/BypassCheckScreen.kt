@@ -115,7 +115,7 @@ fun BypassChargeCheckScreen(navController: NavController) {
         activePath = PropertyUtils.get("persist.sys.azenithconf.bypasspath", "UNSUPPORTED")
         
         scope.launch(Dispatchers.IO) {
-            val output = Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-service -bpl").exec().out
+            val output = Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service -bpl").exec().out
             val parsedList = output
                 .map { it.replace("\\u001B\\[[;\\d]*m".toRegex(), "") }
                 .filter { it.contains("FOUND") && !it.contains("NOT FOUND") }
@@ -188,7 +188,7 @@ fun BypassChargeCheckScreen(navController: NavController) {
                 }
             }
     
-            val binaryPath = "/data/adb/modules/AZenith/system/bin/sys.azenith-service"
+            val binaryPath = "/data/adb/modules/nextcore/system/bin/sys.azenith-service"
             Shell.cmd("$binaryPath -cbc 2>&1").to(callbackList).submit { result ->
                 isRunning = false
                 hasRunDiagnosis = true

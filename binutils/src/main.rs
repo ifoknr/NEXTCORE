@@ -17,7 +17,6 @@
 mod utils;
 
 use std::env;
-use std::process::Command;
 use utils::*;
 
 fn main() {
@@ -37,8 +36,9 @@ fn main() {
             "setrefreshrates" => if args.len() > 2 { setrefreshrates(&args[2]) },
             "restartservice" => restartservice(),
             "setrender" => if args.len() > 2 { setrender(&args[2]) },
-            _ => {
-                let _ = Command::new(function).args(&args[2..]).status();
+            other => {
+                eprintln!("Unknown command: {}", other);
+                std::process::exit(1);
             }
         }
     }

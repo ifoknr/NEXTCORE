@@ -1,4 +1,4 @@
-name: AZenith
+name: NextCore
 
 on:
   pull_request:
@@ -17,6 +17,9 @@ on:
       - "mainfiles/**"
       - "preloadbin/**"
       - "thermalcore/**"
+      - "binprofiles/**"
+      - "binutils/**"
+      - "binpreferenced/**"
       - "azenithApplist.json"
       - "version"
       - "version_type"
@@ -27,7 +30,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build AZenith
+    name: Build NextCore
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -145,12 +148,17 @@ jobs:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           COMMIT_URL: ${{ github.event.head_commit.url }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          TITLE: AZenith
+          TITLE: NextCore
         run: |
           if [ -n "$CHAT_ID" ] && [ -n "$BOT_TOKEN" ]; then
             export VERSION=$(git rev-list --count HEAD)
             bash .github/scripts/telebot.sh "${{ steps.compileZip.outputs.zipName }}"
           else
-            echo "Telegram bot token or chatid is undefined!"
-            exit 1
+            echo "Telegram bot token or chatid is undefined, skipping upload."
           fi
+
+      - name: Upload Module Zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.compileZip.outputs.artifactName }}
+          path: ${{ steps.compileZip.outputs.zipName }}

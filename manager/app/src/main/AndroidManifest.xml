@@ -74,7 +74,7 @@
             </intent-filter>
         </activity>
         
-        <receiver android:name=".receiver.ZenithReceiver" android:exported="true">
+        <receiver android:name=".receiver.ZenithReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="zx.azenith.ACTION_MANAGE" />
             </intent-filter>
@@ -95,7 +95,7 @@
 
         <receiver
             android:name=".RefreshRateReceiver"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="zx.azenith.SET_FPS" />
             </intent-filter>

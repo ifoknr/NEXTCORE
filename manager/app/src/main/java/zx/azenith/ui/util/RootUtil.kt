@@ -32,7 +32,7 @@ import zx.azenith.R
 
 
 object RootUtils {
-    private const val MODULE_DIR = "/data/adb/modules/AZenith"
+    private const val MODULE_DIR = "/data/adb/modules/nextcore"
     private const val API_DIR_PATH = "/data/data/zx.azenith/API"
     private const val PROFILE_FILE_NAME = "current_profile"
     private const val PROFILE_PATH = "$API_DIR_PATH/$PROFILE_FILE_NAME"
@@ -269,10 +269,10 @@ object RootUtils {
     }
 
     fun isUpdateApkAvailable(): Boolean {
-        return SuFile("/data/adb/modules/AZenith/AZenith.apk").exists()
+        return SuFile("/data/adb/modules/nextcore/AZenith.apk").exists()
     }
 
     fun isModuleUpdatePendingReboot(): Boolean {
-        return SuFile("/data/adb/modules/AZenith/update").exists()
+        return SuFile("/data/adb/modules/nextcore/update").exists()
     }
 }

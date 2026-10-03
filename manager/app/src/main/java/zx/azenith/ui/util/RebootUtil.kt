@@ -14,7 +14,7 @@ object RebootManager {
     private val _pendingReboot = MutableStateFlow(false)
     val pendingReboot: StateFlow<Boolean> = _pendingReboot.asStateFlow()
 
-    private const val FLAG_PATH = "/data/adb/modules/AZenith/reboot"
+    private const val FLAG_PATH = "/data/adb/modules/nextcore/reboot"
     private var moduleFlag = false
 
     fun captureBaselineOnce(key: String, value: Boolean) = synchronized(lock) {

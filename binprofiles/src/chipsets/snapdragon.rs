@@ -1,108 +1,145 @@
-use std::fs;
-use std::path::Path;
+use crate::utils::*;  use std::path::Path;  use std::thread;
 
-pub struct SnapdragonTuner;
+pub fn snapdragon_balance() {
+    let govs = [
+        ("/*cpu-ddr-latfloor*", "compute"),
+        ("/*cpu*-lat", "mem_latency"),
+        ("/*cpu-cpu-ddr-bw", "bw_hwmon"),
+        ("/*cpu-cpu-llcc-bw", "bw_hwmon"),
+        ("/*gpubw*", "bw_vbif")
+    ];
 
-impl SnapdragonTuner {
-    fn write_node(path: &str, value: &str) {
-        if Path::new(path).exists() {
-            let _ = fs::write(path, value.trim());
+    for (pattern, gov) in govs {
+        if let Ok(paths) = glob::glob(&format!("/sys/class/devfreq{}", pattern)) {
+            for path in paths.flatten() {
+                write_lock(gov, &format!("{}/governor", path.display()));
+            }
         }
     }
 
-    pub fn apply_cpu_governor(governor: &str) {
-        if let Ok(entries) = glob::glob("/sys/devices/system/cpu/cpufreq/policy*") {
-            for entry in entries.flatten() {
-                let p = entry.to_string_lossy();
-                let avail_path = format!("{}/scaling_available_governors", p);
-                let target_path = format!("{}/scaling_governor", p);
-
-                if let Ok(avail) = fs::read_to_string(&avail_path) {
-                    if avail.contains(governor) {
-                        Self::write_node(&target_path, governor);
-                    } else if avail.contains("schedutil") {
-                        Self::write_node(&target_path, "schedutil");
+    for bus in &["LLCC", "L3", "DDR", "DDRQOS"] {
+        let base = format!("/sys/devices/system/cpu/bus_dcvs/{}", bus);
+        if Path::new(&base).exists() {
+            let avail = format!("{}/available_frequencies", base);
+            if let (Some(max), Some(min)) = (which_maxfreq(&avail), which_minfreq(&avail)) {
+                if let Ok(paths) = glob::glob(&format!("{}/*/max_freq", base)) {
+                    for p in paths.flatten() {
+                        write_lock(&max.to_string(), p.to_str().unwrap());
+                    }
+                }
+                if let Ok(paths) = glob::glob(&format!("{}/*/min_freq", base)) {
+                    for p in paths.flatten() {
+                        write_lock(&min.to_string(), p.to_str().unwrap());
                     }
                 }
             }
         }
     }
 
-    fn tune_adreno_gpu(performance: bool) {
-        let kgsl_path = "/sys/class/kgsl/kgsl-3d0";
-        if !Path::new(kgsl_path).exists() {
-            return;
-        }
-
-        if performance {
-            Self::write_node(&format!("{}/devfreq/governor", kgsl_path), "msm-adreno-tz");
-            Self::write_node(&format!("{}/throttling", kgsl_path), "0");
-            Self::write_node(&format!("{}/force_bus_on", kgsl_path), "1");
-            Self::write_node(&format!("{}/force_clk_on", kgsl_path), "1");
-            Self::write_node(&format!("{}/idle_timer", kgsl_path), "64");
-        } else {
-            Self::write_node(&format!("{}/throttling", kgsl_path), "1");
-            Self::write_node(&format!("{}/force_bus_on", kgsl_path), "0");
-            Self::write_node(&format!("{}/force_clk_on", kgsl_path), "0");
-            Self::write_node(&format!("{}/idle_timer", kgsl_path), "24");
+    let gpu_path = "/sys/class/kgsl/kgsl-3d0/devfreq";
+    if Path::new(gpu_path).exists() {
+        let freqs = read_freqs(&format!("{}/available_frequencies", gpu_path));
+        if freqs.len() >= 2 {
+            write_lock(&freqs[1].to_string(), &format!("{}/min_freq", gpu_path));
+            write_lock(&freqs[freqs.len() - 1].to_string(), &format!("{}/max_freq", gpu_path));
+        } else if freqs.len() == 1 {
+            write_lock(&freqs[0].to_string(), &format!("{}/min_freq", gpu_path));
+            write_lock(&freqs[0].to_string(), &format!("{}/max_freq", gpu_path));
         }
     }
 
-    pub fn apply_performance_profile() {
-        Self::apply_cpu_governor("sugov_ext");
-        Self::tune_adreno_gpu(true);
+    write_lock("1", "/sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost");
+}
 
-        if let Ok(entries) = glob::glob("/sys/devices/system/cpu/qcom_core_ctl/cpu*") {
-            for entry in entries.flatten() {
-                let p = entry.to_string_lossy();
-                Self::write_node(&format!("{}/enable", p), "0");
+pub fn snapdragon_performance() {
+    // Jalankan pencarian devfreq di thread terpisah agar tidak membuat device lag/freeze
+    thread::spawn(|| {
+        let govs = [
+            ("/*cpu-ddr-latfloor*", "performance"),
+            ("/*cpu*-lat", "performance"),
+            ("/*cpu-cpu-ddr-bw", "performance"),
+            ("/*cpu-cpu-llcc-bw", "performance"),
+            ("/*gpubw*", "performance")
+        ];
+
+        for (pattern, gov) in govs {
+            if let Ok(paths) = glob::glob(&format!("/sys/class/devfreq{}", pattern)) {
+                for path in paths.flatten() {
+                    write_lock(gov, path.to_str().unwrap());
+                }
             }
         }
+    });
 
-        Self::write_node("/dev/cpuset/top-app/uclamp.min", "60");
-        Self::write_node("/dev/cpuset/top-app/uclamp.latency_sensitive", "1");
-        Self::write_node("/dev/cpuset/foreground/uclamp.min", "20");
-        Self::write_node("/dev/cpuset/background/uclamp.max", "30");
+    // Jalankan urusan bus DCVS di thread terpisah juga
+    thread::spawn(|| {
+        for bus in &["LLCC", "L3", "DDR", "DDRQOS"] {
+            let base = format!("/sys/devices/system/cpu/bus_dcvs/{}", bus);
+            if Path::new(&base).exists() {
+                let avail = format!("{}/available_frequencies", base);
+                if let Some(max) = which_maxfreq(&avail) {
+                    if let Ok(paths) = glob::glob(&format!("{}/*/max_freq", base)) {
+                        for p in paths.flatten() { write_lock(&max.to_string(), p.to_str().unwrap()); }
+                    }
+                    if let Ok(paths) = glob::glob(&format!("{}/*/min_freq", base)) {
+                        for p in paths.flatten() { write_lock(&max.to_string(), p.to_str().unwrap()); }
+                    }
+                }
+            }
+        }
+    });
 
-        if let Ok(policies) = glob::glob("/sys/devices/system/cpu/cpufreq/policy*/sugov_ext") {
-            for policy in policies.flatten() {
-                let p = policy.to_string_lossy();
-                Self::write_node(&format!("{}/up_rate_limit_us", p), "500");
-                Self::write_node(&format!("{}/down_rate_limit_us", p), "15000");
+    // GPU core clock tetap di main thread tidak apa-apa karena jalurnya absolut (cepat)
+    let gpu_path = "/sys/class/kgsl/kgsl-3d0/devfreq";
+    if Path::new(gpu_path).exists() {
+        if let Some(freq) = which_maxfreq(&format!("{}/available_frequencies", gpu_path)) {
+            write_lock(&freq.to_string(), &format!("{}/min_freq", gpu_path));
+            write_lock(&freq.to_string(), &format!("{}/max_freq", gpu_path));
+        }
+    }
+
+    write_lock("3", "/sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost");
+}
+
+pub fn snapdragon_powersave() {
+    let govs = [
+        ("/*cpu-ddr-latfloor*", "powersave"),
+        ("/*cpu*-lat", "powersave"),
+        ("/*cpu-cpu-ddr-bw", "powersave"),
+        ("/*cpu-cpu-llcc-bw", "powersave"),
+        ("/*gpubw*", "powersave")
+    ];
+
+    for (pattern, gov) in govs {
+        if let Ok(paths) = glob::glob(&format!("/sys/class/devfreq{}", pattern)) {
+            for path in paths.flatten() {
+                write_lock(gov, &format!("{}/governor", path.display()));
             }
         }
     }
 
-    pub fn apply_balanced_profile() {
-        Self::apply_cpu_governor("sugov_ext");
-        Self::tune_adreno_gpu(false);
-
-        if let Ok(entries) = glob::glob("/sys/devices/system/cpu/qcom_core_ctl/cpu*") {
-            for entry in entries.flatten() {
-                let p = entry.to_string_lossy();
-                Self::write_node(&format!("{}/enable", p), "1");
-            }
-        }
-
-        Self::write_node("/dev/cpuset/top-app/uclamp.min", "10");
-        Self::write_node("/dev/cpuset/top-app/uclamp.latency_sensitive", "0");
-        Self::write_node("/dev/cpuset/background/uclamp.max", "20");
-
-        if let Ok(policies) = glob::glob("/sys/devices/system/cpu/cpufreq/policy*/sugov_ext") {
-            for policy in policies.flatten() {
-                let p = policy.to_string_lossy();
-                Self::write_node(&format!("{}/up_rate_limit_us", p), "2000");
-                Self::write_node(&format!("{}/down_rate_limit_us", p), "5000");
+    for bus in &["LLCC", "L3", "DDR", "DDRQOS"] {
+        let base = format!("/sys/devices/system/cpu/bus_dcvs/{}", bus);
+        if Path::new(&base).exists() {
+            let avail = format!("{}/available_frequencies", base);
+            if let Some(min) = which_minfreq(&avail) {
+                if let Ok(paths) = glob::glob(&format!("{}/*/max_freq", base)) {
+                    for p in paths.flatten() { write_lock(&min.to_string(), p.to_str().unwrap()); }
+                }
+                if let Ok(paths) = glob::glob(&format!("{}/*/min_freq", base)) {
+                    for p in paths.flatten() { write_lock(&min.to_string(), p.to_str().unwrap()); }
+                }
             }
         }
     }
 
-    pub fn apply_powersave_profile() {
-        Self::apply_cpu_governor("schedutil");
-        Self::tune_adreno_gpu(false);
-
-        Self::write_node("/dev/cpuset/top-app/uclamp.max", "50");
-        Self::write_node("/dev/cpuset/foreground/uclamp.max", "35");
-        Self::write_node("/dev/cpuset/background/uclamp.max", "15");
+    let gpu_path = "/sys/class/kgsl/kgsl-3d0/devfreq";
+    if Path::new(gpu_path).exists() {
+        if let Some(freq) = which_minfreq(&format!("{}/available_frequencies", gpu_path)) {
+            write_lock(&freq.to_string(), &format!("{}/min_freq", gpu_path));
+            write_lock(&freq.to_string(), &format!("{}/max_freq", gpu_path));
+        }
     }
+
+    write_lock("0", "/sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost");
 }

@@ -148,6 +148,6 @@ void validateprop(void) {
         char cmd[MAX_PROP_NAME_BUF + 32];
         snprintf(cmd, sizeof(cmd), "resetprop -p --delete %s", pending.names[i]);
         log_zenith(LOG_WARN, "PropValidator: delete -> %s", pending.names[i]);
-        systemv(cmd);
+        systemv("%s", cmd);
     }
 }

@@ -250,7 +250,7 @@ pub fn restartservice() {
     
     setprop("persist.sys.azenith.state", "stopped");
     
-    if systemv("sh /data/adb/modules/AZenith/service.sh &") != 0 {
+    if systemv("sh /data/adb/modules/nextcore/service.sh &") != 0 {
         log_error("Failed to restart service script");
     } else {
         log_info("Restarted AZenith services");

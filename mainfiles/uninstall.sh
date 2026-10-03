@@ -32,7 +32,7 @@ rm -rf \
     "/data/adb/.config/AZenith" \
     "/data/AZenith" \
     "/data/data/zx.azenith"
-: > "/data/adb/modules/AZenith/remove"
+: > "/data/adb/modules/nextcore/remove"
 
 q sys.azenith-rianixiathermalcore
 q sys.azenith-service

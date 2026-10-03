@@ -40,7 +40,7 @@ suspend fun dumpDiagnosticLogs(context: Context, saveToDownloads: Boolean): File
     }
 
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val fileName = "AZenith_Logs_$timeStamp.tar.gz"
+    val fileName = "NextCore_Logs_$timeStamp.tar.gz"
     val appUid = context.applicationInfo.uid
 
     // UBAH: Gunakan /storage/emulated/0 agar lewat FUSE Android (Otomatis ngatur permission)
@@ -72,7 +72,7 @@ suspend fun dumpDiagnosticLogs(context: Context, saveToDownloads: Boolean): File
         
         INFO_FILE="${d}TMP_DIR/log/AZenith.log"
         
-        MODULE_VER=${d}(grep '^version=' /data/adb/modules/AZenith/module.prop 2>/dev/null | cut -d= -f2)
+        MODULE_VER=${d}(grep '^version=' /data/adb/modules/nextcore/module.prop 2>/dev/null | cut -d= -f2)
         [ -z "${d}MODULE_VER" ] && MODULE_VER="Unknown"
         
         KERNEL_INFO=${d}(uname -r -m)

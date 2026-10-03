@@ -117,7 +117,7 @@ fun SettingsScreen(
     val loadingDialog = rememberLoadingDialog()
     val uninstallDialog = rememberConfirmDialog(
         onConfirm = {
-            Shell.cmd("sh /data/adb/modules/AZenith/uninstall.sh").submit()
+            Shell.cmd("sh /data/adb/modules/nextcore/uninstall.sh").submit()
         },
         onDismiss = {}
     )
@@ -336,7 +336,7 @@ fun SettingsScreen(
                                 {
                                     ExpressiveListItem(
                                         onClick = {
-                                            Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-service --rerun").submit { result ->
+                                            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service --rerun").submit { result ->
                                                 if (result.isSuccess) {
                                                     coroutineScope.launch {
                                                         snackbarHostState.showSnackbar(restartToastText)

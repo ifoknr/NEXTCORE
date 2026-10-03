@@ -215,6 +215,8 @@ if [ ! -f "$MODULE_CONFIG/gamelist/azenithApplist.json" ]; then
 fi
 echo "- Extracting module banner..."
 extract "$ZIPFILE" module.banner.jpg "$MODPATH"
+echo "- Extracting WebUI..."
+extract "$ZIPFILE" webui/index.html "$MODPATH"
 
 # Skip mountify
 touch "$MODPATH/skip_mountify"
@@ -232,15 +234,15 @@ if [ -f "$HM_CONFIG" ]; then
 
     if [ -n "$HM_BIN" ]; then
         echo "- Found Hybrid Mount CLI at: $HM_BIN"
-        $HM_BIN api config-patch --patch '{"rules":{"AZenith":{"default_mode":"ignore"}}}' --apply-runtime >/dev/null 2>&1
+        $HM_BIN api config-patch --patch '{"rules":{"nextcore":{"default_mode":"ignore"}}}' --apply-runtime >/dev/null 2>&1
         echo "- Runtime policy for AZenith updated to 'ignore'."
     else
         echo "- Warning: CLI binary not found in standard paths. Skipping live patch."
     fi
 
-    if ! grep -q "\[rules\.AZenith\]" "$HM_CONFIG"; then
+    if ! grep -q "\[rules\.nextcore\]" "$HM_CONFIG"; then
         echo "" >> "$HM_CONFIG"
-        echo "[rules.AZenith]" >> "$HM_CONFIG"
+        echo "[rules.nextcore]" >> "$HM_CONFIG"
         echo 'default_mode = "ignore"' >> "$HM_CONFIG"
         echo "- Permanent rule added to config.toml."
     fi
@@ -255,7 +257,7 @@ if [ "$KSU" = "true" ] || [ "$APATCH" = "true" ]; then
 	echo "- KSU/AP Detected, skipping module mount (skip_mount)"
 	# symlink ourselves on $PATH
 	manager_paths="/data/adb/ap/bin /data/adb/ksu/bin"
-	BIN_PATH="/data/adb/modules/AZenith/system/bin"
+	BIN_PATH="/data/adb/modules/nextcore/system/bin"
 	for dir in $manager_paths; do
 		[ -d "$dir" ] && {
 			echo "- Creating symlink in $dir"
@@ -272,7 +274,17 @@ fi
 
 # Apply Tweaks Based on Chipset
 echo "- Checking device soc"
-chipset=$(grep -i 'hardware' /proc/cpuinfo | uniq | cut -d ':' -f2 | sed 's/^[ \t]*//')
+chipset=""
+# Android 12+ exposes the SoC vendor directly; this is the most reliable source
+# (e.g. Galaxy Tab S10 Ultra reports ro.soc.manufacturer=Mediatek, ro.soc.model=MT6989).
+case "$(getprop ro.soc.manufacturer | tr '[:upper:]' '[:lower:]')" in
+*mediatek*) chipset="mt $(getprop ro.soc.model)" ;;
+*qti* | *qualcomm*) chipset="qcom $(getprop ro.soc.model)" ;;
+*samsung*) chipset="exynos $(getprop ro.soc.model)" ;;
+*google*) chipset="tensor $(getprop ro.soc.model)" ;;
+*unisoc* | *spreadtrum*) chipset="unisoc $(getprop ro.soc.model)" ;;
+esac
+[ -z "$chipset" ] && chipset=$(grep -i 'hardware' /proc/cpuinfo | uniq | cut -d ':' -f2 | sed 's/^[ \t]*//')
 [ -z "$chipset" ] && chipset="$(getprop ro.board.platform) $(getprop ro.hardware)"
 case "$(echo "$chipset" | tr '[:upper:]' '[:lower:]')" in
 *mt* | *MT*)

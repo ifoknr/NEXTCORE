@@ -1,1 +1,202 @@
-AZenith-ifokrnr-main/mainfiles/webui/index.html
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NextCore</title>
+<style>
+  :root {
+    --bg: #f4f5f8; --card: #ffffff; --text: #16181d; --muted: #646b78;
+    --accent: #3a5bd9; --accent-text: #ffffff; --border: #e1e4ea;
+    --ok: #1f8a4c; --bad: #c0392b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #101215; --card: #1a1d22; --text: #eceef2; --muted: #9aa1ad;
+      --accent: #7b96ff; --accent-text: #0d1020; --border: #2a2e35;
+      --ok: #4cc77f; --bad: #ff6b5e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px; background: var(--bg); color: var(--text);
+    font-family: system-ui, "Noto Sans Arabic", sans-serif; font-size: 15px;
+  }
+  h1 { font-size: 22px; margin: 4px 0 2px; }
+  .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .card h2 { font-size: 15px; margin: 0 0 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat .k { color: var(--muted); font-size: 12px; }
+  .stat .v { font-size: 16px; font-weight: 600; word-break: break-word; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; }
+  select, button {
+    font: inherit; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); padding: 10px 12px;
+  }
+  select { flex: 1; min-width: 0; }
+  button.primary { background: var(--accent); color: var(--accent-text); border: none; font-weight: 600; }
+  button:disabled { opacity: .5; }
+  .seg { display: flex; gap: 8px; }
+  .seg button { flex: 1; }
+  .seg button.active { background: var(--accent); color: var(--accent-text); border-color: transparent; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  .toast {
+    position: fixed; bottom: 16px; left: 16px; right: 16px; padding: 12px 14px; border-radius: 12px;
+    background: var(--text); color: var(--bg); opacity: 0; transition: opacity .2s; pointer-events: none;
+  }
+  .toast.show { opacity: .95; }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>NextCore</h1>
+  <div class="sub" id="version">—</div>
+
+  <div class="card">
+    <h2>حالة النظام</h2>
+    <div class="grid">
+      <div class="stat"><div class="k">الجهاز</div><div class="v" id="device">—</div></div>
+      <div class="stat"><div class="k">المعالج</div><div class="v" id="soc">—</div></div>
+      <div class="stat"><div class="k">حرارة البطارية</div><div class="v" id="temp">—</div></div>
+      <div class="stat"><div class="k">الخدمة</div><div class="v" id="daemon">—</div></div>
+      <div class="stat"><div class="k">الملف الحالي</div><div class="v" id="profile">—</div></div>
+      <div class="stat"><div class="k">الحاكم الحالي</div><div class="v" id="gov">—</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>الوضع</h2>
+    <div class="seg" id="modeSeg">
+      <button data-auto="1">تلقائي</button>
+      <button data-auto="0">يدوي</button>
+    </div>
+    <div class="seg" id="profileSeg" style="margin-top:10px">
+      <button data-p="1">أداء</button>
+      <button data-p="2">متوازن</button>
+      <button data-p="3">توفير</button>
+    </div>
+    <div class="hint">اختيار الملف يدوياً يعمل فقط عند إيقاف الوضع التلقائي.</div>
+  </div>
+
+  <div class="card">
+    <h2>حاكم المعالج (الوضع المتوازن)</h2>
+    <div class="row">
+      <select id="govSelect"></select>
+      <button class="primary" id="govApply">تطبيق</button>
+    </div>
+    <div class="hint">"تلقائي" يعيد الحاكم الافتراضي للجهاز (sugov_ext على معالجات MediaTek الحديثة).</div>
+  </div>
+
+  <div class="card">
+    <h2>عزل الشحن (Bypass Charging)</h2>
+    <div class="row">
+      <span id="bypassPath" class="hint" style="margin:0">—</span>
+      <div class="seg" id="bypassSeg" style="min-width:160px">
+        <button data-b="1">تشغيل</button>
+        <button data-b="0">إيقاف</button>
+      </div>
+    </div>
+    <div class="hint">يتطلب اختيار مسار الشحن أولاً من تطبيق NextCore (فحص التوافق).</div>
+  </div>
+
+  <div class="card">
+    <button id="openApp" style="width:100%">فتح تطبيق NextCore</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  const ACTION = "sh /data/adb/modules/nextcore/action.sh";
+  let state = null;
+
+  function exec(cmd) {
+    return new Promise((resolve) => {
+      if (typeof ksu === "undefined" || !ksu.exec) {
+        resolve({ errno: 1, stdout: "", stderr: "KernelSU WebUI API غير متوفر" });
+        return;
+      }
+      const cb = "nc_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+      window[cb] = (errno, stdout, stderr) => {
+        delete window[cb];
+        resolve({ errno, stdout, stderr });
+      };
+      ksu.exec(cmd, "{}", cb);
+    });
+  }
+
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(t._h);
+    t._h = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  const profileNames = { "0": "تهيئة", "1": "أداء", "2": "متوازن", "3": "توفير" };
+
+  function setActive(segId, attr, value) {
+    document.querySelectorAll("#" + segId + " button").forEach((b) => {
+      b.classList.toggle("active", b.dataset[attr] === value);
+    });
+  }
+
+  async function refresh() {
+    const r = await exec(ACTION + " get_status");
+    if (r.errno !== 0) { toast(r.stderr || "تعذر قراءة الحالة"); return; }
+    try { state = JSON.parse(r.stdout.trim()); } catch (e) { toast("استجابة غير صالحة"); return; }
+
+    document.getElementById("version").textContent = "الإصدار " + (state.version || "—");
+    document.getElementById("device").textContent = state.device || "—";
+    document.getElementById("soc").textContent = state.soc || "—";
+    document.getElementById("temp").textContent = state.temp === "--" ? "—" : state.temp + "°C";
+    const d = document.getElementById("daemon");
+    d.textContent = state.daemon ? "تعمل" : "متوقفة";
+    d.className = "v " + (state.daemon ? "ok" : "bad");
+    document.getElementById("profile").textContent = profileNames[state.profile] || "—";
+    document.getElementById("gov").textContent = state.governor || "—";
+    document.getElementById("bypassPath").textContent =
+      (!state.bypass_path || state.bypass_path === "NEED_SETUP") ? "لم يتم اختيار مسار" :
+      state.bypass_path === "UNSUPPORTED" ? "غير مدعوم على هذا الجهاز" : state.bypass_path;
+
+    setActive("modeSeg", "auto", state.auto === "1" ? "1" : "0");
+    setActive("profileSeg", "p", state.profile);
+    setActive("bypassSeg", "b", state.bypass === "1" ? "1" : "0");
+    document.querySelectorAll("#profileSeg button").forEach((b) => (b.disabled = state.auto === "1"));
+
+    const sel = document.getElementById("govSelect");
+    const govs = (state.governors || "").split(/\s+/).filter(Boolean);
+    sel.innerHTML = "";
+    const auto = new Option("تلقائي (افتراضي الجهاز)", "auto");
+    sel.add(auto);
+    govs.forEach((g) => sel.add(new Option(g, g)));
+    sel.value = state.custom_gov && govs.includes(state.custom_gov) ? state.custom_gov : "auto";
+  }
+
+  async function run(cmd, okMsg) {
+    const r = await exec(cmd);
+    toast(r.errno === 0 ? okMsg : (r.stderr || r.stdout || "فشل التنفيذ").trim());
+    await refresh();
+  }
+
+  document.querySelectorAll("#modeSeg button").forEach((b) =>
+    b.addEventListener("click", () => run(ACTION + " set_auto " + b.dataset.auto, "تم تغيير الوضع")));
+  document.querySelectorAll("#profileSeg button").forEach((b) =>
+    b.addEventListener("click", () => run(ACTION + " set_profile " + b.dataset.p, "تم تطبيق الملف")));
+  document.querySelectorAll("#bypassSeg button").forEach((b) =>
+    b.addEventListener("click", () => run(ACTION + " set_global keep_gov " + b.dataset.b, "تم الحفظ")));
+  document.getElementById("govApply").addEventListener("click", () => {
+    const g = document.getElementById("govSelect").value;
+    if (!/^[A-Za-z0-9_-]+$/.test(g)) return;
+    run(ACTION + " set_global " + g + " keep", "تم تطبيق الحاكم");
+  });
+  document.getElementById("openApp").addEventListener("click", () =>
+    exec("/data/adb/modules/nextcore/system/bin/sys.azenith-service --appactivity"));
+
+  refresh();
+</script>
+</body>
+</html>

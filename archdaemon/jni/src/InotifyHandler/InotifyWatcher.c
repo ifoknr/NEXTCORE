@@ -113,7 +113,7 @@ int setup_inotify_watchers(void) {
                    {"/data/adb/.config/AZenith/API/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
                    {"/data/adb/.config/AZenith/gamelist/", IN_MODIFY | IN_CLOSE_WRITE | IN_MOVED_TO | IN_CREATE},
                    {"/data/adb/.config/AZenith/bypasschgconfig/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
-                   {"/data/adb/modules/AZenith/", IN_MODIFY | IN_CREATE | IN_MOVED_TO | IN_DELETE}};
+                   {"/data/adb/modules/nextcore/", IN_MODIFY | IN_CREATE | IN_MOVED_TO | IN_DELETE}};
 
     for (size_t i = 0; i < sizeof(targets) / sizeof(targets[0]); i++) {
         inotify_add_watch(fd, targets[i].path, targets[i].mask);

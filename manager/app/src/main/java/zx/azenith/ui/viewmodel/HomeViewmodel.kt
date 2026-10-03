@@ -112,8 +112,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun applyProfile(profileReason: String, onSuccess: () -> Unit) {
+        if (profileReason !in setOf("1", "2", "3")) return
         viewModelScope.launch(Dispatchers.IO) {
-            Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-service -p $profileReason").submit()
+            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service -p $profileReason").submit()
             viewModelScope.launch(Dispatchers.Main) { onSuccess() }
         }
     }

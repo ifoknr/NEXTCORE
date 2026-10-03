@@ -54,8 +54,11 @@ class BypassChgTileService : TileService() {
     }
 
     private fun setBypassChg(value: String) {
-        PropertyUtils.set(BYPASS_PROP, value)
-        RootUtils.writeRootFile(BYPASSCHG_FILE, "$value\n")
+        // Root I/O can block (su prompt, slow shell); keep it off the main thread.
+        Thread {
+            PropertyUtils.set(BYPASS_PROP, value)
+            RootUtils.writeRootFile(BYPASSCHG_FILE, "$value\n")
+        }.start()
     }
 
     private fun updateTileState() {

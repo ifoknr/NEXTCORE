@@ -24,6 +24,7 @@ need_integrity=(
 	"mainfiles/uninstall.sh"
 	"mainfiles/module.prop"
     "mainfiles/module.banner.jpg"
+	"mainfiles/webui"
 	"mainfiles/azenithApplist.json"
     "mainfiles/AZenith.apk"
 )
@@ -62,6 +63,17 @@ cp binprofiles/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-profilesetti
 cp binutils/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-utilityconf mainfiles/libs/armeabi-v7a/sys.azenith-utilityconf 2>/dev/null || true
 cp binpreferenced/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-preferencedtweaks mainfiles/libs/armeabi-v7a/sys.azenith-preferencedtweaks 2>/dev/null || true
 
+# Fail the build if any required binary is missing (avoids shipping a broken zip)
+for abi in arm64-v8a armeabi-v7a; do
+	for bin in sys.azenith-service sys.azenith-preloadbin sys.azenith-rianixiathermalcore \
+		sys.azenith-profilesettings sys.azenith-utilityconf sys.azenith-preferencedtweaks; do
+		if [ ! -f "mainfiles/libs/$abi/$bin" ]; then
+			echo "ERROR: missing binary mainfiles/libs/$abi/$bin" >&2
+			exit 1
+		fi
+	done
+done
+
 # Other Files
 cp azenithApplist.json mainfiles/
 cp LICENSE mainfiles/ 2>/dev/null
@@ -81,7 +93,7 @@ else
 fi
 
 # Parse version info to module prop
-zipName="AZenith-$version-$release_code.zip"
+zipName="NextCore-$version-$release_code.zip"
 echo "zipName=$zipName" >>"$GITHUB_OUTPUT"
 artifactName="${zipName%.zip}"
 echo "artifactName=$artifactName" >>"$GITHUB_OUTPUT"

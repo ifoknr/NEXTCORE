@@ -352,6 +352,7 @@
   "MT6985W/TCZA":{ "VENDOR":"MediaTek","NAME":"Dimensity 9200+","FAB":"4 nm","CPU":"4 x Cortex-A510\n3 x Cortex-A715\n1 x Cortex-X3","MEMORY":"LPDDR5X","BANDWIDTH":"","CHANNELS":""},
   "MT6985W/CZA":{ "VENDOR":"MediaTek","NAME":"Dimensity 9200","FAB":"4 nm","CPU":"4 x Cortex-A510\n3 x Cortex-A715\n1 x Cortex-X3","MEMORY":"LPDDR5X","BANDWIDTH":"","CHANNELS":""},
   "MT6985":{ "VENDOR":"MediaTek","NAME":"Dimensity 9200+","FAB":"4 nm","CPU":"4 x Cortex-A510\n3 x Cortex-A715\n1 x Cortex-X3","MEMORY":"LPDDR5X","BANDWIDTH":"","CHANNELS":""},
+  "MT6989":{ "VENDOR":"MediaTek","NAME":"Dimensity 9300 / 9300+","FAB":"4 nm","CPU":"4 x Cortex-X4\n4 x Cortex-A720","MEMORY":"LPDDR5T","BANDWIDTH":"","CHANNELS":""},
   "MT6993W/CZA":{ "VENDOR":"MediaTek","NAME":"Dimensity 9500","FAB":"3 nm","CPU":"","MEMORY":"","BANDWIDTH":"","CHANNELS":""},
   "MT8910Z/TNZB":{ "VENDOR":"MediaTek","NAME":"Dimensity 9500","FAB":"3 nm","CPU":"","MEMORY":"","BANDWIDTH":"","CHANNELS":""},
   "MT6993":{ "VENDOR":"MediaTek","NAME":"Dimensity 9500","FAB":"3 nm","CPU":"","MEMORY":"","BANDWIDTH":"","CHANNELS":""},
