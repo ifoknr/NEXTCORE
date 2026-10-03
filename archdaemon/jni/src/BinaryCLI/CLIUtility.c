@@ -110,7 +110,7 @@ int handle_log(int argc, char** argv) {
         remaining -= written;
     }
 
-    external_log(level, tag, message);
+    external_log(level, tag, "%s", message);
     return 0;
 }
 
@@ -150,7 +150,7 @@ int handle_verboselog(int argc, char** argv) {
         remaining -= written;
     }
 
-    external_vlog(level, tag, message);
+    external_vlog(level, tag, "%s", message);
     return 0;
 }
 
@@ -205,7 +205,7 @@ int restart_service(void) {
         log_zenith(LOG_FATAL, "Unable to daemonize service");
         return 1;
     }
-    system("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf restartservice");
+    system("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf restartservice");
     return 0;
 }
 

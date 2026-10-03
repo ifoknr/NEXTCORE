@@ -47,7 +47,13 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             vcsInfo.include = false
-            signingConfig = signingConfigs.getByName("release")
+            // Use the release key only when its password is provided (CI secret);
+            // otherwise fall back to the debug key so forks can still build.
+            signingConfig = if (System.getenv("KS_PWD").isNullOrEmpty()) {
+                signingConfigs.getByName("debug")
+            } else {
+                signingConfigs.getByName("release")
+            }
             
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), 

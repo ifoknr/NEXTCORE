@@ -48,6 +48,12 @@ bool apply_resolution_target(DaemonContext* ctx, const char* pkg,
     if (IS_DEFAULT(downscale) && IS_DEFAULT(fps))
         return false;
 
+    if (!is_shell_safe(pkg) || (!IS_DEFAULT(downscale) && !is_shell_safe(downscale)) ||
+        (!IS_DEFAULT(fps) && !is_shell_safe(fps))) {
+        log_zenith(LOG_WARN, "ResolutionChanger: Invalid package or value, skipping.");
+        return false;
+    }
+
     if (ctx->resolution_applied) {
         log_zenith(LOG_INFO, "ResolutionChanger: Already applied for %s, skipping.", pkg);
         return false;
@@ -66,7 +72,7 @@ bool apply_resolution_target(DaemonContext* ctx, const char* pkg,
 
         snprintf(cmd + n, sizeof(cmd) - n, " %s", pkg);
 
-        systemv(cmd);
+        systemv("%s", cmd);
         ctx->resolution_applied = true;
         ctx->used_legacy_fallback = false;
         log_zenith(LOG_INFO, "ResolutionChanger: Applied '%s' (Android %d)", cmd, sdk);
@@ -96,6 +102,10 @@ bool apply_resolution_target(DaemonContext* ctx, const char* pkg,
  */
 void restore_resolution_target(DaemonContext* ctx, const char* pkg) {
     if (!ctx->resolution_applied) return;
+    if (!is_shell_safe(pkg)) {
+        ctx->resolution_applied = false;
+        return;
+    }
 
     if (ctx->used_legacy_fallback) {
         systemv("cmd device_config delete game_overlay %s", pkg);

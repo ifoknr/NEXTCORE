@@ -19,8 +19,6 @@ mod chipsets;
 mod profiles;
 
 use std::env;
-use std::path::Path;
-use std::process::Command;
 use std::fs;
 use utils::*;
 use profiles::*;
@@ -66,12 +64,9 @@ fn main() {
             "3" | "eco_mode" => eco_mode(),
             "applyfreqbalance" => applyfreqbalance(),
             "applyfreqgame" => applyfreqgame(),
-            _ => {
-                if Path::new(&args[1]).exists() || args[1].contains('.') {
-                    let _ = Command::new(&args[1])
-                        .args(&args[2..])
-                        .status();
-                }
+            other => {
+                eprintln!("Unknown command: {}", other);
+                std::process::exit(1);
             }
         }
     }

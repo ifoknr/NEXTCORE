@@ -73,20 +73,24 @@ class ZenithReceiver : BroadcastReceiver() {
 
                 val pendingResult = goAsync()
                 CoroutineScope(Dispatchers.Default).launch {
-                    delay(3000)
-                    val reshow = Intent(context, ZenithReceiver::class.java).apply {
-                        this.action = ACTION_MANAGE
-                        putExtras(intent.extras ?: return@launch)
+                    try {
+                        delay(3000)
+                        val extras = intent.extras ?: return@launch
+                        val reshow = Intent(context, ZenithReceiver::class.java).apply {
+                            this.action = ACTION_MANAGE
+                            putExtras(extras)
+                        }
+                        context.sendBroadcast(reshow)
+                    } finally {
+                        pendingResult.finish()
                     }
-                    context.sendBroadcast(reshow)
-                    pendingResult.finish()
                 }
             }
         }
     }
 
     private fun handleNotification(context: Context, intent: Intent, manager: NotificationManager) {
-        val title = intent.getStringExtra("notifytitle") ?: "AZenith"
+        val title = intent.getStringExtra("notifytitle") ?: "NextCore"
         val message = intent.getStringExtra("notifytext") ?: ""
         
         val chrono = intent.getBooleanExtra("chrono_bool", 

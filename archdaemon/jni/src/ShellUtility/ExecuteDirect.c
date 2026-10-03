@@ -24,15 +24,15 @@
  * @return Pointer to the captured output string (trimmed), or NULL if execution or fork fails.
  */
 char* execute_direct(const char* path, const char* arg0, ...) {
-    /* Supports up to 15 arguments + NULL */
-    const char* argv[16];
+    /* Supports up to 31 arguments + NULL */
+    const char* argv[32];
     int argc = 0;
     argv[argc++] = arg0;
 
     va_list args;
     va_start(args, arg0);
     const char* arg;
-    while ((arg = va_arg(args, const char*)) && argc < 15) {
+    while ((arg = va_arg(args, const char*)) && argc < 31) {
         argv[argc++] = arg;
     }
     argv[argc] = NULL;
@@ -78,8 +78,7 @@ char* execute_direct(const char* path, const char* arg0, ...) {
     close(pipefd[0]);
 
     int status;
-    waitpid(pid, &status, 0);
-    if (WEXITSTATUS(status))
+    if (waitpid(pid, &status, 0) == -1 || !WIFEXITED(status) || WEXITSTATUS(status))
         return NULL;
 
     return strdup(trim_newline(output));

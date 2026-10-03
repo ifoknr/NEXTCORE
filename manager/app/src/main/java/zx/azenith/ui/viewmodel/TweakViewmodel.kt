@@ -240,7 +240,7 @@ class TweakViewModel : ViewModel() {
                 }
             }
             
-            RootUtils.touchRootFile("/data/adb/modules/AZenith/reboot")
+            RootUtils.touchRootFile("/data/adb/modules/nextcore/reboot")
             if (restoreTweaks) {
                 loadAllConfiguration(context)
             }
@@ -364,7 +364,7 @@ class TweakViewModel : ViewModel() {
 
     private fun loadMaliGovernorsInternal() {
 
-        val checkResult = Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf checkmalipath").exec()
+        val checkResult = Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf checkmalipath").exec()
         val hasMali = checkResult.out.joinToString("").trim() == "true"
 
         if (hasMali) {
@@ -422,7 +422,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_default_cpu_gov", selectedGov)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "2") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
             }
         }
     }
@@ -434,7 +434,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_powersave_cpu_gov", selectedGov)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "3") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
             }
         }
     }
@@ -446,7 +446,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_performance_cpu_gov", selectedGov)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "3") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsgov $selectedGov").exec()
             }
         }
     }
@@ -468,7 +468,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_default_balanced_IO", selectedIO)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "2") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
             }
         }
     }
@@ -480,7 +480,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_performance_IO", selectedIO)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "1") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
             }
         }
     }
@@ -492,7 +492,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_powersave_IO", selectedIO)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "3") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsIO $selectedIO").exec()
             }
         }
     }
@@ -505,7 +505,7 @@ class TweakViewModel : ViewModel() {
 
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "2") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
             }
         }
     }
@@ -517,7 +517,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_performance_maligpu_gov", selectedGov)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "1") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
             }
         }
     }
@@ -529,7 +529,7 @@ class TweakViewModel : ViewModel() {
             PropertyUtils.set("persist.sys.azenith.custom_powersave_maligpu_gov", selectedGov)
             val currentProfile = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")
             if (currentProfile == "3") {
-                Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
+                Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setsMaliGov $selectedGov").exec()
             }
         }
     }
@@ -573,13 +573,15 @@ class TweakViewModel : ViewModel() {
         thermalState = checked
         viewModelScope.launch(Dispatchers.IO) {
             PropertyUtils.set("persist.sys.azenithconf.thermalcore", if (checked) "1" else "0")
-            Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setthermalcore ${if (checked) "1" else "0"}").exec()
+            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setthermalcore ${if (checked) "1" else "0"}").exec()
         }
     }
 
     fun executeSetRenderer(reason: String, context: Context) {
+        // The value ends up in a root shell command; only allow plain renderer names.
+        if (!reason.matches(Regex("^[A-Za-z0-9_.-]+$"))) return
         isRendererLoading = true
-        Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-utilityconf setrender $reason && setprop persist.sys.azenithconf.renderer $reason").submit {
+        Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf setrender $reason && setprop persist.sys.azenithconf.renderer $reason").submit {
             viewModelScope.launch {
                 delay(1000)
                 loadAllConfiguration(context)

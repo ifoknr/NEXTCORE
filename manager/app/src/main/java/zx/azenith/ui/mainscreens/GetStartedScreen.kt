@@ -360,7 +360,7 @@ fun GetStartedScreen(navController: NavController, onCompleted: () -> Unit = {})
                                     } else {
                                         isFinalizing = true
                                         coroutineScope.launch {
-                                            RootUtils.isModuleInstalled()
+                                            withContext(Dispatchers.IO) { RootUtils.isModuleInstalled() }
                                             delay(2000)
 
                                             val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
@@ -373,7 +373,13 @@ fun GetStartedScreen(navController: NavController, onCompleted: () -> Unit = {})
                                             // app first, so finishing setup killed the
                                             // running activity and cold-started it
                                             // again instead of navigating on.
-                                            Shell.cmd("su -c pm grant zx.azenith android.permission.READ_EXTERNAL_STORAGE && su -c pm grant zx.azenith android.permission.POST_NOTIFICATIONS && su -c pm grant zx.azenith android.permission.READ_MEDIA_IMAGES").exec()
+                                            withContext(Dispatchers.IO) {
+                                                Shell.cmd(
+                                                    "pm grant zx.azenith android.permission.READ_EXTERNAL_STORAGE",
+                                                    "pm grant zx.azenith android.permission.POST_NOTIFICATIONS",
+                                                    "pm grant zx.azenith android.permission.READ_MEDIA_IMAGES"
+                                                ).exec()
+                                            }
                                             onCompleted()
                                         }
                                     }
@@ -632,7 +638,7 @@ fun GetStartedScreen(navController: NavController, onCompleted: () -> Unit = {})
                                                     onCheckedChange = { isChecked ->
                                                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                                         stateToast = isChecked
-                                                        Shell.cmd("su -c setprop persist.sys.azenithconf.showtoast ${if (isChecked) "1" else "0"}").submit()
+                                                        Shell.cmd("setprop persist.sys.azenithconf.showtoast ${if (isChecked) "1" else "0"}").submit()
                                                     }
                                                 )
                                             }
@@ -650,8 +656,8 @@ fun GetStartedScreen(navController: NavController, onCompleted: () -> Unit = {})
                                                         autoMode = isChecked
                                                         val state = if (isChecked) "0" else "1"
                                                         Shell.cmd(
-                                                            "su -c setprop persist.sys.azenithconf.AIenabled $state",
-                                                            "su -c \"echo $state > /data/adb/.config/AZenith/API/current_modes\""
+                                                            "setprop persist.sys.azenithconf.AIenabled $state",
+                                                            "echo $state > /data/adb/.config/AZenith/API/current_modes"
                                                         ).submit()
                                                     }
                                                 )

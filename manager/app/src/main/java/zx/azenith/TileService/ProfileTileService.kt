@@ -37,7 +37,7 @@ class ProfileTileService : TileService() {
 
     companion object {
         private const val AI_PROP = "persist.sys.azenithconf.AIenabled"
-        private const val DAEMON_BIN = "/data/adb/modules/AZenith/system/bin/sys.azenith-service"
+        private const val DAEMON_BIN = "/data/adb/modules/nextcore/system/bin/sys.azenith-service"
     }
 
     override fun onCreate() {

@@ -20,11 +20,11 @@
  * @brief Checks if the module properties have been renamed or modified by a 3rd party.
  */
 void is_kanged(void) {
-    if (systemv("grep -q '^name=AZenith火$' %s", MODULE_PROP) != 0) [[clang::unlikely]] {
+    if (systemv("grep -q '^id=nextcore$' %s", MODULE_PROP) != 0) [[clang::unlikely]] {
         goto doorprize;
     }
 
-    if (systemv("grep -q '^author=ArchHaven Developers$' %s", MODULE_PROP) != 0) [[clang::unlikely]] {
+    if (systemv("grep -q '^name=NextCore$' %s", MODULE_PROP) != 0) [[clang::unlikely]] {
         goto doorprize;
     }
 

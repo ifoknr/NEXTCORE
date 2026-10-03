@@ -158,7 +158,8 @@ void apply_eco_profile(DaemonContext* ctx) {
                 systemv("sys.azenith-utilityconf setrender default");
                 __system_property_set("persist.sys.azenithconf.renderer", "default");
             } else {
-                systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
+                if (is_shell_safe(ctx->saved_renderer))
+                    systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
                 __system_property_set("persist.sys.azenithconf.renderer", ctx->saved_sys_renderer);
             }
         }
@@ -214,7 +215,8 @@ void apply_balanced_profile(DaemonContext* ctx) {
                 systemv("sys.azenith-utilityconf setrender default");
                 __system_property_set("persist.sys.azenithconf.renderer", "default");
             } else {
-                systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
+                if (is_shell_safe(ctx->saved_renderer))
+                    systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
                 __system_property_set("persist.sys.azenithconf.renderer", ctx->saved_sys_renderer);
             }
         }

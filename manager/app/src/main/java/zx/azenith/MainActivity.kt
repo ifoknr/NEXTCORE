@@ -290,7 +290,7 @@ fun MainScreen(fromTileType: String? = null) {
                 installingDialog.withInstalling {
                     val result = kotlinx.coroutines.withContext(Dispatchers.IO) {
                         Shell.cmd(
-                            "cp /data/adb/modules/AZenith/AZenith.apk /data/local/tmp/AZenith_tmp.apk",
+                            "cp /data/adb/modules/nextcore/AZenith.apk /data/local/tmp/AZenith_tmp.apk",
                             "sleep 5 && pm install -r /data/local/tmp/AZenith_tmp.apk",
                             "rm -f /data/local/tmp/AZenith_tmp.apk"
                         ).exec()
@@ -315,7 +315,13 @@ fun MainScreen(fromTileType: String? = null) {
     
     LaunchedEffect(rootStatus) {
         if (rootStatus) {
-            val moduleVC = RootUtils.getModuleVersionCode()
+            val (moduleVC, updateApkAvailable, modulePendingReboot) = withContext(Dispatchers.IO) {
+                Triple(
+                    RootUtils.getModuleVersionCode(),
+                    RootUtils.isUpdateApkAvailable(),
+                    RootUtils.isModuleUpdatePendingReboot()
+                )
+            }
             val appVC = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                 context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode.toInt()
             } else {
@@ -323,7 +329,7 @@ fun MainScreen(fromTileType: String? = null) {
                 context.packageManager.getPackageInfo(context.packageName, 0).versionCode
             }
 
-            if (appVC < moduleVC && RootUtils.isUpdateApkAvailable()) {
+            if (appVC < moduleVC && updateApkAvailable) {
                 updateDialog.showConfirm(
                     title = context.getString(R.string.dialog_update_available_title),
                     content = context.getString(R.string.dialog_update_available_content, appVC, moduleVC),
@@ -332,7 +338,7 @@ fun MainScreen(fromTileType: String? = null) {
                 )
             }
 
-            if (RootUtils.isModuleUpdatePendingReboot()) {
+            if (modulePendingReboot) {
                 rebootDialog.showConfirm(
                     title = context.getString(R.string.dialog_module_update_title),
                     content = context.getString(R.string.dialog_module_update_content),

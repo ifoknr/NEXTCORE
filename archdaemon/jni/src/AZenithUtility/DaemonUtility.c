@@ -57,6 +57,22 @@ void escape_shell_string(char* dest, const char* src, size_t max_size) {
 }
 
 /**
+ * @brief Checks that a value is safe to place unquoted in a shell command.
+ * @param value String to check (package name, renderer, scale factor, ...).
+ * @return true if it only contains [A-Za-z0-9._-] and is non-empty.
+ */
+bool is_shell_safe(const char* value) {
+    if (!value || !value[0])
+        return false;
+
+    for (const char* c = value; *c; c++) {
+        if (!isalnum((unsigned char)*c) && *c != '.' && *c != '_' && *c != '-')
+            return false;
+    }
+    return true;
+}
+
+/**
  * @brief Push an Android broadcast notification.
  * @param title Notification title.
  * @param fmt Format string for the message.
@@ -70,29 +86,27 @@ void notify(const char* title, const char* fmt, bool chrono, int timeout_ms, ...
     vsnprintf(message, sizeof(message), fmt, args);
     va_end(args);
 
-    char safe_title[256];
-    char safe_message[2048];
-
-    escape_shell_string(safe_title, title, sizeof(safe_title));
-    escape_shell_string(safe_message, message, sizeof(safe_message));
-
+    /*
+     * Run the broadcast without a shell: the title/message may contain an app
+     * label chosen by a third-party app, so it must never be parsed by sh.
+     */
     const char* action = "zx.azenith.ACTION_MANAGE";
     const char* component = "zx.azenith/zx.azenith.receiver.ZenithReceiver";
     const char* chrono_str = chrono ? "true" : "false";
+    char* out;
 
     if (timeout_ms > 0) {
-        systemv("su -c \"am broadcast -a %s -n %s "
-                "--es notifytitle '%s' --es notifytext '%s' "
-                "--ez chrono_bool %s --es timeout '%d' "
-                ">/dev/null 2>&1\"",
-                action, component, safe_title, safe_message, chrono_str, timeout_ms);
+        char timeout_str[16];
+        snprintf(timeout_str, sizeof(timeout_str), "%d", timeout_ms);
+        out = execute_direct("/system/bin/cmd", "cmd", "activity", "broadcast", "-a", action, "-n", component,
+                             "--es", "notifytitle", title, "--es", "notifytext", message, "--ez", "chrono_bool",
+                             chrono_str, "--es", "timeout", timeout_str, NULL);
     } else {
-        systemv("su -c \"am broadcast -a %s -n %s "
-                "--es notifytitle '%s' --es notifytext '%s' "
-                "--ez chrono_bool %s "
-                ">/dev/null 2>&1\"",
-                action, component, safe_title, safe_message, chrono_str);
+        out = execute_direct("/system/bin/cmd", "cmd", "activity", "broadcast", "-a", action, "-n", component,
+                             "--es", "notifytitle", title, "--es", "notifytext", message, "--ez", "chrono_bool",
+                             chrono_str, NULL);
     }
+    free(out);
 }
 
 /**
@@ -150,12 +164,11 @@ void toast(const char* message) {
     char val[PROP_VALUE_MAX] = {0};
 
     if (__system_property_get("persist.sys.azenithconf.showtoast", val) > 0 && val[0] == '1') {
-        int exit = systemv("su -c \"am broadcast "
-                           "-a zx.azenith.ACTION_MANAGE "
-                           "-n zx.azenith/.receiver.ZenithReceiver "
-                           "--es toasttext '%s' "
-                           ">/dev/null 2>&1\"",
-                           message);
+        char* out = execute_direct("/system/bin/cmd", "cmd", "activity", "broadcast", "-a",
+                                   "zx.azenith.ACTION_MANAGE", "-n", "zx.azenith/.receiver.ZenithReceiver",
+                                   "--es", "toasttext", message, NULL);
+        int exit = out ? 0 : 1;
+        free(out);
 
         if (exit != 0) [[clang::unlikely]] {
             log_zenith(LOG_WARN, "Unable to send toast broadcast: %s", message);
@@ -278,6 +291,10 @@ void extract_string_value(char* dest, const char* key_pos, size_t max_len) {
  * @param pkg Target package name to restart.
  */
 void restart_target_app(const char* pkg) {
+    if (!is_shell_safe(pkg)) {
+        log_zenith(LOG_WARN, "RestartHandler: Refusing to restart invalid package name");
+        return;
+    }
     log_zenith(LOG_INFO, "RestartHandler: Restarting %s to apply pending changes...", pkg);
     is_restarting_renderer = true; // reuse existing flag, guards inotify/pid logic during respawn
     systemv("am force-stop %s && am start -n $(cmd package resolve-activity --brief %s | tail -n 1)",
@@ -309,7 +326,7 @@ void update_module_description(pid_t pid) {
 
     char new_desc[256];
     snprintf(new_desc, sizeof(new_desc),
-             "description=[✅AZenith is Alive with PID : %d] One, Two, Three! AZenith has arrived!\n",
+             "description=✅ Running (PID %d) · Advanced performance engine\n",
              pid);
 
     fp = fopen(MODULE_PROP, "w");

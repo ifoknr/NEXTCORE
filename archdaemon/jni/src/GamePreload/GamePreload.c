@@ -27,8 +27,8 @@
 void GamePreload(const char* package) {
     sleep(5);
 
-    if (!package || package[0] == '\0') {
-        log_zenith(LOG_WARN, "Package is null or empty");
+    if (!is_shell_safe(package)) {
+        log_zenith(LOG_WARN, "Package is null, empty or invalid");
         return;
     }
 
@@ -72,7 +72,7 @@ void GamePreload(const char* package) {
     }
 
     char budget[32] = {0};
-    if (__system_property_get("persist.sys.azenithconf.preloadbudget", budget) <= 0) {
+    if (__system_property_get("persist.sys.azenithconf.preloadbudget", budget) <= 0 || !is_shell_safe(budget)) {
         strcpy(budget, "500M");
     }
 

@@ -19,7 +19,6 @@ mod utils;
 
 use std::env;
 use std::fs;
-use std::path::Path;
 use std::process::Command;
 use prefs::*;
 use utils::*;
@@ -64,12 +63,9 @@ fn main() {
             "apply" | "prefs" | "preferenced" => {
                 prefsettings();
             }
-            _ => {
-                if Path::new(&args[1]).exists() || args[1].contains('.') {
-                    let _ = Command::new(&args[1])
-                        .args(&args[2..])
-                        .status();
-                }
+            other => {
+                eprintln!("Unknown command: {}", other);
+                std::process::exit(1);
             }
         }
     } else {

@@ -72,7 +72,7 @@ class SettingsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val flag = if (enabled) "-sn" else "-hn"
             PropertyUtils.set("persist.sys.azenith.profilenotifications", if (enabled) "1" else "0")
-            Shell.cmd("/data/adb/modules/AZenith/system/bin/sys.azenith-service $flag").submit()            
+            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service $flag").submit()            
         }
     }
     

@@ -50,7 +50,7 @@
 
 #define MAX_GAME_PIDS 8
 
-#define NOTIFY_TITLE "AZenith"
+#define NOTIFY_TITLE "NextCore"
 #define LOG_TAG "AZenith"
 #define LOG_TAG_PROFILE "AZenith_Profiles"
 
@@ -64,9 +64,9 @@
 #define GAME_INFO_APP "/data/data/zx.azenith/API/gameinfo"
 #define GAMELIST "/data/adb/.config/AZenith/gamelist/azenithApplist.json"
 #define DAEMON_MODES "/data/adb/.config/AZenith/API/current_modes"
-#define MODULE_PROP "/data/adb/modules/AZenith/module.prop"
-#define MODULE_UPDATE "/data/adb/modules/AZenith/update"
-#define MODULE_REMOVE "/data/adb/modules/AZenith/remove"
+#define MODULE_PROP "/data/adb/modules/nextcore/module.prop"
+#define MODULE_UPDATE "/data/adb/modules/nextcore/update"
+#define MODULE_REMOVE "/data/adb/modules/nextcore/remove"
 #define BYPASSCHG_CONFIG "/data/adb/.config/AZenith/bypasschgconfig"
 #define MODULE_VERSION ".placeholder"
 #define APP_MONITOR_FILE "/data/adb/.config/AZenith/app_status"
@@ -248,6 +248,7 @@ void toast(const char* message);
 void is_kanged(void);
 void checkstate(void);
 void escape_shell_string(char *dest, const char *src, size_t max_size);
+bool is_shell_safe(const char* value);
 char* timern(void);
 void setspid(void);
 bool return_true(void);
