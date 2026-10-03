@@ -23,7 +23,7 @@ readonly VERSION_TYPE=$(cat version_type)
 readonly VERSION_CODE=$(git rev-list HEAD --count)
 readonly SHORT_HASH=$(git rev-parse --short HEAD)
 readonly RELEASE_CODE="${VERSION_CODE}-${SHORT_HASH}-${VERSION_TYPE}"
-readonly FULL_VERSION="${VERSION} (${RELEASE_CODE})"
+readonly FULL_VERSION="${VERSION} (${VERSION_CODE})"
 
 echo "Starting version injection..."
 echo "Target Version: $FULL_VERSION"

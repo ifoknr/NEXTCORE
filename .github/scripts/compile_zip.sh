@@ -34,8 +34,10 @@ version="$(cat version)"
 version_type="$(cat version_type | tr -d '\n\r ')" # Hapus spasi/newline agar presisi
 version_code="$(git rev-list HEAD --count)"
 release_code="$(git rev-list HEAD --count)-$(git rev-parse --short HEAD)-$version_type"
-sed -i "s/version=.*/version=$version ($release_code)/" mainfiles/module.prop
-sed -i "s/versionCode=.*/versionCode=$version_code/" mainfiles/module.prop
+# Shown in the root manager, e.g. "v2.0.0 (1975)"; must match MODULE_VERSION set by verify.sh
+display_version="$version ($version_code)"
+sed -i "s/^version=.*/version=$display_version/" mainfiles/module.prop
+sed -i "s/^versionCode=.*/versionCode=$version_code/" mainfiles/module.prop
 
 # Set Profile Folder untuk Rust berdasarkan version_type
 RUST_PROFILE="release"
@@ -93,7 +95,7 @@ else
 fi
 
 # Parse version info to module prop
-zipName="NextCore-$version-$release_code.zip"
+zipName="NextCore-$version-$version_code.zip"
 echo "zipName=$zipName" >>"$GITHUB_OUTPUT"
 artifactName="${zipName%.zip}"
 echo "artifactName=$artifactName" >>"$GITHUB_OUTPUT"

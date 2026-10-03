@@ -326,7 +326,7 @@ void update_module_description(pid_t pid) {
 
     char new_desc[256];
     snprintf(new_desc, sizeof(new_desc),
-             "description=[✅ NextCore يعمل - PID: %d] محرك أداء NextCore نشط.\n",
+             "description=✅ Running (PID %d) · Advanced performance engine\n",
              pid);
 
     fp = fopen(MODULE_PROP, "w");
