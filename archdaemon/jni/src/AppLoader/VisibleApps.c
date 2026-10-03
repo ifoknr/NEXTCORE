@@ -15,6 +15,27 @@ static char s_last_package[256] = "";
 static char s_visible_pkg[256] = "";
 static int s_last_pid = -1;
 
+/* مطابقة لتعريف AZenith.h: int uidof(pid_t pid) */
+int uidof(pid_t pid) {
+    if (pid <= 0) return -1;
+    char status_path[64];
+    snprintf(status_path, sizeof(status_path), "/proc/%d/status", pid);
+    FILE *status_fp = fopen(status_path, "r");
+    if (!status_fp) return -1;
+
+    char s_line[128];
+    int uid = -1;
+    while (fgets(s_line, sizeof(s_line), status_fp)) {
+        if (strncmp(s_line, "Uid:", 4) == 0) {
+            if (sscanf(s_line, "Uid:\t%d", &uid) == 1) {
+                break;
+            }
+        }
+    }
+    fclose(status_fp);
+    return uid;
+}
+
 int get_foreground_pid(void) {
     const char *target_cgroup = TOP_APP_CGROUP;
     if (access(target_cgroup, R_OK) != 0) {
@@ -34,24 +55,10 @@ int get_foreground_pid(void) {
         int temp_pid = atoi(line);
         if (temp_pid <= 1000) continue;
 
-        char status_path[64];
-        snprintf(status_path, sizeof(status_path), "/proc/%d/status", temp_pid);
-        FILE *status_fp = fopen(status_path, "r");
-        if (status_fp) {
-            char s_line[128];
-            int uid = -1;
-            while (fgets(s_line, sizeof(s_line), status_fp)) {
-                if (strncmp(s_line, "Uid:", 4) == 0) {
-                    sscanf(s_line, "Uid:\t%d", &uid);
-                    break;
-                }
-            }
-            fclose(status_fp);
-
-            if (uid >= 10000) {
-                pid = temp_pid;
-                break;
-            }
+        int uid = uidof(temp_pid);
+        if (uid >= 10000) {
+            pid = temp_pid;
+            break;
         }
     }
     fclose(fp);
@@ -89,7 +96,9 @@ int check_foreground_app_changed(char *current_package, int *current_pid) {
     if (get_package_name_by_pid(pid, pkg, sizeof(pkg))) {
         if (strcmp(pkg, s_last_package) != 0) {
             strncpy(s_last_package, pkg, sizeof(s_last_package) - 1);
+            s_last_package[sizeof(s_last_package) - 1] = '\0';
             strncpy(current_package, pkg, 255);
+            current_package[255] = '\0';
             s_last_pid = pid;
             *current_pid = pid;
             return 1;
@@ -98,8 +107,9 @@ int check_foreground_app_changed(char *current_package, int *current_pid) {
     return 0;
 }
 
-/* الدالة المطلوبة لربط ProfileUtility.c */
-char *get_visible_package(void) {
+/* مطابقة لتعريف AZenith.h: char* get_visible_package(SystemStateCache* cache) */
+char* get_visible_package(SystemStateCache* cache) {
+    (void)cache;
     int pid = get_foreground_pid();
     if (pid <= 0) {
         return NULL;
@@ -108,29 +118,4 @@ char *get_visible_package(void) {
         return s_visible_pkg;
     }
     return NULL;
-}
-
-/* الدالة المطلوبة لربط استعلام الـ UID */
-uid_t uidof(const char *package_name) {
-    if (!package_name || package_name[0] == '\0') {
-        return (uid_t)-1;
-    }
-
-    FILE *fp = fopen("/data/system/packages.list", "r");
-    if (fp) {
-        char line[512];
-        while (fgets(line, sizeof(line), fp)) {
-            char pkg[256];
-            int uid = -1;
-            if (sscanf(line, "%255s %d", pkg, &uid) == 2) {
-                if (strcmp(pkg, package_name) == 0) {
-                    fclose(fp);
-                    return (uid_t)uid;
-                }
-            }
-        }
-        fclose(fp);
-    }
-
-    return (uid_t)-1;
 }
