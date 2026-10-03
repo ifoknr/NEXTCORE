@@ -1,11 +1,81 @@
 #define _GNU_SOURCE
+#include "AZenith.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/resource.h>
 #include <sched.h>
+
+/* الدالة المطلوبة لربط InotifyWatcher.c و System.c */
+pid_t get_pids_of(const char *process_name) {
+    if (!process_name || process_name[0] == '\0') {
+        return -1;
+    }
+
+    DIR *dir = opendir("/proc");
+    if (!dir) return -1;
+
+    struct dirent *entry;
+    pid_t found_pid = -1;
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] < '0' || entry->d_name[0] > '9') continue;
+
+        int pid = atoi(entry->d_name);
+        if (pid <= 0) continue;
+
+        char cmdline_path[64];
+        snprintf(cmdline_path, sizeof(cmdline_path), "/proc/%d/cmdline", pid);
+        int fd = open(cmdline_path, O_RDONLY);
+        if (fd >= 0) {
+            char cmdline[256] = {0};
+            ssize_t bytes = read(fd, cmdline, sizeof(cmdline) - 1);
+            close(fd);
+            if (bytes > 0) {
+                char *colon = strchr(cmdline, ':');
+                if (colon) *colon = '\0';
+                if (strcmp(cmdline, process_name) == 0) {
+                    found_pid = pid;
+                    break;
+                }
+            }
+        }
+
+        char comm_path[64];
+        snprintf(comm_path, sizeof(comm_path), "/proc/%d/comm", pid);
+        FILE *cfp = fopen(comm_path, "r");
+        if (cfp) {
+            char comm[64] = {0};
+            if (fgets(comm, sizeof(comm), cfp)) {
+                comm[strcspn(comm, "\r\n")] = '\0';
+                if (strcmp(comm, process_name) == 0) {
+                    found_pid = pid;
+                    fclose(cfp);
+                    break;
+                }
+            }
+            fclose(cfp);
+        }
+    }
+
+    closedir(dir);
+    return found_pid;
+}
+
+/* الدالة المطلوبة لربط System.c عند إقلاع الـ Daemon */
+static pid_t s_spid = -1;
+
+void setspid(void) {
+    pid_t pid = get_pids_of("system_server");
+    if (pid > 0) {
+        s_spid = pid;
+    } else {
+        s_spid = getpid();
+    }
+}
 
 static int is_render_thread(const char *thread_name) {
     const char *critical_threads[] = {
@@ -27,7 +97,6 @@ static int is_render_thread(const char *thread_name) {
 void optimize_game_threads(int game_pid) {
     if (game_pid <= 0) return;
 
-    // 1. رفع أولوية العملية الرئيسية إلى Nice -10
     setpriority(PRIO_PROCESS, game_pid, -10);
 
     char task_dir_path[64];
@@ -51,10 +120,8 @@ void optimize_game_threads(int game_pid) {
                 thread_name[strcspn(thread_name, "\n")] = 0;
 
                 if (is_render_thread(thread_name)) {
-                    // خيط الرندرة والصوت يأخذ أولوية مرتفعة
                     setpriority(PRIO_PROCESS, tid, -15);
 
-                    // تحرير قيود الأنوية والسماح بالعمل على جميع الأنوية
                     cpu_set_t cpuset;
                     CPU_ZERO(&cpuset);
                     for (int cpu = 0; cpu < 8; cpu++) {
