@@ -5,3 +5,4 @@ versionCode=2000
 author=Turki & Collaborators
 description=Advanced performance engine for Snapdragon & Dimensity.
 banner=module.banner.jpg
+updateJson=https://github.com/ifoknr/NEXTCORE/releases/latest/download/update.json
