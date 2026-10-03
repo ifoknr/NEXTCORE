@@ -1,16 +1,21 @@
+#include "AZenith.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define TOP_APP_CGROUP "/dev/cpuset/top-app/cgroup.procs"
 #define TOP_APP_CGROUP_V2 "/sys/fs/cgroup/top-app/cgroup.procs"
 
 static char s_last_package[256] = "";
+static char s_visible_pkg[256] = "";
 static int s_last_pid = -1;
 
-int get_foreground_pid() {
+int get_foreground_pid(void) {
     const char *target_cgroup = TOP_APP_CGROUP;
     if (access(target_cgroup, R_OK) != 0) {
         target_cgroup = TOP_APP_CGROUP_V2;
@@ -91,4 +96,41 @@ int check_foreground_app_changed(char *current_package, int *current_pid) {
         }
     }
     return 0;
+}
+
+/* الدالة المطلوبة لربط ProfileUtility.c */
+char *get_visible_package(void) {
+    int pid = get_foreground_pid();
+    if (pid <= 0) {
+        return NULL;
+    }
+    if (get_package_name_by_pid(pid, s_visible_pkg, sizeof(s_visible_pkg))) {
+        return s_visible_pkg;
+    }
+    return NULL;
+}
+
+/* الدالة المطلوبة لربط استعلام الـ UID */
+uid_t uidof(const char *package_name) {
+    if (!package_name || package_name[0] == '\0') {
+        return (uid_t)-1;
+    }
+
+    FILE *fp = fopen("/data/system/packages.list", "r");
+    if (fp) {
+        char line[512];
+        while (fgets(line, sizeof(line), fp)) {
+            char pkg[256];
+            int uid = -1;
+            if (sscanf(line, "%255s %d", pkg, &uid) == 2) {
+                if (strcmp(pkg, package_name) == 0) {
+                    fclose(fp);
+                    return (uid_t)uid;
+                }
+            }
+        }
+        fclose(fp);
+    }
+
+    return (uid_t)-1;
 }
