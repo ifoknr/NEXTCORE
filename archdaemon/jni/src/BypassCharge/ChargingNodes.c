@@ -6,47 +6,36 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-/* تعريف مسارات العزل للملفات القديمة (BypassCompatibility.c) */
-const char *bypass_list[] = {
-    "/sys/class/power_supply/battery/input_suspend",
-    "/sys/class/qcom-battery/input_suspend",
-    "/sys/devices/platform/charger/bypass_charge",
-    "/sys/class/power_supply/battery/charging_enabled",
-    "/sys/class/power_supply/battery/battery_charging_enabled",
-    "/sys/class/power_supply/battery/charge_control_limit_max",
-    "/sys/class/power_supply/battery/mmi_charging_enable",
-    "/sys/class/power_supply/battery/charge_control_limit",
-    "/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit",
-    "/sys/class/power_supply/battery/batt_slate_mode"
-};
-
-const size_t bypass_list_size = sizeof(bypass_list) / sizeof(bypass_list[0]);
-
-typedef struct {
-    const char *node_path;
-    const char *disable_value;
-    const char *enable_value;
-} ChargingNodeInfo;
-
-static const ChargingNodeInfo SUPPORTED_NODES[] = {
+/* تعريف المصفوفة بنوع BypassNode المطابق لـ AZenith.h */
+BypassNode bypass_list[] = {
+    // 1. كوالكوم وشاومي (HyperOS / MIUI)
     {"/sys/class/power_supply/battery/input_suspend", "1", "0"},
     {"/sys/class/qcom-battery/input_suspend", "1", "0"},
+    
+    // 2. ميديا تيك Dimensity وأجهزة الألعاب
     {"/sys/devices/platform/charger/bypass_charge", "1", "0"},
     {"/sys/class/power_supply/battery/charging_enabled", "0", "1"},
     {"/sys/class/power_supply/battery/battery_charging_enabled", "0", "1"},
+    
+    // 3. Asus ROG / BlackShark
     {"/sys/class/power_supply/battery/charge_control_limit_max", "1", "0"},
     {"/sys/class/power_supply/battery/mmi_charging_enable", "0", "1"},
+    
+    // 4. Google Pixel و AOSP القياسي
     {"/sys/class/power_supply/battery/charge_control_limit", "0", "1"},
     {"/sys/devices/platform/google,battery/power_supply/battery/charge_control_limit", "0", "1"},
+
+    // 5. سامسونج
     {"/sys/class/power_supply/battery/batt_slate_mode", "1", "0"}
 };
 
-#define TOTAL_NODES (sizeof(SUPPORTED_NODES) / sizeof(SUPPORTED_NODES[0]))
+/* مطابق لـ extern const int bypass_list_size في AZenith.h */
+const int bypass_list_size = (int)(sizeof(bypass_list) / sizeof(bypass_list[0]));
 
 static int g_active_node_index = -1;
 
 static int is_node_writable(const char *path) {
-    if (access(path, F_OK) != 0) return 0;
+    if (!path || access(path, F_OK) != 0) return 0;
     if (access(path, W_OK) == 0) return 1;
 
     chmod(path, 0666);
@@ -58,9 +47,9 @@ int detect_bypass_node(void) {
         return g_active_node_index;
     }
 
-    for (size_t i = 0; i < TOTAL_NODES; i++) {
-        if (is_node_writable(SUPPORTED_NODES[i].node_path)) {
-            g_active_node_index = (int)i;
+    for (int i = 0; i < bypass_list_size; i++) {
+        if (is_node_writable(bypass_list[i].path)) {
+            g_active_node_index = i;
             return g_active_node_index;
         }
     }
@@ -71,11 +60,10 @@ int enable_bypass_charging(void) {
     int idx = detect_bypass_node();
     if (idx < 0) return 0;
 
-    const ChargingNodeInfo *node = &SUPPORTED_NODES[idx];
-    FILE *fp = fopen(node->node_path, "w");
+    FILE *fp = fopen(bypass_list[idx].path, "w");
     if (!fp) return 0;
 
-    fputs(node->disable_value, fp);
+    fputs(bypass_list[idx].disable, fp);
     fclose(fp);
     return 1;
 }
@@ -84,11 +72,10 @@ int disable_bypass_charging(void) {
     int idx = detect_bypass_node();
     if (idx < 0) return 0;
 
-    const ChargingNodeInfo *node = &SUPPORTED_NODES[idx];
-    FILE *fp = fopen(node->node_path, "w");
+    FILE *fp = fopen(bypass_list[idx].path, "w");
     if (!fp) return 0;
 
-    fputs(node->enable_value, fp);
+    fputs(bypass_list[idx].enable, fp);
     fclose(fp);
     return 1;
 }
@@ -96,7 +83,7 @@ int disable_bypass_charging(void) {
 const char* get_current_bypass_path(void) {
     int idx = detect_bypass_node();
     if (idx >= 0) {
-        return SUPPORTED_NODES[idx].node_path;
+        return bypass_list[idx].path;
     }
     return "Unsupported / Not Found";
 }
