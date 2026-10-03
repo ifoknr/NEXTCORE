@@ -49,8 +49,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import dev.chrisbanes.haze.blur.blurEffect
-import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.blur.HazeBlurStyle
+import dev.chrisbanes.haze.blur.material3.Material3
+import dev.chrisbanes.haze.blur.hazeBlur
 
 /**
  * The one dialog shell. Every dialog in the app goes through here, so motion, layout and the
@@ -145,11 +147,16 @@ fun AZenithDialog(
                         .clip(RoundedCornerShape(spec.cornerRadius))
                         .then(
                             if (isBlurEnabled && hazeState != null) {
-                                Modifier.hazeEffect(state = hazeState) { blurEffect { blurRadius = 24.dp } }
+                                Modifier.hazeBlur(
+                                input = HazeInput.Sources(hazeState),
+                                style = HazeBlurStyle.Material3(
+                                    containerColor = containerColor.copy(alpha = 0.35f)
+                                ) { blurRadius(24.dp) }
+                            )
                             } else Modifier
                         )
                         .background(
-                            if (isBlurEnabled) containerColor.copy(alpha = 0.35f) else containerColor
+                            if (isBlurEnabled) Color.Transparent else containerColor
                         )
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },

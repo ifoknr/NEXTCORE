@@ -41,8 +41,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import dev.chrisbanes.haze.blur.blurEffect
-import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.blur.HazeBlurStyle
+import dev.chrisbanes.haze.blur.material3.Material3
+import dev.chrisbanes.haze.blur.hazeBlur
 import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
@@ -133,12 +135,16 @@ fun CustomBottomSheet(
                     .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                     .then(
                         if (isBlurEnabled && hazeState != null) {
-                            Modifier.hazeEffect(state = hazeState) { blurEffect { blurRadius = 24.dp } }
+                            Modifier.hazeBlur(
+                                input = HazeInput.Sources(hazeState),
+                                style = HazeBlurStyle.Material3(
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.35f)
+                                ) { blurRadius(24.dp) }
+                            )
                         } else Modifier
                     )
                     .background(
-                        if (isBlurEnabled) MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.35f)
-                        else MaterialTheme.colorScheme.surfaceContainer
+                        if (isBlurEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer
                     )
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },

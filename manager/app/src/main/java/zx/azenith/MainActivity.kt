@@ -76,8 +76,10 @@ import androidx.navigation.navArgument
 import androidx.tracing.Trace
 import com.topjohnwu.superuser.Shell
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.blur.blurEffect
-import dev.chrisbanes.haze.hazeEffect
+import dev.chrisbanes.haze.HazeInput
+import dev.chrisbanes.haze.blur.HazeBlurStyle
+import dev.chrisbanes.haze.blur.material3.Material3
+import dev.chrisbanes.haze.blur.hazeBlur
 import dev.chrisbanes.haze.hazeSource
 import java.io.File
 import kotlin.math.abs
@@ -363,54 +365,15 @@ fun MainScreen(fromTileType: String? = null) {
         RootDialogsProvider {
             val isAnyDialogOpen = zx.azenith.ui.component.LocalActiveDialogCount.current.value > 0 || installingDialog.isShown || updateDialog.isShown || rebootDialog.isShown
             
-            if (android.os.Build.VERSION.SDK_INT >= 33) {
-                val currentOnBack by androidx.compose.runtime.rememberUpdatedState {
-                    if (showExitConfirm) {
-                        showExitConfirm = false
-                    } else if (pagerState.currentPage != 0) {
-                        coroutineScope.launch { pagerState.animateScrollToPage(0) }
-                    } else {
-                        showExitConfirm = true
-                    }
-                }
-                val backCallback = androidx.compose.runtime.remember {
-                    android.window.OnBackInvokedCallback {
-                        currentOnBack()
-                    }
-                }
-                androidx.compose.runtime.DisposableEffect(isOnMainPager, isAnyDialogOpen, context) {
-                    var currentContext = context
-                    var activity: android.app.Activity? = null
-                    while (currentContext is android.content.ContextWrapper) {
-                        if (currentContext is android.app.Activity) {
-                            activity = currentContext
-                            break
-                        }
-                        currentContext = currentContext.baseContext
-                    }
-                    val dispatcher = activity?.onBackInvokedDispatcher
-                    if (isOnMainPager && !isAnyDialogOpen && dispatcher != null) {
-                        dispatcher.registerOnBackInvokedCallback(
-                            android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                            backCallback
-                        )
-                    }
-                    onDispose {
-                        dispatcher?.unregisterOnBackInvokedCallback(backCallback)
-                    }
-                }
-            } else {
-                androidx.activity.compose.BackHandler(enabled = isOnMainPager && !isAnyDialogOpen) {
-                    if (showExitConfirm) {
-                        showExitConfirm = false
-                    } else if (pagerState.currentPage != 0) {
-                        coroutineScope.launch { pagerState.animateScrollToPage(0) }
-                    } else {
-                        showExitConfirm = true
-                    }
+            androidx.activity.compose.BackHandler(enabled = isOnMainPager && !isAnyDialogOpen) {
+                if (showExitConfirm) {
+                    showExitConfirm = false
+                } else if (pagerState.currentPage != 0) {
+                    coroutineScope.launch { pagerState.animateScrollToPage(0) }
+                } else {
+                    showExitConfirm = true
                 }
             }
-
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -423,189 +386,10 @@ fun MainScreen(fromTileType: String? = null) {
                         .fillMaxSize()
                         .background(MaterialTheme.colorScheme.surface)
                         .nestedScroll(nestedScrollConnection),
-                    enterTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeIn(animationSpec = tween(700))
-                        } else if (targetState.destination.route !in bottomBarRoutes) {
-                            // Forward axis. MD3 moves the incoming screen
-                            // emphasis-decelerate (400ms) and the outgoing one
-                            // emphasis-accelerate (200ms) so the pair reads as
-                            // one movement rather than two independent slides.
-                            // A spring on the incoming offset leaves the
-                            // outgoing screen with nothing to hand off to.
-                            // The offset runs on the plain emphasized curve at
-                            // 500ms rather than emphasized-decelerate: that
-                            // curve rises almost vertically, so most of the
-                            // travel lands in the first ~100ms and the screen
-                            // reads as an instant cut that then settles. The
-                            // fade stays on decelerate, where the fast start is
-                            // what makes the incoming surface feel lit.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(500, easing = Emphasized)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        } else {
-                            // Subscreen <-> subscreen: the same shared axis X as the
-                            // root -> subscreen case. It used to be a bare fade, which
-                            // is what made opening a submenu feel instant -- there was
-                            // no positional movement to read as travel.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(400, easing = EmphasizedDecelerate)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        }
-                    },
-                    exitTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeOut(animationSpec = tween(700))
-                        } else if (initialState.destination.route in bottomBarRoutes && targetState.destination.route !in bottomBarRoutes) {
-                            // The outgoing page has to travel with the incoming one
-                            // or the pair reads as a new screen sliding over a
-                            // static one. MD3 fade-through keeps the distance
-                            // small and the exit short; it uses -1/8 at 90ms
-                            // precisely because the incoming screen does the
-                            // travelling. The incoming screen here moves far
-                            // enough to need a real handoff, so the outgoing one
-                            // is pushed to -1/3 over the emphasized curve and is
-                            // NOT faded -- a fade would blank it out well before
-                            // the incoming one has covered it, leaving a bare
-                            // background visible for the rest of the transition.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 3) },
-                                animationSpec = tween(500, easing = Emphasized)
-                            )
-                        } else {
-                            // Subscreen <-> subscreen or root <-> subscreen (backwards): use
-                            // M3 shared axis X, but give the outgoing content a short
-                            // fade so the transition reads smooth rather than abrupt.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 6) },
-                                animationSpec = tween(200, easing = EmphasizedAccelerate)
-                            ) + fadeOut(animationSpec = tween(200, easing = EmphasizedAccelerate))
-                        }
-                    },
-                    popEnterTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeIn(animationSpec = tween(700))
-                        } else if (targetState.destination.route !in bottomBarRoutes) {
-                            // Forward axis. MD3 moves the incoming screen
-                            // emphasis-decelerate (400ms) and the outgoing one
-                            // emphasis-accelerate (200ms) so the pair reads as
-                            // one movement rather than two independent slides.
-                            // A spring on the incoming offset leaves the
-                            // outgoing screen with nothing to hand off to.
-                            // The offset runs on the plain emphasized curve at
-                            // 500ms rather than emphasized-decelerate: that
-                            // curve rises almost vertically, so most of the
-                            // travel lands in the first ~100ms and the screen
-                            // reads as an instant cut that then settles. The
-                            // fade stays on decelerate, where the fast start is
-                            // what makes the incoming surface feel lit.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(500, easing = Emphasized)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        } else {
-                            // Subscreen <-> subscreen: the same shared axis X as the
-                            // root -> subscreen case. It used to be a bare fade, which
-                            // is what made opening a submenu feel instant -- there was
-                            // no positional movement to read as travel.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(400, easing = EmphasizedDecelerate)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        }
-                    },
-                    popExitTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeOut(animationSpec = tween(700))
-                        } else if (initialState.destination.route in bottomBarRoutes && targetState.destination.route !in bottomBarRoutes) {
-                            // The outgoing page has to travel with the incoming one
-                            // or the pair reads as a new screen sliding over a
-                            // static one. MD3 fade-through keeps the distance
-                            // small and the exit short; it uses -1/8 at 90ms
-                            // precisely because the incoming screen does the
-                            // travelling. The incoming screen here moves far
-                            // enough to need a real handoff, so the outgoing one
-                            // is pushed to -1/3 over the emphasized curve and is
-                            // NOT faded -- a fade would blank it out well before
-                            // the incoming one has covered it, leaving a bare
-                            // background visible for the rest of the transition.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 3) },
-                                animationSpec = tween(500, easing = Emphasized)
-                            )
-                        } else {
-                            // Subscreen <-> subscreen or root <-> subscreen (backwards): use
-                            // M3 shared axis X, but give the outgoing content a short
-                            // fade so the transition reads smooth rather than abrupt.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 6) },
-                                animationSpec = tween(200, easing = EmphasizedAccelerate)
-                            ) + fadeOut(animationSpec = tween(200, easing = EmphasizedAccelerate))
-                        }
-                    },
-                    predictivePopEnterTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeIn(animationSpec = tween(700))
-                        } else if (targetState.destination.route !in bottomBarRoutes) {
-                            // Forward axis. MD3 moves the incoming screen
-                            // emphasis-decelerate (400ms) and the outgoing one
-                            // emphasis-accelerate (200ms) so the pair reads as
-                            // one movement rather than two independent slides.
-                            // A spring on the incoming offset leaves the
-                            // outgoing screen with nothing to hand off to.
-                            // The offset runs on the plain emphasized curve at
-                            // 500ms rather than emphasized-decelerate: that
-                            // curve rises almost vertically, so most of the
-                            // travel lands in the first ~100ms and the screen
-                            // reads as an instant cut that then settles. The
-                            // fade stays on decelerate, where the fast start is
-                            // what makes the incoming surface feel lit.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(500, easing = Emphasized)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        } else {
-                            // Subscreen <-> subscreen: the same shared axis X as the
-                            // root -> subscreen case. It used to be a bare fade, which
-                            // is what made opening a submenu feel instant -- there was
-                            // no positional movement to read as travel.
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth / 3 },
-                                animationSpec = tween(400, easing = EmphasizedDecelerate)
-                            ) + fadeIn(animationSpec = tween(400, easing = EmphasizedDecelerate))
-                        }
-                    },
-                    predictivePopExitTransition = {
-                        if (initialState.destination.route == "get_started" && targetState.destination.route in bottomBarRoutes) {
-                            fadeOut(animationSpec = tween(700))
-                        } else if (initialState.destination.route in bottomBarRoutes && targetState.destination.route !in bottomBarRoutes) {
-                            // The outgoing page has to travel with the incoming one
-                            // or the pair reads as a new screen sliding over a
-                            // static one. MD3 fade-through keeps the distance
-                            // small and the exit short; it uses -1/8 at 90ms
-                            // precisely because the incoming screen does the
-                            // travelling. The incoming screen here moves far
-                            // enough to need a real handoff, so the outgoing one
-                            // is pushed to -1/3 over the emphasized curve and is
-                            // NOT faded -- a fade would blank it out well before
-                            // the incoming one has covered it, leaving a bare
-                            // background visible for the rest of the transition.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 3) },
-                                animationSpec = tween(500, easing = Emphasized)
-                            )
-                        } else {
-                            // Subscreen <-> subscreen or root <-> subscreen (backwards): use
-                            // M3 shared axis X, but give the outgoing content a short
-                            // fade so the transition reads smooth rather than abrupt.
-                            slideOutHorizontally(
-                                targetOffsetX = { fullWidth: Int -> -(fullWidth / 6) },
-                                animationSpec = tween(200, easing = EmphasizedAccelerate)
-                            ) + fadeOut(animationSpec = tween(200, easing = EmphasizedAccelerate))
-                        }
-                    }
+                    enterTransition = { zx.azenith.ui.navigation.enterTransition() },
+                    exitTransition = { zx.azenith.ui.navigation.exitTransition() },
+                    popEnterTransition = { zx.azenith.ui.navigation.popEnterTransition() },
+                    popExitTransition = { zx.azenith.ui.navigation.popExitTransition() }
                 ) {
                     composable("get_started") {
                         // get_started writes has_completed_get_started itself and
@@ -613,17 +397,18 @@ fun MainScreen(fromTileType: String? = null) {
                         // "am start -S", which force-stops the process first, so
                         // finishing setup restarted the app from cold instead of
                         // moving on to "main".
-                        GetStartedScreen(navController) {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            GetStartedScreen(navController) {
                             navController.navigate("main") {
                                 popUpTo("get_started") { inclusive = true }
                                 launchSingleTop = true
                             }
                         }
+                        }
                     }
                     
                     // Route Pager (Kode 2)
                     composable("main") {
-
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -631,6 +416,11 @@ fun MainScreen(fromTileType: String? = null) {
                                     if (isBlurEnabled) Modifier.hazeSource(state = hazeState) else Modifier
                                 )
                         ) {
+                            zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this@composable) {
+
+                                Box(
+                                    modifier = Modifier.fillMaxSize()
+                                ) {
                             HorizontalPager(
                                 state = pagerState,
                                 modifier = Modifier.fillMaxSize(),
@@ -670,40 +460,84 @@ fun MainScreen(fromTileType: String? = null) {
                         } // ends HorizontalPager
                         
 
-                    } // ends Box
-                } // ends composable
+                                } // ends Box
+                            } // ends ScreenWrapper
+                        } // ends outer Box
+                    } // ends composable
 
                     // Subscreens
-                    composable("color_palette") { ColorPaletteScreen(navController) }
-                    composable("colorscheme") { ColorSchemeSettings(navController) }
-                    composable("FasScreen") { FasScreen(navController) }
-                    composable("bypasschg") { BypassChargeScreen(navController) }
-                    composable("bypasschg_check") { BypassChargeCheckScreen(navController) }
-                    composable("preferenced") { PreferenceTweakScreen(navController) }
-                    composable("aboutscreen") { AboutScreen(navController) }
-                    composable("fpsgoscreen") { FpsGoSettings(navController) }
-                    composable("governorsettings") { GovSettings(navController) }
+                    composable("color_palette") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            ColorPaletteScreen(navController)
+                        }
+                    }
+                    composable("colorscheme") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            ColorSchemeSettings(navController)
+                        }
+                    }
+                    composable("FasScreen") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            FasScreen(navController)
+                        }
+                    }
+                    composable("bypasschg") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            BypassChargeScreen(navController)
+                        }
+                    }
+                    composable("bypasschg_check") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            BypassChargeCheckScreen(navController)
+                        }
+                    }
+                    composable("preferenced") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            PreferenceTweakScreen(navController)
+                        }
+                    }
+                    composable("aboutscreen") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            AboutScreen(navController)
+                        }
+                    }
+                    composable("fpsgoscreen") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            FpsGoSettings(navController)
+                        }
+                    }
+                    composable("governorsettings") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            GovSettings(navController)
+                        }
+                    }
                     composable(
                         route = "app_settings/{pkg}",
                         arguments = listOf(navArgument("pkg") { type = NavType.StringType })
                     ) { backStackEntry ->
                         val pkg = backStackEntry.arguments?.getString("pkg")
-                        AppSettingsScreen(navController, pkg)
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            AppSettingsScreen(navController, pkg)
+                        }
                     }
                 }
                 
-                AnimatedVisibility(
-                    // The bar is chrome, not a root-dependent surface, so it is
-                    // shown from the first frame. It used to wait on
-                    // rootStatus && moduleInstalled, which are only set after
-                    // requestRootAccess() returns -- on a cold start that is
-                    // however long the su prompt takes, so the app opened to a
-                    // bare background with no bar and no top bar. Each item
-                    // disables itself instead of the whole bar disappearing.
-                    visible = rawRoute in bottomBarRoutes,
-                    enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-                    exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-                    modifier = Modifier.align(Alignment.BottomCenter)
+                val shouldShowNavBar = rawRoute in bottomBarRoutes
+                val navBarVisibilityProgressState = androidx.compose.animation.core.animateFloatAsState(
+                    targetValue = if (shouldShowNavBar) 1f else 0f,
+                    animationSpec = androidx.compose.animation.core.tween(durationMillis = 220, easing = androidx.compose.animation.core.LinearOutSlowInEasing),
+                    label = "NavBarVisibilityProgress"
+                )
+                
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .graphicsLayer {
+                            val hideFraction = (1f - navBarVisibilityProgressState.value).coerceIn(0f, 1f)
+                            translationY = size.height * hideFraction
+                            alpha = navBarVisibilityProgressState.value.coerceIn(0f, 1f)
+                        }
                 ) {
                     BottomNavBar(
                         items = navItems,
@@ -841,17 +675,14 @@ fun BottomNavBar(
                 .widthIn(max = 350.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(28.dp)) 
-                .then(
-                    if (isBlurEnabled && hazeState != null) {
-                        Modifier.hazeEffect(state = hazeState) {
-                            blurEffect {
-                                blurRadius = 24.dp
-                            }
-                        }
-                    } else Modifier
-                ),
+                .then(if (isBlurEnabled && hazeState != null) Modifier.hazeBlur(
+                                input = HazeInput.Sources(hazeState),
+                                style = HazeBlurStyle.Material3(
+                                    containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f)
+                                ) { blurRadius(24.dp) }
+                            ) else Modifier),
             shape = RoundedCornerShape(28.dp),
-            color = if (isBlurEnabled) MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f) else MaterialTheme.colorScheme.surfaceContainer,
+            color = if (isBlurEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer,
             shadowElevation = if (isBlurEnabled) 0.dp else 8.dp
         ) {
             // Measured label widths, so the selected pill can interpolate its
