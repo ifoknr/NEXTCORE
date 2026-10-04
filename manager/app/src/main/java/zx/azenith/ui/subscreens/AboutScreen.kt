@@ -155,27 +155,27 @@ fun AboutScreen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         FilledTonalButton(
-                            onClick = { openLink("https://t.me/ArchHavenDisc") }
+                            onClick = { openLink("https://github.com/ifoknr/NEXTCORE") }
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_telegram), 
+                                painter = painterResource(id = R.drawable.ic_github), 
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.str_support_group))
+                            Text(stringResource(R.string.about_github))
                         }
 
                         OutlinedButton(
-                            onClick = { openLink("https://t.me/ZeshArch") }
+                            onClick = { openLink("https://github.com/ifoknr/NEXTCORE/issues") }
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_telegram), 
+                                painter = painterResource(id = R.drawable.ic_github), 
                                 contentDescription = null,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.str_channel))
+                            Text(stringResource(R.string.about_report_issue))
                         }
                     }
                 }
@@ -190,8 +190,48 @@ fun AboutScreen(navController: NavController) {
                     content = listOf(
                         {
                             ExpressiveListItem(
-                                headlineContent = { Text(text = stringResource(R.string.str_liliya), fontWeight = FontWeight.SemiBold) },
+                                headlineContent = { Text(text = stringResource(R.string.str_turki), fontWeight = FontWeight.SemiBold) },
                                 supportingContent = { Text(stringResource(R.string.str_creator_maintainer)) },
+                                leadingContent = {
+                                    Image(
+                                        painter = painterResource(R.drawable.avatar_turki),
+                                        contentDescription = stringResource(R.string.str_turki),
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier.size(48.dp).clip(CircleShape)
+                                    )
+                                },
+                                trailingContent = {
+                                    Row(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        IconButton(onClick = { openLink("https://github.com/ifoknr") }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_github),
+                                                contentDescription = stringResource(R.string.cd_github),
+                                                modifier = Modifier.size(29.dp),
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                    )
+                )
+            }
+
+
+            item { 
+                AboutSectionTitle(stringResource(R.string.str_credits)) 
+            }
+            item {
+                ExpressiveList(
+                    content = listOf(
+                        {
+                            ExpressiveListItem(
+                                headlineContent = { Text(text = stringResource(R.string.str_liliya), fontWeight = FontWeight.SemiBold) },
+                                supportingContent = { Text(stringResource(R.string.str_original_author)) },
                                 leadingContent = {
                                     Image(
                                         painter = painterResource(R.drawable.avatar_liliya),
@@ -224,18 +264,7 @@ fun AboutScreen(navController: NavController) {
                                     }
                                 }
                             )
-                        }
-                    )
-                )
-            }
-
-
-            item { 
-                AboutSectionTitle(stringResource(R.string.str_collaborators)) 
-            }
-            item {
-                ExpressiveList(
-                    content = listOf(
+                        },
                         {
                             ExpressiveListItem(
                                 headlineContent = { Text(text = stringResource(R.string.str_rianixia), fontWeight = FontWeight.SemiBold) },
@@ -321,7 +350,7 @@ fun AboutScreen(navController: NavController) {
                 ExpressiveList(
                     content = listOf {
                         ExpressiveListItem(
-                            onClick = { openLink("https://github.com/Liliya2727/AZenith") },
+                            onClick = { openLink("https://github.com/ifoknr/NEXTCORE") },
                             headlineContent = { Text(stringResource(R.string.str_source_code)) },
                             supportingContent = { Text(stringResource(R.string.str_view_the_source_code_on_github)) },
                             leadingContent = { LeadingIcon(icon = Icons.Rounded.Code) },

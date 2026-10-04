@@ -123,7 +123,7 @@
     <string name="label_recommended">Recommended</string>
     <string name="label_system">System</string>
     <string name="learn_more">Learn More</string>
-    <string name="learn_more_desc">Documentation, source code, changelog and NextCore internals. Learn how features work and how to customize safely.</string>
+    <string name="learn_more_desc">Source code, changelog and documentation for NextCore on GitHub</string>
     <string name="lets_go">Let\'s Go</string>
     <string name="master_switch">NextCore Service</string>
     <string name="master_switch_desc">Enabling this allows the performance profile to be triggered</string>
@@ -348,7 +348,7 @@
     <string name="str_welcome_to">Welcome to</string>
     <string name="str_you_re_all_set">You\'re all set</string>
     <string name="support_us">Support Us</string>
-    <string name="support_us_desc">Support development and let NextCore keep improving</string>
+    <string name="support_us_desc">Star NextCore on GitHub and help it keep improving</string>
     <string name="theme">Theme</string>
     <string name="theme_applying">Applying theme…</string>
     <string name="theme_desc">Customize theme and accent color</string>
@@ -391,4 +391,12 @@
     <string name="dialog_exit_confirm_title">Close NextCore?</string>
     <string name="dialog_exit_confirm_content">Are you sure you want to exit the application?</string>
     <string name="dialog_exit_confirm_button">Exit</string>
+    <string name="str_turki">Turki</string>
+    <string name="str_original_author">Original AZenith author</string>
+    <string name="str_credits">Credits (AZenith team)</string>
+    <string name="about_github">GitHub</string>
+    <string name="about_report_issue">Report an issue</string>
+    <string name="tile_bypass_charge">Bypass Charge</string>
+    <string name="only_snapdragon">This option is only available for Snapdragon devices.</string>
+    <string name="only_mediatek">This option is only available for MediaTek devices.</string>
 </resources>

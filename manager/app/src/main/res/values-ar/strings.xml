@@ -123,7 +123,7 @@
     <string name="label_recommended">موصى به</string>
     <string name="label_system">النظام</string>
     <string name="learn_more">اعرف المزيد</string>
-    <string name="learn_more_desc">الوثائق، شفرة المصدر، سجل التغييرات، وشرح مبادئ NextCore الأساسية، تعرف على طرق تنفيذ الميزات وطرق التخصيص الآمنة</string>
+    <string name="learn_more_desc">شفرة المصدر وسجل التغييرات والتوثيق الخاص بـ NextCore على GitHub</string>
     <string name="lets_go">لنبدأ</string>
     <string name="master_switch">المفتاح الرئيسي</string>
     <string name="master_switch_desc">عند التفعيل، يمكن للتطبيق تشغيل ملف تعريف الأداء</string>
@@ -342,7 +342,7 @@
     <string name="str_welcome_to">مرحبًا بك في</string>
     <string name="str_you_re_all_set">لقد انتهيت</string>
     <string name="support_us">ادعمنا</string>
-    <string name="support_us_desc">ساعد في التطوير، واجعل NextCore يستمر في التحسن</string>
+    <string name="support_us_desc">ادعم NextCore بنجمة على GitHub وساعده في الاستمرار والتحسن</string>
     <string name="theme">السمة</string>
     <string name="theme_desc">تخصيص السمة ولون التركيز</string>
     <string name="thermalcore_service">خدمة التحكم الحراري ThermalCore</string>
@@ -380,4 +380,23 @@
     <string name="presets">الإعدادات المسبقة</string>
     <string name="str_bypass_need_setup">لم يتم إعداد مسار الشحن الجانبي بعد. يرجى إكمال الإعداد عبر فحص التوافق أولاً.</string>
     <string name="reboot_required_content">يتطلب هذا الخيار إعادة التشغيل ليتم تطبيقه. متابعة؟</string>
+    <string name="str_turki">تركي</string>
+    <string name="str_original_author">مطوّر AZenith الأصلي</string>
+    <string name="str_credits">شكر وتقدير (فريق AZenith)</string>
+    <string name="about_github">GitHub</string>
+    <string name="about_report_issue">الإبلاغ عن مشكلة</string>
+    <string name="tile_bypass_charge">الشحن الجانبي</string>
+    <string name="only_snapdragon">هذا الخيار متاح فقط لأجهزة Snapdragon.</string>
+    <string name="only_mediatek">هذا الخيار متاح فقط لأجهزة MediaTek.</string>
+    <string name="no_apps_found">لا توجد تطبيقات مطابقة للبحث</string>
+    <string name="theme_save">حفظ</string>
+    <string name="theme_discard">تجاهل</string>
+    <string name="theme_unsaved">تغييرات السمة غير محفوظة</string>
+    <string name="theme_applied">تم تطبيق السمة</string>
+    <string name="theme_apply_action">تطبيق</string>
+    <string name="theme_applying">جاري تطبيق السمة…</string>
+    <string name="show_notifications">إظهار إشعار الملف الحالي</string>
+    <string name="dialog_exit_confirm_title">إغلاق NextCore؟</string>
+    <string name="dialog_exit_confirm_content">هل أنت متأكد أنك تريد الخروج من التطبيق؟</string>
+    <string name="dialog_exit_confirm_button">خروج</string>
 </resources>
