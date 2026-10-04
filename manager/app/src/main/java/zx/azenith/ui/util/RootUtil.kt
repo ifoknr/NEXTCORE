@@ -208,8 +208,10 @@ object RootUtils {
 
     fun getCurrentProfileRes(): Int {
         // Fall back to the daemon's own file when the app mirror is missing or empty
-        val content = getCurrentProfileValue()
+        return profileResFor(getCurrentProfileValue())
+    }
 
+    fun profileResFor(content: String): Int {
         return when (content) {
             "0" -> R.string.status_initializing
             "1" -> {

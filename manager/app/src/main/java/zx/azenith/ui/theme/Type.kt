@@ -60,28 +60,28 @@ private fun style(family: FontFamily, weight: FontWeight, size: Float, line: Flo
     )
 
 /**
- * Compact Material 3 type scale. Sizes sit a step below the M3 defaults so
- * buttons and cards stay small on phones; Arabic gets a little more line
+ * Material 3 type scale, slightly larger than the defaults for readability
+ * (RvSystem Monitor style); Arabic gets a little more line
  * height because Kufi glyphs are taller.
  */
 fun nextCoreTypography(family: FontFamily, arabic: Boolean): Typography {
     val l = if (arabic) 1.12f else 1f
     return Typography(
-        displayLarge = style(family, FontWeight.Normal, 52f, 60f * l, -0.25f),
-        displayMedium = style(family, FontWeight.SemiBold, 40f, 48f * l),
-        displaySmall = style(family, FontWeight.Normal, 32f, 40f * l),
-        headlineLarge = style(family, FontWeight.SemiBold, 28f, 36f * l),
-        headlineMedium = style(family, FontWeight.SemiBold, 24f, 32f * l),
-        headlineSmall = style(family, FontWeight.SemiBold, 21f, 28f * l),
-        titleLarge = style(family, FontWeight.Bold, 19f, 26f * l),
-        titleMedium = style(family, FontWeight.SemiBold, 15f, 22f * l, 0.1f),
-        titleSmall = style(family, FontWeight.Medium, 13.5f, 20f * l, 0.1f),
-        bodyLarge = style(family, FontWeight.Normal, 15f, 22f * l, 0.3f),
-        bodyMedium = style(family, FontWeight.Normal, 13.5f, 20f * l, 0.2f),
-        bodySmall = style(family, FontWeight.Normal, 12f, 17f * l, 0.3f),
-        labelLarge = style(family, FontWeight.Medium, 13.5f, 20f * l, 0.1f),
-        labelMedium = style(family, FontWeight.Medium, 12f, 16f * l, 0.4f),
-        labelSmall = style(family, FontWeight.Medium, 11f, 15f * l, 0.4f),
+        displayLarge = style(family, FontWeight.Normal, 56f, 64f * l, -0.25f),
+        displayMedium = style(family, FontWeight.SemiBold, 44f, 52f * l),
+        displaySmall = style(family, FontWeight.Normal, 36f, 44f * l),
+        headlineLarge = style(family, FontWeight.SemiBold, 32f, 40f * l),
+        headlineMedium = style(family, FontWeight.SemiBold, 28f, 36f * l),
+        headlineSmall = style(family, FontWeight.SemiBold, 24f, 32f * l),
+        titleLarge = style(family, FontWeight.SemiBold, 22f, 28f * l),
+        titleMedium = style(family, FontWeight.Medium, 17f, 24f * l, 0.1f),
+        titleSmall = style(family, FontWeight.Medium, 15f, 21f * l, 0.1f),
+        bodyLarge = style(family, FontWeight.Normal, 16f, 24f * l, 0.3f),
+        bodyMedium = style(family, FontWeight.Normal, 14.5f, 21f * l, 0.2f),
+        bodySmall = style(family, FontWeight.Normal, 13f, 18f * l, 0.3f),
+        labelLarge = style(family, FontWeight.Medium, 14.5f, 20f * l, 0.1f),
+        labelMedium = style(family, FontWeight.Medium, 13f, 17f * l, 0.3f),
+        labelSmall = style(family, FontWeight.Medium, 11.5f, 15f * l, 0.4f),
     )
 }
 

@@ -216,31 +216,36 @@ fun TweakScreen(
         containerColor = MaterialTheme.colorScheme.surface
     ) { innerPadding ->
 
-        LazyColumn(
+        NcSheet(topPadding = innerPadding.calculateTopPadding()) {
+            LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                top = innerPadding.calculateTopPadding(),
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 110.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            )
+            contentPadding = ncSheetListPadding()
         ) {
 
             item {
-                Spacer(modifier = Modifier.height(16.dp))
-                ExpressiveList(
-                    content = listOf( 
-                        {
-                            ExpressiveInfoCard(
-                                supportingContent = { Text(text = stringResource(R.string.str_these_settings_apply_to_all_en)) },
-                                leadingContent = { LeadingIcon(icon = Icons.Filled.Info) },
-                                containerColor = colorScheme.surfaceContainerLow,
-                                onClick = {}
-                            )
-                        }
+                NcWatermarkCard(
+                    watermark = Icons.Rounded.Tune,
+                    container = colorScheme.primaryContainer,
+                    contentColor = colorScheme.onPrimaryContainer
+                ) {
+                    Text(
+                        text = stringResource(R.string.nav_tweaks),
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold
                     )
-                )
+                    Text(
+                        text = stringResource(R.string.nc_tweaks_hero_desc),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.str_these_settings_apply_to_all_en),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
             }
 
             item { TweaksSectionTitle(text = stringResource(R.string.section_performance)) }
@@ -460,6 +465,7 @@ fun TweakScreen(
                     )
                 )
             }
+        }
         }
     }
 
@@ -824,59 +830,9 @@ fun TweakScreenTopAppBar(
     modifier: Modifier = Modifier,
     onMoreModifier: Modifier = Modifier
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-    val context = LocalContext.current
-    val settingsPrefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
-    val blurOn = settingsPrefs.getBoolean("expressive_blur_ui", false)
-
-    Box(
-    modifier = modifier
-        .fillMaxWidth()
-        .statusBarsPadding()
-    ) {
-        AppBarFade(
-            surface = colorScheme.surface,
-            modifier = Modifier.matchParentSize(),
-            hazeState = if (blurOn) LocalAppHazeState.current else null,
-            isBlurEnabled = blurOn,
-        )
-        LargeFlexibleTopAppBar(
-            navigationIcon = {
-                Box(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
-                        .size(38.dp)
-                        .clip(CircleShape)
-                        .background(colorScheme.surfaceVariant)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.avatar),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            },
-            title = {
-                Text(
-                    text = stringResource(R.string.nav_tweaks),
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Transparent,
-                scrolledContainerColor = Color.Transparent
-            ),
-            actions = {
-                IconButton(onClick = onMoreClick, modifier = onMoreModifier) {
-                    Icon(
-                        imageVector = Icons.Outlined.Cloud,
-                        contentDescription = stringResource(R.string.cd_menu)
-                    )
-                }
-            },
-            scrollBehavior = scrollBehavior,
-            windowInsets = WindowInsets(0, 0, 0, 0)
-        )
+    NcPageHeader(subtitle = stringResource(R.string.nav_tweaks), modifier = modifier) {
+        IconButton(onClick = onMoreClick, modifier = onMoreModifier) {
+            Icon(imageVector = Icons.Outlined.Cloud, contentDescription = stringResource(R.string.cd_menu), modifier = Modifier.size(28.dp))
+        }
     }
 }

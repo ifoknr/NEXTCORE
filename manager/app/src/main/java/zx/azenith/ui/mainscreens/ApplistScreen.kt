@@ -136,134 +136,231 @@ fun ApplistScreen(navController: NavController) {
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
     
+    val homeViewModel: zx.azenith.ui.viewmodel.HomeViewModel = viewModel()
+    val homeState by homeViewModel.uiState.collectAsState()
+    var filter by rememberSaveable { mutableIntStateOf(0) } // 0 all, 1 enabled, 2 games
+    var menuExpanded by remember { mutableStateOf(false) }
+    val cs = MaterialTheme.colorScheme
+
     Scaffold(
         topBar = {
-            ApplistTopAppBar(
-                scrollBehavior,
-                isSearchMode = isSearchMode,
-                onSearchModeChange = { 
-                    isSearchMode = it 
-                    if (!it) viewModel.clearSearch() 
-                },
-                searchQuery = viewModel.searchTextFieldValue,
-                onSearchChange = { viewModel.updateSearch(it) },
-                showSystemApps = viewModel.showSystemApps,
-                onToggleSystem = { newValue ->
-                    viewModel.showSystemApps = newValue
-                    prefs.edit().putBoolean("show_system_apps", newValue).apply()
-                },
-                onRefresh = { viewModel.loadApps(context, forceRefresh = true) },
-                focusRequester = focusRequester
-            )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pullToRefresh(
-                    state = pullToRefreshState,
-                    isRefreshing = viewModel.isRefreshing,
-                    onRefresh = { 
-                        AppIconCache.clear()
-                        viewModel.loadApps(context, forceRefresh = true) 
-                    }
-                )
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) {
-            val appsToDisplay = viewModel.filteredApps
-
-            val navBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            val listContentPadding = PaddingValues(
-                top = innerPadding.calculateTopPadding(),
-                start = 16.dp,
-                end = 16.dp,
-                bottom = 110.dp + navBottomPadding
-            )
-
-                AnimatedVisibility(
-                    visible = appsToDisplay.isEmpty() && !viewModel.isRefreshing,
-                    enter = fadeIn(animationSpec = spring(stiffness = 300f)),
-                    exit = fadeOut(animationSpec = spring(stiffness = 500f))
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_apps_found),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+            NcPageHeader(subtitle = stringResource(R.string.nav_applist)) {
+                IconButton(onClick = { menuExpanded = true }) {
+                    Icon(Icons.Default.MoreVert, stringResource(R.string.cd_menu), Modifier.size(28.dp))
                 }
-                AnimatedVisibility(
-                    visible = appsToDisplay.isNotEmpty(),
-                    enter = fadeIn(animationSpec = spring(stiffness = 400f)),
-                    exit = fadeOut(animationSpec = spring(stiffness = 500f))
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false },
+                    shape = RoundedCornerShape(20.dp)
                 ) {
-                ExpressiveLazyList(
-                state = listState,
-                items = appsToDisplay,
-                key = { it.packageName },
-                contentPadding = listContentPadding
-            ) { app ->
-                ExpressiveListItem(
-                    onClick = { navController.navigate("app_settings/${app.packageName}") },
-                    headlineContent = {
-                        Text(
-                            text = app.label,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    supportingContent = {
-                        Column {
-                            Text(
-                                text = app.packageName,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.menu_refresh)) },
+                        onClick = {
+                            AppIconCache.clear()
+                            viewModel.loadApps(context, forceRefresh = true)
+                            menuExpanded = false
+                        },
+                        leadingIcon = { Icon(Icons.Default.Refresh, null) }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.menu_show_system_apps)) },
+                        trailingIcon = { if (viewModel.showSystemApps) Icon(Icons.Default.Check, null) },
+                        onClick = {
+                            val newValue = !viewModel.showSystemApps
+                            viewModel.showSystemApps = newValue
+                            prefs.edit().putBoolean("show_system_apps", newValue).apply()
+                            menuExpanded = false
+                        }
+                    )
+                }
+            }
+        },
+        containerColor = cs.surface
+    ) { innerPadding ->
+        NcSheet(topPadding = innerPadding.calculateTopPadding()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pullToRefresh(
+                        state = pullToRefreshState,
+                        isRefreshing = viewModel.isRefreshing,
+                        onRefresh = {
+                            AppIconCache.clear()
+                            viewModel.loadApps(context, forceRefresh = true)
+                        }
+                    )
+            ) {
+                val allApps = viewModel.filteredApps
+                val gamesCount = allApps.count { it.isRecommended }
+                val appsToDisplay = when (filter) {
+                    1 -> allApps.filter { it.isEnabledInConfig }
+                    2 -> allApps.filter { it.isRecommended }
+                    else -> allApps
+                }
 
-                            Row(modifier = Modifier.padding(top = 4.dp)) {
-                                if (app.isEnabledInConfig) {
-                                    LabelText(
-                                        text = stringResource(R.string.label_enabled),
-                                        color = Color(0xFF4CAF50)
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = ncSheetListPadding()
+                ) {
+                    item(key = "search") {
+                        Surface(shape = RoundedCornerShape(28.dp), color = cs.surfaceContainerHigh, modifier = Modifier.fillMaxWidth()) {
+                            Row(Modifier.padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Search, null, tint = cs.onSurfaceVariant)
+                                TextField(
+                                    value = viewModel.searchTextFieldValue,
+                                    onValueChange = { viewModel.updateSearch(it) },
+                                    placeholder = { Text(stringResource(R.string.nc_search_game)) },
+                                    singleLine = true,
+                                    modifier = Modifier.weight(1f).focusRequester(focusRequester),
+                                    colors = TextFieldDefaults.colors(
+                                        focusedContainerColor = Color.Transparent,
+                                        unfocusedContainerColor = Color.Transparent,
+                                        focusedIndicatorColor = Color.Transparent,
+                                        unfocusedIndicatorColor = Color.Transparent,
+                                        disabledIndicatorColor = Color.Transparent
                                     )
-                                } else {
-                                    LabelText(stringResource(R.string.label_disabled), MaterialTheme.colorScheme.error)
-                                }
-                                if (app.isRecommended) {
-                                    LabelText(stringResource(R.string.label_recommended), MaterialTheme.colorScheme.primary)
-                                }
-                                if (app.isSystem) {
-                                    LabelText(stringResource(R.string.label_system), MaterialTheme.colorScheme.secondary)
+                                )
+                                if (viewModel.searchTextFieldValue.text.isNotEmpty()) {
+                                    IconButton(onClick = { viewModel.clearSearch(); focusManager.clearFocus() }) {
+                                        Icon(Icons.Default.Clear, stringResource(R.string.cd_clear))
+                                    }
                                 }
                             }
                         }
-                    },
-                    leadingContent = {
-                        AppIconImage(
-                            app = app,
-                            size = 60.dp
-                        )
                     }
-                )
-                }
+                    item(key = "filters") {
+                        Row(
+                            Modifier.padding(top = 12.dp, bottom = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            FilterPill(stringResource(R.string.nc_filter_all), filter == 0) { filter = 0 }
+                            FilterPill(stringResource(R.string.nc_filter_games, gamesCount), filter == 2) { filter = 2 }
+                            FilterPill(stringResource(R.string.nc_filter_enabled), filter == 1) { filter = 1 }
+                        }
+                    }
+                    val runningPkg = homeState.runningGamePkg
+                    if (!runningPkg.isNullOrEmpty()) {
+                        item(key = "running") {
+                            val runningApp = allApps.firstOrNull { it.packageName == runningPkg }
+                            NcWatermarkCard(
+                                watermark = Icons.Default.SportsEsports,
+                                modifier = Modifier.padding(top = 10.dp),
+                                padding = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
+                                onClick = { navController.navigate("app_settings/$runningPkg") }
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                    if (runningApp != null) AppIconImage(app = runningApp, size = 48.dp)
+                                    Column(Modifier.weight(1f)) {
+                                        Text(stringResource(R.string.nc_running_now), style = MaterialTheme.typography.labelMedium, color = cs.onSecondaryContainer.copy(alpha = 0.7f))
+                                        Text(
+                                            runningApp?.label ?: runningPkg,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.SemiBold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                    ElapsedTimeText(homeState.runningGameStartTime ?: "00:00:00")
+                                }
+                            }
+                        }
+                    }
+                    item(key = "appsHeader") { NcSheetSection(stringResource(R.string.nc_apps_section)) }
+                    if (appsToDisplay.isEmpty() && !viewModel.isRefreshing) {
+                        item(key = "empty") {
+                            Text(
+                                text = stringResource(R.string.no_apps_found),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = cs.onSurfaceVariant,
+                                modifier = Modifier.fillMaxWidth().padding(32.dp)
+                            )
+                        }
+                    }
+                    itemsIndexed(appsToDisplay, key = { _, app -> app.packageName }) { index, app ->
+                        val big = 22.dp
+                        val small = 6.dp
+                        val shape = when {
+                            appsToDisplay.size == 1 -> RoundedCornerShape(big)
+                            index == 0 -> RoundedCornerShape(topStart = big, topEnd = big, bottomStart = small, bottomEnd = small)
+                            index == appsToDisplay.lastIndex -> RoundedCornerShape(topStart = small, topEnd = small, bottomStart = big, bottomEnd = big)
+                            else -> RoundedCornerShape(small)
+                        }
+                        Surface(
+                            onClick = { navController.navigate("app_settings/${app.packageName}") },
+                            shape = shape,
+                            color = cs.surfaceContainer,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 4.dp)
+                                .animateItem(fadeInSpec = null, fadeOutSpec = null)
+                        ) {
+                            Row(
+                                Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            ) {
+                                AppIconImage(app = app, size = 44.dp)
+                                Column(Modifier.weight(1f)) {
+                                    Text(
+                                        app.label,
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Medium,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Text(
+                                        app.packageName,
+                                        style = MaterialTheme.typography.bodySmall.copy(textDirection = TextDirection.Ltr),
+                                        color = cs.onSurfaceVariant,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+                                if (app.isEnabledInConfig) {
+                                    AppTag(stringResource(R.string.label_enabled), cs.tertiary, cs.onTertiary)
+                                } else if (app.isRecommended) {
+                                    AppTag(stringResource(R.string.label_recommended), cs.inverseSurface.copy(alpha = 0.8f), cs.inverseOnSurface)
+                                } else if (app.isSystem) {
+                                    AppTag(stringResource(R.string.label_system), cs.surfaceContainerHighest, cs.onSurfaceVariant)
+                                }
+                            }
+                        }
+                    }
                 }
 
-            PullToRefreshDefaults.LoadingIndicator(
-                state = pullToRefreshState,
-                isRefreshing = viewModel.isRefreshing,
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = innerPadding.calculateTopPadding())
-            )
+                PullToRefreshDefaults.LoadingIndicator(
+                    state = pullToRefreshState,
+                    isRefreshing = viewModel.isRefreshing,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun FilterPill(text: String, selected: Boolean, onClick: () -> Unit) {
+    val cs = MaterialTheme.colorScheme
+    Surface(
+        onClick = onClick,
+        shape = RoundedCornerShape(12.dp),
+        color = if (selected) cs.primary else cs.surfaceContainerHigh,
+        contentColor = if (selected) cs.onPrimary else cs.onSurface
+    ) {
+        Text(text, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp))
+    }
+}
+
+@Composable
+private fun AppTag(text: String, container: Color, content: Color) {
+    Box(
+        Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(container)
+            .padding(horizontal = 9.dp, vertical = 3.dp)
+    ) {
+        Text(text, style = MaterialTheme.typography.labelMedium, color = content, maxLines = 1)
     }
 }
 

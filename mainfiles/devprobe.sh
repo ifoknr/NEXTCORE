@@ -124,8 +124,17 @@ _dp_gpu() {
 	if [ -z "$DP_GPU_NAME" ]; then
 		DP_GPU_NAME=$(getprop ro.hardware.egl)
 		case "$DP_GPU_NAME" in
-		mali) DP_GPU_NAME="Mali" ;;
-		adreno) DP_GPU_NAME="Adreno" ;;
+		*mali*) DP_GPU_NAME="Mali" ;;
+		*adreno*) DP_GPU_NAME="Adreno" ;;
+		*powervr* | *pvr*) DP_GPU_NAME="PowerVR" ;;
+		*)
+			# Some ROMs put arbitrary text in ro.hardware.egl; use the GPU family from the node instead
+			case "$DP_GPU_FREQ_PATH" in
+			*mali*) DP_GPU_NAME="Mali" ;;
+			*kgsl*) DP_GPU_NAME="Adreno" ;;
+			*pvr*) DP_GPU_NAME="PowerVR" ;;
+			esac
+			;;
 		esac
 	fi
 }

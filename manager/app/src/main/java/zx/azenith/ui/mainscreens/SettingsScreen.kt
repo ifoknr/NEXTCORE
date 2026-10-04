@@ -219,18 +219,31 @@ fun SettingsScreen(
             },
             containerColor = MaterialTheme.colorScheme.surface
         ) { innerPadding ->
+            NcSheet(topPadding = innerPadding.calculateTopPadding()) {
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(
-                    top = innerPadding.calculateTopPadding(),
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 110.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-                )
+                contentPadding = ncSheetListPadding()
             ) {
                 item {
-                    Spacer(modifier = Modifier.height(16.dp)) 
+                    NcWatermarkCard(
+                        watermark = Icons.Filled.Palette,
+                        container = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        onClick = { navController.navigate("color_palette") },
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.nc_settings_hero),
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = stringResource(R.string.nc_settings_hero_desc),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
 
                     ExpressiveList(
                         content = listOf(
@@ -407,6 +420,7 @@ fun SettingsScreen(
                 }
             }
         }
+        }
 
 
         LoadingDialogHost(handle = loadingDialog)
@@ -551,62 +565,13 @@ fun SettingsScreenTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior,
     onChangelogClick: () -> Unit
 ) {
-    val colorScheme = MaterialTheme.colorScheme
-
-    val smoothGradient = Brush.verticalGradient(
-        0.0f to colorScheme.surface,
-        0.4f to colorScheme.surface.copy(alpha = 0.9f),
-        0.5f to colorScheme.surface.copy(alpha = 0.8f),
-        0.6f to colorScheme.surface.copy(alpha = 0.7f),
-        0.7f to colorScheme.surface.copy(alpha = 0.5f),
-        0.8f to colorScheme.surface.copy(alpha = 0.4f),
-        0.9f to colorScheme.surface.copy(alpha = 0.3f),
-        1.0f to Color.Transparent 
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(smoothGradient)
-            .statusBarsPadding()
-    ) {
-        LargeFlexibleTopAppBar(
-            navigationIcon = {
-                Box(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)
-                        .size(38.dp)
-                        .clip(CircleShape)
-                        .background(colorScheme.surfaceVariant)
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.avatar),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            },
-            title = {
-                Text(
-                    text = stringResource(R.string.settings),
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            actions = {
-                IconButton(onClick = onChangelogClick) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.TextSnippet,
-                        contentDescription = stringResource(R.string.cd_changelog)
-                    )
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.Transparent,
-                scrolledContainerColor = Color.Transparent
-            ),
-            scrollBehavior = scrollBehavior,
-            windowInsets = WindowInsets(0, 0, 0, 0)
-        )
+    NcPageHeader(subtitle = stringResource(R.string.settings)) {
+        IconButton(onClick = onChangelogClick) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.TextSnippet,
+                contentDescription = stringResource(R.string.cd_changelog),
+                modifier = Modifier.size(28.dp)
+            )
+        }
     }
 }
