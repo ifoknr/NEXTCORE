@@ -44,10 +44,17 @@ import androidx.compose.material.icons.outlined.OfflineBolt
 import androidx.compose.material.icons.outlined.Water
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Image
+import androidx.compose.material.icons.rounded.Palette
+import androidx.compose.material.icons.rounded.SettingsBackupRestore
 import androidx.compose.material.icons.rounded.PowerSettingsNew
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.TabletAndroid
 import androidx.compose.material.icons.rounded.UnfoldMore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -79,7 +86,10 @@ import zx.azenith.R
 import zx.azenith.ui.component.*
 import zx.azenith.ui.theme.BrandFontFamily
 import zx.azenith.ui.util.SupportLevel
+import zx.azenith.ui.util.clearHeaderImage
 import zx.azenith.ui.util.getHeaderImage
+import zx.azenith.ui.util.saveHeaderImage
+import zx.azenith.ui.util.saveMediaDirectly
 import zx.azenith.ui.util.getRealDeviceName
 import zx.azenith.ui.util.getSELinuxStatus
 import zx.azenith.ui.viewmodel.HomeUiState
@@ -100,6 +110,48 @@ fun LiveStatsPoller(viewModel: HomeViewModel, isVisible: Boolean, profileLoaded:
                 viewModel.pollLiveStats()
                 delay(LIVE_POLL_MS)
             }
+        }
+    }
+}
+
+/** Small pencil on the Home banner: pick a new image, go back to the default, or open the full banner settings. */
+@Composable
+private fun BannerEditButton(
+    hasCustom: Boolean,
+    modifier: Modifier = Modifier,
+    onPick: () -> Unit,
+    onReset: () -> Unit,
+    onMore: () -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    Box(modifier) {
+        FilledTonalIconButton(
+            onClick = { open = true },
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.85f)
+            ),
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(Icons.Rounded.Edit, stringResource(R.string.nc_banner_edit), Modifier.size(20.dp))
+        }
+        DropdownMenu(expanded = open, onDismissRequest = { open = false }, shape = RoundedCornerShape(20.dp)) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.nc_banner_pick)) },
+                leadingIcon = { Icon(Icons.Rounded.Image, null) },
+                onClick = { open = false; onPick() }
+            )
+            if (hasCustom) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.nc_banner_reset)) },
+                    leadingIcon = { Icon(Icons.Rounded.SettingsBackupRestore, null) },
+                    onClick = { open = false; onReset() }
+                )
+            }
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.nc_banner_more)) },
+                leadingIcon = { Icon(Icons.Rounded.Palette, null) },
+                onClick = { open = false; onMore() }
+            )
         }
     }
 }
@@ -132,7 +184,33 @@ fun HomeScreen(
     var deviceName by remember { mutableStateOf("${Build.MANUFACTURER} ${Build.MODEL}") }
     var selinux by remember { mutableStateOf("") }
     val kernel = remember { Os.uname().release }
-    val bannerUri = remember { context.getHeaderImage() }
+    // Follows the saved banner, so a change here or in Colors & Theme shows up right away.
+    var bannerUri by remember { mutableStateOf(context.getHeaderImage()) }
+    DisposableEffect(context) {
+        val prefs = context.getSharedPreferences("settings", android.content.Context.MODE_PRIVATE)
+        val listener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == "header_image_uri" || key == null) bannerUri = context.getHeaderImage()
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        onDispose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+    val bannerSavedMsg = stringResource(R.string.str_banner_updated)
+    val bannerFailMsg = stringResource(R.string.str_pick_media_fail)
+    val bannerPicker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        coroutineScope.launch {
+            val ext = when (context.contentResolver.getType(uri)) {
+                "image/png" -> "png"
+                "image/gif" -> "gif"
+                "image/webp" -> "webp"
+                else -> "jpg"
+            }
+            val saved = withContext(Dispatchers.IO) {
+                context.saveMediaDirectly(uri, ext)?.also { context.saveHeaderImage(it) }
+            }
+            snackbarHostState.showSnackbar(if (saved != null) bannerSavedMsg else bannerFailMsg)
+        }
+    }
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             deviceName = getRealDeviceName(context)
@@ -173,13 +251,25 @@ fun HomeScreen(
             ) {
                 if (uiState.isBannerEnabled) {
                     item(key = "banner") {
-                        MediaBannerRenderer(
-                            uriString = bannerUri,
-                            modifier = Modifier
+                        Box(
+                            Modifier
                                 .fillMaxWidth()
-                                .then(if (wide) Modifier.height(220.dp) else Modifier.aspectRatio(1280f / 560f))
+                                .then(if (wide) Modifier.height(240.dp) else Modifier.aspectRatio(1280f / 560f))
                                 .clip(RoundedCornerShape(30.dp))
-                        )
+                        ) {
+                            MediaBannerRenderer(uriString = bannerUri, modifier = Modifier.fillMaxSize())
+                            BannerEditButton(
+                                hasCustom = bannerUri != null,
+                                modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
+                                onPick = {
+                                    bannerPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                                },
+                                onReset = {
+                                    coroutineScope.launch(Dispatchers.IO) { context.clearHeaderImage() }
+                                },
+                                onMore = { navController?.navigate("color_palette") { launchSingleTop = true } }
+                            )
+                        }
                     }
                 }
                 item(key = "status") {

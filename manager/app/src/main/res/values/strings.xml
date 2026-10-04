@@ -430,6 +430,10 @@
     <string name="nc_kernel">Kernel version</string>
     <string name="nc_device_card">Device card</string>
     <string name="nc_device_card_desc">What NextCore detected on this device</string>
+    <string name="nc_banner_edit">Change banner</string>
+    <string name="nc_banner_pick">Choose image</string>
+    <string name="nc_banner_reset">Default banner</string>
+    <string name="nc_banner_more">Video, crop and more</string>
     <string name="nc_restart_service">Restart service</string>
     <string name="nc_restarting">Restarting service…</string>
     <string name="nc_full_desc">All general and %1$s tweaks are active</string>

@@ -430,6 +430,10 @@
     <string name="nc_kernel">إصدار النواة</string>
     <string name="nc_device_card">بطاقة الجهاز</string>
     <string name="nc_device_card_desc">ما اكتشفه NextCore في جهازك</string>
+    <string name="nc_banner_edit">تغيير البنر</string>
+    <string name="nc_banner_pick">اختيار صورة</string>
+    <string name="nc_banner_reset">البنر الافتراضي</string>
+    <string name="nc_banner_more">فيديو وقص وخيارات أكثر</string>
     <string name="nc_restart_service">إعادة تشغيل الخدمة</string>
     <string name="nc_restarting">جارٍ إعادة تشغيل الخدمة…</string>
     <string name="nc_full_desc">كل التحسينات العامة والخاصة بـ %1$s مفعّلة</string>

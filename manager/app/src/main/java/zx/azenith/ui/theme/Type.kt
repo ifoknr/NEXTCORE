@@ -21,20 +21,32 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import zx.azenith.R
 
 
-/** Latin UI font. Google Sans Flex, SIL OFL 1.1 (assets/licenses). */
-val GoogleSansFlex = FontFamily(
-    Font(R.font.google_sans_flex_regular, FontWeight.Normal),
-    Font(R.font.google_sans_flex_medium, FontWeight.Medium),
-    Font(R.font.google_sans_flex_semibold, FontWeight.SemiBold),
-    Font(R.font.google_sans_flex_bold, FontWeight.Bold),
+/**
+ * Latin UI font. Roboto, SIL OFL 1.1 (assets/licenses). One variable file
+ * carries every weight; each [Font] pins its weight axis.
+ */
+@OptIn(ExperimentalTextApi::class)
+private fun roboto(weight: FontWeight) = Font(
+    R.font.roboto_variable,
+    weight = weight,
+    variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
+)
+
+val Roboto = FontFamily(
+    roboto(FontWeight.Normal),
+    roboto(FontWeight.Medium),
+    roboto(FontWeight.SemiBold),
+    roboto(FontWeight.Bold),
 )
 
 /** Arabic UI font. Noto Kufi Arabic, SIL OFL 1.1 (assets/licenses). It also carries Latin glyphs. */
@@ -45,8 +57,8 @@ val NotoKufiArabic = FontFamily(
     Font(R.font.noto_kufi_arabic_bold, FontWeight.Bold),
 )
 
-/** Brand wordmark and big numbers always use Google Sans Flex, whatever the locale. */
-val BrandFontFamily = GoogleSansFlex
+/** Brand wordmark and big numbers always use Roboto, whatever the locale. */
+val BrandFontFamily = Roboto
 
 private val arabicScriptLanguages = setOf("ar", "fa", "ur", "ps", "ckb", "sd", "ug")
 
@@ -85,15 +97,15 @@ fun nextCoreTypography(family: FontFamily, arabic: Boolean): Typography {
     )
 }
 
-/** Picks Noto Kufi Arabic for Arabic-script locales and Google Sans Flex otherwise. */
+/** Picks Noto Kufi Arabic for Arabic-script locales and Roboto otherwise. */
 @Composable
 fun rememberNextCoreTypography(): Typography {
     val locales = LocalConfiguration.current.locales
     val lang = if (locales.isEmpty) "" else locales[0].language
     val arabic = lang in arabicScriptLanguages
     return remember(arabic) {
-        nextCoreTypography(if (arabic) NotoKufiArabic else GoogleSansFlex, arabic)
+        nextCoreTypography(if (arabic) NotoKufiArabic else Roboto, arabic)
     }
 }
 
-val Typography = nextCoreTypography(GoogleSansFlex, arabic = false)
+val Typography = nextCoreTypography(Roboto, arabic = false)
