@@ -142,6 +142,9 @@ enum class ColorMode(val value: Int) {
     }
 }
 
+/** NextCore brand orange; the default key color until the user picks another (0 = wallpaper colors). */
+const val NEXTCORE_SEED_COLOR: Int = 0xFFE0703F.toInt()
+
 data class AppSettings(val colorMode: ColorMode, val keyColor: Int, val colorSpec: ColorSpec.SpecVersion)
 
 object ThemeController {
@@ -150,7 +153,7 @@ object ThemeController {
         val colorMode = ColorMode.fromValue(
             prefs.getInt("color_mode", ColorMode.SYSTEM.value)
         )
-        val keyColor = prefs.getInt("key_color", 0) 
+        val keyColor = prefs.getInt("key_color", NEXTCORE_SEED_COLOR)
         
         val colorSpecStr = prefs.getString("color_spec", "DEFAULT")
         val colorSpec = try {
@@ -230,7 +233,7 @@ fun AZenithTheme(
 
     MaterialExpressiveTheme(
         colorScheme = animatedColorScheme,
-        typography = Typography,
+        typography = rememberNextCoreTypography(),
         shapes = ExpressiveShapes,
         motionScheme = MotionScheme.expressive(),
         content = content

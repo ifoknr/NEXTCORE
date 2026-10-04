@@ -44,6 +44,9 @@
   .seg button { flex: 1; }
   .seg button.active { background: var(--accent); color: var(--accent-text); border-color: transparent; }
   .ok { color: var(--ok); } .bad { color: var(--bad); }
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+  .badge.full { background: rgba(76,199,127,.16); color: var(--ok); }
+  .badge.partial { background: rgba(230,180,40,.18); color: #c99700; }
   .toast {
     position: fixed; bottom: 16px; left: 16px; right: 16px; padding: 12px 14px; border-radius: 12px;
     background: var(--text); color: var(--bg); opacity: 0; transition: opacity .2s; pointer-events: none;
@@ -60,6 +63,7 @@
 <body>
   <h1>NextCore</h1>
   <div class="sub" id="version">—</div>
+  <div class="badge" id="support" style="display:none"></div>
 
   <div class="card">
     <h2>حالة النظام</h2>
@@ -164,6 +168,16 @@
     if (r.errno !== 0) { toast(r.stderr || "تعذر قراءة الحالة"); return; }
     try { state = JSON.parse(r.stdout.trim()); } catch (e) { toast("استجابة غير صالحة"); return; }
 
+    const sup = document.getElementById("support");
+    if (state.support === "FULL") {
+      sup.textContent = "✓ دعم كامل · " + (state.soc_vendor || "") + " " + (state.soc || "");
+      sup.className = "badge full"; sup.style.display = "inline-block";
+    } else if (state.support === "PARTIAL") {
+      sup.textContent = "⚠ دعم جزئي · معالج غير معروف، التحسينات العامة فقط";
+      sup.className = "badge partial"; sup.style.display = "inline-block";
+    } else {
+      sup.style.display = "none";
+    }
     document.getElementById("version").textContent = "الإصدار " + (state.version || "—");
     document.getElementById("device").textContent = state.device || "—";
     document.getElementById("soc").textContent = state.soc || "—";

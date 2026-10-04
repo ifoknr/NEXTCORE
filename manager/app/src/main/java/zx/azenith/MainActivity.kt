@@ -456,7 +456,7 @@ fun MainScreen(fromTileType: String? = null) {
                                 modifier = pageModifier.fillMaxSize()
                             ) {
                                 when (pagerRoutes[page]) {
-                                    "home" -> HomeScreen()
+                                    "home" -> HomeScreen(navController, isVisible = pagerState.currentPage == page)
                                     "applist" -> ApplistScreen(navController)
                                     "tweaks" -> TweakScreen(navController)
                                     "settings" -> SettingsScreen(navController)
@@ -510,6 +510,11 @@ fun MainScreen(fromTileType: String? = null) {
                     composable("fpsgoscreen") {
                         zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
                             FpsGoSettings(navController)
+                        }
+                    }
+                    composable("devicecard") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            zx.azenith.ui.subscreens.DeviceCardScreen(navController)
                         }
                     }
                     composable("governorsettings") {

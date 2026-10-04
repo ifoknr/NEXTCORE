@@ -120,7 +120,7 @@ abort_api() {
   echo ""
   echo "! Installation Aborted"
   echo "! Unsupported Android Version Detected"
-  echo "! AZenith requires Android 10 (API 29) or newer."
+  echo "! NextCore requires Android 10 (API 29) or newer."
   abort "! Your device is currently running API $API_LEVEL."
 }
 
@@ -128,7 +128,7 @@ abort_corrupted() {
   clear
   echo ""
   echo "! Installation Aborted"
-  echo "! The AZenith package appears to be corrupted or incomplete."
+  echo "! The NextCore package appears to be corrupted or incomplete."
   echo "! Required installation files were not found."
   echo ""
   abort "! Please re-download the module and try again."
@@ -138,15 +138,15 @@ abort_arch() {
   clear
   echo "! Installation Aborted"
   echo "! Unsupported CPU Architecture Detected"
-  echo "! Your device architecture is not compatible with this build of AZenith."
+  echo "! Your device architecture is not compatible with this build of NextCore."
   echo "! Supported architectures:"
   echo "  • arm64-v8a"
   abort "  • armeabi-v7a"
 }
 
 installation_complete() {
-  echo "- AZenith has been successfully installed"
-  echo "- Thank you for choosing AZenith!"
+  echo "- NextCore has been successfully installed"
+  echo "- Support level: $DP_SUPPORT ($soc)"
   echo "- Please reboot your device."
   echo "- Open Manager from Action"
   echo "- Don't forget to grant root access."
@@ -154,9 +154,9 @@ installation_complete() {
 
 # Displaybanner
 echo ""
-echo "              AZenith              "
+echo "              NextCore              "
 echo ""
-echo "- Installing AZenith..."
+echo "- Installing NextCore..."
 
 # API Level Check (Require API 29+)
 [ "$API_LEVEL" -lt 29 ] && abort_api
@@ -274,52 +274,15 @@ if [ "$KSU" = "true" ] || [ "$APATCH" = "true" ]; then
 	done
 fi
 
-# Apply Tweaks Based on Chipset
-echo "- Checking device soc"
-chipset=""
-# Android 12+ exposes the SoC vendor directly; this is the most reliable source
-# (e.g. Galaxy Tab S10 Ultra reports ro.soc.manufacturer=Mediatek, ro.soc.model=MT6989).
-case "$(getprop ro.soc.manufacturer | tr '[:upper:]' '[:lower:]')" in
-*mediatek*) chipset="mt $(getprop ro.soc.model)" ;;
-*qti* | *qualcomm*) chipset="qcom $(getprop ro.soc.model)" ;;
-*samsung*) chipset="exynos $(getprop ro.soc.model)" ;;
-*google*) chipset="tensor $(getprop ro.soc.model)" ;;
-*unisoc* | *spreadtrum*) chipset="unisoc $(getprop ro.soc.model)" ;;
-esac
-[ -z "$chipset" ] && chipset=$(grep -i 'hardware' /proc/cpuinfo | uniq | cut -d ':' -f2 | sed 's/^[ \t]*//')
-[ -z "$chipset" ] && chipset="$(getprop ro.board.platform) $(getprop ro.hardware)"
-case "$(echo "$chipset" | tr '[:upper:]' '[:lower:]')" in
-*mt* | *MT*)
-	soc="MediaTek"
-	echo "- Applying Tweaks for $soc"
-	setprop persist.sys.azenith.soctype 1
-	;;
-*sm* | *qcom* | *SM* | *QCOM* | *Qualcomm* | *sdm* | *snapdragon*)
-	soc="Snapdragon"
-	echo "- Applying Tweaks for $soc"
-	setprop persist.sys.azenith.soctype 2
-	;;
-*exynos* | *Exynos* | *EXYNOS* | *universal* | *samsung* | *erd* | *s5e*)
-	soc="Exynos"
-	echo "- Applying Tweaks for $soc"
-	setprop persist.sys.azenith.soctype 3
-	;;
-*Unisoc* | *unisoc* | *ums*)
-	soc="Unisoc"
-	echo "- Applying Tweaks for $soc"
-	setprop persist.sys.azenith.soctype 4
-	;;
-*gs* | *Tensor* | *tensor*)
-	soc="Tensor"
-	echo "- Applying Tweaks for $soc"
-	setprop persist.sys.azenith.soctype 5
-	;;
-*)
-	soc="Unknown"
-	echo "- Applying Tweaks for $chipset"
-	setprop persist.sys.azenith.soctype 0
-	;;
-esac
+# Detect the device, pick monitoring sensors and the support level
+ui_print ""
+ui_print "- Scanning device..."
+extract "$ZIPFILE" devprobe.sh "$MODPATH"
+. "$MODPATH/devprobe.sh"
+devprobe_run
+soc="$DP_SOC_VENDOR"
+setprop persist.sys.azenith.soctype "$DP_SOC_TYPE"
+ui_print ""
 
 # Soc Type
 # 1) MediaTek
@@ -435,7 +398,7 @@ APP_INSTALLED=false
 if ! _prepare_apk; then
     echo "[!] Failed to prepare APK. Continuing without installing manager..." >&2
 else
-    if install_manager "$TMP_APK" "AZenith Manager"; then
+    if install_manager "$TMP_APK" "NextCore Manager"; then
         APP_INSTALLED=true
     fi
     _cleanup_apk

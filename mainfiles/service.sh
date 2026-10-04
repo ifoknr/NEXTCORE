@@ -70,6 +70,14 @@ if [ ! -f "$MODULE_CONFIG/gamelist/azenithApplist.json" ] && [ -f "$MODDIR/azeni
     cp "$MODDIR/azenithApplist.json" "$MODULE_CONFIG/gamelist/azenithApplist.json"
 fi
 
+# Refresh the device profile (sensors for the app's live monitoring)
+if [ -f "$MODDIR/devprobe.sh" ]; then
+    . "$MODDIR/devprobe.sh"
+    devprobe_run quiet
+    blog "Device probe: $DP_SOC_VENDOR $DP_SOC_MODEL, support $DP_SUPPORT, cpu temp ${DP_CPU_TEMP_LABEL:-none}, gpu ${DP_GPU_FREQ_PATH:-none}"
+    [ "$DP_SUPPORT" = "PARTIAL" ] && blog "Unknown SoC: only general tweaks will be applied"
+fi
+
 # Clear Old Logs
 "$BIN_SVC" --clearlogs
 

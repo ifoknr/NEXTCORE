@@ -68,7 +68,10 @@ _get_status() {
 	auto="$(getprop persist.sys.azenithconf.AIenabled)"
 	running=0
 	[ -n "$(/system/bin/toybox pidof sys.azenith-service)" ] && running=1
-	printf '{"device":"%s","soc":"%s","temp":"%s","profile":"%s","governor":"%s","governors":"%s","custom_gov":"%s","bypass":"%s","bypass_path":"%s","auto":"%s","daemon":%s,"version":"%s"}\n' \
+	support="$(grep '^support=' "$MODULE_CONFIG/device_profile" 2>/dev/null | cut -d= -f2-)"
+	soc_vendor="$(grep '^soc_vendor=' "$MODULE_CONFIG/device_profile" 2>/dev/null | cut -d= -f2-)"
+	printf '{"support":"%s","soc_vendor":"%s","device":"%s","soc":"%s","temp":"%s","profile":"%s","governor":"%s","governors":"%s","custom_gov":"%s","bypass":"%s","bypass_path":"%s","auto":"%s","daemon":%s,"version":"%s"}\n' \
+		"$(_json_escape "$support")" "$(_json_escape "$soc_vendor")" \
 		"$(_json_escape "$device")" "$(_json_escape "$soc_model")" "$temp" "$(_json_escape "$profile")" \
 		"$(_json_escape "$gov")" "$(_json_escape "$govs")" "$(_json_escape "$custom_gov")" \
 		"$(_json_escape "$bypass")" "$(_json_escape "$bypass_path")" "$(_json_escape "$auto")" "$running" \
@@ -117,6 +120,8 @@ _doctor() {
 	echo "== soc: $(getprop ro.soc.manufacturer) $(getprop ro.soc.model) (soctype=$(getprop persist.sys.azenith.soctype))"
 	echo "== profile: $(cat "$MODULE_CONFIG/API/current_profile" 2>/dev/null)"
 	[ -d /data/adb/modules/AZenith ] && echo "== WARNING: AZenith module folder still exists"
+	echo "== device_profile"
+	cat "$MODULE_CONFIG/device_profile" 2>/dev/null || echo "(missing)"
 	echo "== boot.log"
 	cat "$MODULE_CONFIG/debug/boot.log" 2>/dev/null
 	echo "== AZenith.log (last 30)"
