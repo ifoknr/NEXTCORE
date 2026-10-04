@@ -209,6 +209,8 @@ extract "$ZIPFILE" module.prop "$MODPATH"
 cp "$MODPATH/module.prop" "$MODPATH/module.prop.orig"
 echo "- Extracting uninstall.sh..."
 extract "$ZIPFILE" uninstall.sh "$MODPATH"
+# Keep a pristine copy in the module so service.sh can restore a missing gamelist
+extract "$ZIPFILE" azenithApplist.json "$MODPATH"
 if [ ! -f "$MODULE_CONFIG/gamelist/azenithApplist.json" ]; then
     echo "- Extracting Applist.json..."
     extract "$ZIPFILE" azenithApplist.json "$MODULE_CONFIG/gamelist"

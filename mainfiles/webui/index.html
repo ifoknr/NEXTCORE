@@ -50,6 +50,11 @@
   }
   .toast.show { opacity: .95; }
   .hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+  pre.diag {
+    direction: ltr; text-align: left; white-space: pre-wrap; word-break: break-word;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px; font-size: 11px; max-height: 320px; overflow: auto; margin: 10px 0 0; display: none;
+  }
 </style>
 </head>
 <body>
@@ -101,6 +106,16 @@
       </div>
     </div>
     <div class="hint">يتطلب اختيار مسار الشحن أولاً من تطبيق NextCore (فحص التوافق).</div>
+  </div>
+
+  <div class="card">
+    <h2>التشخيص</h2>
+    <div class="seg">
+      <button id="diagBtn">عرض التشخيص</button>
+      <button id="restartBtn">إعادة تشغيل الخدمة</button>
+    </div>
+    <pre class="diag" id="diagOut"></pre>
+    <div class="hint">إذا كانت الخدمة متوقفة، انسخ نص التشخيص وأرسله للمطوّر.</div>
   </div>
 
   <div class="card">
@@ -193,7 +208,19 @@
     if (!/^[A-Za-z0-9_-]+$/.test(g)) return;
     run(ACTION + " set_global " + g + " keep", "تم تطبيق الحاكم");
   });
-  document.getElementById("openApp").addEventListener("click", () =>
+  document.getElementById("diagBtn").addEventListener("click", async () => {
+    const out = document.getElementById("diagOut");
+    out.style.display = "block";
+    out.textContent = "...";
+    const r = await exec(ACTION + " doctor");
+    out.textContent = (r.stdout || r.stderr || "لا توجد بيانات").trim();
+  });
+  document.getElementById("restartBtn").addEventListener("click", async () => {
+    await exec(ACTION + " restart");
+    toast("جاري إعادة تشغيل الخدمة...");
+    setTimeout(refresh, 6000);
+  });
+    document.getElementById("openApp").addEventListener("click", () =>
     exec("/data/adb/modules/nextcore/system/bin/sys.azenith-service --appactivity"));
 
   refresh();

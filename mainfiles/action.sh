@@ -34,6 +34,8 @@ readonly CPUFREQ="/sys/devices/system/cpu/cpu0/cpufreq"
 #   action.sh set_global <governor|auto|keep_gov> <bypass 0|1|keep>
 #   action.sh set_profile <1|2|3>
 #   action.sh set_auto <0|1>
+#   action.sh doctor          (diagnostics: boot.log, daemon log, state)
+#   action.sh restart         (restart the NextCore service)
 # Without arguments (module "Action" button) the manager app is installed/opened.
 # ---------------------------------------------------------------------------
 
@@ -108,7 +110,29 @@ _set_global() {
 	echo "OK"
 }
 
+_doctor() {
+	echo "== state: $(getprop persist.sys.azenith.state)"
+	echo "== service pid: $(/system/bin/toybox pidof sys.azenith-service)"
+	echo "== appmonitor pid: $(/system/bin/toybox pidof sys.azenith-appmonitoring)"
+	echo "== soc: $(getprop ro.soc.manufacturer) $(getprop ro.soc.model) (soctype=$(getprop persist.sys.azenith.soctype))"
+	echo "== profile: $(cat "$MODULE_CONFIG/API/current_profile" 2>/dev/null)"
+	[ -d /data/adb/modules/AZenith ] && echo "== WARNING: AZenith module folder still exists"
+	echo "== boot.log"
+	cat "$MODULE_CONFIG/debug/boot.log" 2>/dev/null
+	echo "== AZenith.log (last 30)"
+	tail -n 30 "$MODULE_CONFIG/debug/AZenith.log" 2>/dev/null
+}
+
 case "$1" in
+doctor)
+	_doctor
+	exit 0
+	;;
+restart)
+	"$BIN_SVC" --rerun >/dev/null 2>&1
+	echo "OK"
+	exit 0
+	;;
 get_status)
 	_get_status
 	exit 0
