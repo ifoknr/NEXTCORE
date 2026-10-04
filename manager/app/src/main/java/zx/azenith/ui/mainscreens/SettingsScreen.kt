@@ -28,8 +28,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -86,7 +87,7 @@ fun SettingsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
-    val listState = rememberLazyListState()
+    val listState = rememberLazyStaggeredGridState()
     
     var showLogBottomSheet by remember { mutableStateOf(false) }
     
@@ -220,12 +221,16 @@ fun SettingsScreen(
             containerColor = MaterialTheme.colorScheme.surface
         ) { innerPadding ->
             NcSheet(topPadding = innerPadding.calculateTopPadding()) {
-            LazyColumn(
+            // Each section is one grid cell: a single column on phones,
+            // sections side by side on tablets.
+            LazyVerticalStaggeredGrid(
+                columns = ncGridCells,
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = ncSheetListPadding()
+                contentPadding = ncSheetListPadding(),
+                horizontalArrangement = Arrangement.spacedBy(NcGridGap)
             ) {
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     NcWatermarkCard(
                         watermark = Icons.Filled.Palette,
                         container = MaterialTheme.colorScheme.primaryContainer,
@@ -244,7 +249,11 @@ fun SettingsScreen(
                             modifier = Modifier.padding(top = 4.dp)
                         )
                     }
+                }
 
+                item { Column {
+                    // Beside other sections on a tablet, a title keeps the rows aligned.
+                    if (ncIsWide()) SettingsSectionTitle(stringResource(R.string.nc_settings_hero))
                     ExpressiveList(
                         content = listOf(
                             { AppInfoHeaderContent() },
@@ -259,11 +268,10 @@ fun SettingsScreen(
                             }
                         )
                     )
-                }
+                } }
 
-                item { SettingsSectionTitle(stringResource(R.string.section_features)) }
-
-                item {
+                item { Column {
+                    SettingsSectionTitle(stringResource(R.string.section_features))
                     if (uiState.isLoaded) {
                         ExpressiveList(
                             content = listOf(
@@ -319,10 +327,25 @@ fun SettingsScreen(
                     } else {
                         SkeletonSettingsList(rowCount = 3)
                     }
-                }
+                } }
 
-                item { SettingsSectionTitle(stringResource(R.string.section_others)) }
-                item {
+                item { Column {
+                    SettingsSectionTitle(stringResource(R.string.nc_monitoring_section))
+                    ExpressiveList(
+                        content = listOf {
+                            ExpressiveListItem(
+                                onClick = { navController.navigate("monitoring") { launchSingleTop = true } },
+                                headlineContent = { Text(stringResource(R.string.nc_overlay_title)) },
+                                supportingContent = { Text(stringResource(R.string.nc_monitoring_settings_desc)) },
+                                leadingContent = { LeadingIcon(icon = Icons.Filled.PictureInPicture) },
+                                trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null) }
+                            )
+                        }
+                    )
+                } }
+
+                item { Column {
+                    SettingsSectionTitle(stringResource(R.string.section_others))
                     if (uiState.isLoaded) {
                         ExpressiveList(
                             content = listOf(
@@ -400,10 +423,10 @@ fun SettingsScreen(
                     } else {
                         SkeletonSettingsList(rowCount = 3)
                     }
-                }
+                } }
 
-                item { SettingsSectionTitle(stringResource(R.string.section_about)) }
-                item {
+                item { Column {
+                    SettingsSectionTitle(stringResource(R.string.section_about))
                     ExpressiveList(
                         content = listOf {
                             ExpressiveListItem(
@@ -417,7 +440,7 @@ fun SettingsScreen(
                             )
                         }
                     )
-                }
+                } }
             }
         }
         }

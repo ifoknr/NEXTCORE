@@ -62,7 +62,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
@@ -83,6 +82,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import zx.azenith.R
+import zx.azenith.overlay.OverlayPrefs
 import zx.azenith.ui.component.*
 import zx.azenith.ui.theme.BrandFontFamily
 import zx.azenith.ui.util.SupportLevel
@@ -97,18 +97,24 @@ import zx.azenith.ui.viewmodel.HomeViewModel
 import java.util.Locale
 
 
-private const val LIVE_POLL_MS = 1500L
-
-/** Polls live stats while [isVisible] and the app is in the foreground. Shared by Home and Monitor. */
+/**
+ * Polls live stats while [isVisible] and the app is in the foreground. Shared by Home and Monitor.
+ * The interval is set under Settings > Floating monitor.
+ */
 @Composable
 fun LiveStatsPoller(viewModel: HomeViewModel, isVisible: Boolean, profileLoaded: Boolean) {
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
     LaunchedEffect(isVisible, profileLoaded) {
         if (!isVisible || !profileLoaded) return@LaunchedEffect
+        val prefs = OverlayPrefs.prefs(context)
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 viewModel.pollLiveStats()
-                delay(LIVE_POLL_MS)
+                delay(
+                    prefs.getLong(OverlayPrefs.MONITOR_INTERVAL_MS, OverlayPrefs.DEFAULT_MONITOR_INTERVAL_MS)
+                        .coerceIn(500L, 10_000L)
+                )
             }
         }
     }
@@ -222,7 +228,7 @@ fun HomeScreen(
     val restartingMsg = stringResource(R.string.nc_restarting)
     val applyingMsg = stringResource(R.string.toast_applying_profile)
     val openDeviceCard: () -> Unit = { navController?.navigate("devicecard") { launchSingleTop = true } }
-    val wide = LocalConfiguration.current.screenWidthDp >= 600
+    val wide = ncIsWide()
 
     Scaffold(
         topBar = {
@@ -272,21 +278,25 @@ fun HomeScreen(
                         }
                     }
                 }
-                item(key = "status") {
-                    StatusDeviceCard(
-                        uiState = uiState,
-                        deviceName = deviceName,
-                        kernel = kernel,
-                        selinux = selinux,
-                        autoMode = autoMode,
-                        onClick = openDeviceCard,
-                        onAutoClick = { viewModel.setAutoMode(!autoMode) }
-                    )
+                val statusCard: @Composable (Modifier) -> Unit = { m ->
+                    Box(m) {
+                        StatusDeviceCard(
+                            uiState = uiState,
+                            deviceName = deviceName,
+                            kernel = kernel,
+                            selinux = selinux,
+                            autoMode = autoMode,
+                            onClick = openDeviceCard,
+                            onAutoClick = { viewModel.setAutoMode(!autoMode) }
+                        )
+                    }
                 }
-                item(key = "game") { RunningGameSection(uiState) }
+                if (!wide) {
+                    item(key = "status") { statusCard(Modifier) }
+                    item(key = "game") { RunningGameSection(uiState) }
+                }
                 item(key = "tiles") {
                     val live = uiState.live
-                    val cols = if (wide) 4 else 2
                     val tiles: List<@Composable (Modifier) -> Unit> = listOf(
                         { m ->
                             ProfileTile(
@@ -336,12 +346,30 @@ fun HomeScreen(
                             )
                         },
                     )
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        tiles.chunked(cols).forEach { row ->
-                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                row.forEach { tile -> tile(Modifier.weight(1f).aspectRatio(1f)) }
+                    val tileGrid: @Composable (Modifier) -> Unit = { m ->
+                        Column(m, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            tiles.chunked(2).forEach { row ->
+                                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                    // Square on phones; a fixed height on tablets so
+                                    // the tiles don't grow with the screen.
+                                    row.forEach { tile ->
+                                        tile(Modifier.weight(1f).then(if (wide) Modifier.height(168.dp) else Modifier.aspectRatio(1f)))
+                                    }
+                                }
                             }
                         }
+                    }
+                    if (wide) {
+                        // Tablet: status card and the 2×2 tiles side by side.
+                        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                statusCard(Modifier.weight(1f))
+                                tileGrid(Modifier.weight(1f))
+                            }
+                            RunningGameSection(uiState)
+                        }
+                    } else {
+                        tileGrid(Modifier)
                     }
                 }
                 item(key = "support") {

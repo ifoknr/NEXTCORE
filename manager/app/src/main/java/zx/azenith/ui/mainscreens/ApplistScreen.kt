@@ -26,9 +26,11 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -85,7 +87,8 @@ fun ApplistScreen(navController: NavController) {
     val viewModel: ApplistViewmodel = viewModel()
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val listState = rememberLazyListState()
+    val listState = rememberLazyGridState()
+    val wide = ncIsWide()
     val lifecycleOwner = LocalLifecycleOwner.current
     
     val topAppBarState = rememberSaveable(saver = TopAppBarState.Saver) {
@@ -198,12 +201,17 @@ fun ApplistScreen(navController: NavController) {
                     else -> allApps
                 }
 
-                LazyColumn(
+                // Phones: one grouped list. Tablets: app cards in as many
+                // columns as fit, with search and filters across the top.
+                val fullLine: (androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope.() -> GridItemSpan) = { GridItemSpan(maxLineSpan) }
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(NcColumnMinWidth),
                     state = listState,
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = ncSheetListPadding()
+                    contentPadding = ncSheetListPadding(),
+                    horizontalArrangement = Arrangement.spacedBy(if (wide) 8.dp else 0.dp)
                 ) {
-                    item(key = "search") {
+                    item(key = "search", span = fullLine) {
                         Surface(shape = RoundedCornerShape(28.dp), color = cs.surfaceContainerHigh, modifier = Modifier.fillMaxWidth()) {
                             Row(Modifier.padding(start = 16.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Search, null, tint = cs.onSurfaceVariant)
@@ -229,7 +237,7 @@ fun ApplistScreen(navController: NavController) {
                             }
                         }
                     }
-                    item(key = "filters") {
+                    item(key = "filters", span = fullLine) {
                         Row(
                             Modifier.padding(top = 12.dp, bottom = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -241,7 +249,7 @@ fun ApplistScreen(navController: NavController) {
                     }
                     val runningPkg = homeState.runningGamePkg
                     if (!runningPkg.isNullOrEmpty()) {
-                        item(key = "running") {
+                        item(key = "running", span = fullLine) {
                             val runningApp = allApps.firstOrNull { it.packageName == runningPkg }
                             NcWatermarkCard(
                                 watermark = Icons.Default.SportsEsports,
@@ -266,9 +274,9 @@ fun ApplistScreen(navController: NavController) {
                             }
                         }
                     }
-                    item(key = "appsHeader") { NcSheetSection(stringResource(R.string.nc_apps_section)) }
+                    item(key = "appsHeader", span = fullLine) { NcSheetSection(stringResource(R.string.nc_apps_section)) }
                     if (appsToDisplay.isEmpty() && !viewModel.isRefreshing) {
-                        item(key = "empty") {
+                        item(key = "empty", span = fullLine) {
                             Text(
                                 text = stringResource(R.string.no_apps_found),
                                 style = MaterialTheme.typography.bodyLarge,
@@ -281,7 +289,7 @@ fun ApplistScreen(navController: NavController) {
                         val big = 22.dp
                         val small = 6.dp
                         val shape = when {
-                            appsToDisplay.size == 1 -> RoundedCornerShape(big)
+                            wide || appsToDisplay.size == 1 -> RoundedCornerShape(big)
                             index == 0 -> RoundedCornerShape(topStart = big, topEnd = big, bottomStart = small, bottomEnd = small)
                             index == appsToDisplay.lastIndex -> RoundedCornerShape(topStart = small, topEnd = small, bottomStart = big, bottomEnd = big)
                             else -> RoundedCornerShape(small)
@@ -292,7 +300,7 @@ fun ApplistScreen(navController: NavController) {
                             color = cs.surfaceContainer,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 4.dp)
+                                .padding(bottom = if (wide) 8.dp else 4.dp)
                                 .animateItem(fadeInSpec = null, fadeOutSpec = null)
                         ) {
                             Row(

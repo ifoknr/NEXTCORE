@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.*
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -133,10 +135,29 @@ fun NcSheet(
     }
 }
 
+/** True on tablets and unfolded foldables (600dp and wider). */
+@Composable
+fun ncIsWide(): Boolean = LocalConfiguration.current.screenWidthDp >= 600
+
+/**
+ * Narrowest a column of cards may get. Wider screens fit more columns instead
+ * of stretching cards, so a tablet fills its width with phone-sized cards:
+ * one column on phones, two on a portrait tablet, three in landscape.
+ */
+val NcColumnMinWidth = 340.dp
+
+/** Columns for the main tabs' card grids; see [NcColumnMinWidth]. */
+val ncGridCells: StaggeredGridCells = StaggeredGridCells.Adaptive(NcColumnMinWidth)
+
+/** Gap between cards in a grid, both across and down. */
+val NcGridGap = 12.dp
+
 /** Standard content padding for a list inside [NcSheet]. */
 @Composable
-fun ncSheetListPadding(bottom: Dp = ncTabBottomPadding()): PaddingValues =
-    PaddingValues(start = 16.dp, end = 16.dp, top = 18.dp, bottom = bottom)
+fun ncSheetListPadding(bottom: Dp = ncTabBottomPadding()): PaddingValues {
+    val side = if (ncIsWide()) 24.dp else 16.dp
+    return PaddingValues(start = side, end = side, top = 18.dp, bottom = bottom)
+}
 
 /**
  * Hero card with a big faded icon in the bottom corner, in the style of

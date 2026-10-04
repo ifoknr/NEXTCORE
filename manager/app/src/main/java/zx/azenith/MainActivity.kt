@@ -119,6 +119,14 @@ class MainActivity : ComponentActivity() {
             }
         } else null
 
+        // Bring the floating monitor back after a reboot or after the system stopped it.
+        val overlayPrefs = zx.azenith.overlay.OverlayPrefs.prefs(this)
+        if (overlayPrefs.getBoolean(zx.azenith.overlay.OverlayPrefs.ENABLED, false) &&
+            !zx.azenith.overlay.OverlayService.isRunning
+        ) {
+            zx.azenith.overlay.OverlayService.start(this)
+        }
+
         setContent {
             AZenithTheme {
                 MainScreen(fromTileType)
@@ -517,6 +525,11 @@ fun MainScreen(fromTileType: String? = null) {
                     composable("devicecard") {
                         zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
                             zx.azenith.ui.subscreens.DeviceCardScreen(navController)
+                        }
+                    }
+                    composable("monitoring") {
+                        zx.azenith.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                            zx.azenith.ui.subscreens.MonitoringSettingsScreen(navController)
                         }
                     }
                     composable("governorsettings") {

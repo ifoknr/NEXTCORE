@@ -43,8 +43,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.material.icons.automirrored.rounded.HelpOutline
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -107,7 +109,7 @@ fun TweakScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val context = LocalContext.current
-    val listState = rememberLazyListState()
+    val listState = rememberLazyStaggeredGridState()
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val colorScheme = MaterialTheme.colorScheme
@@ -217,13 +219,17 @@ fun TweakScreen(
     ) { innerPadding ->
 
         NcSheet(topPadding = innerPadding.calculateTopPadding()) {
-            LazyColumn(
+            // Each section is one grid cell: a single column on phones,
+            // sections side by side on tablets.
+            LazyVerticalStaggeredGrid(
+            columns = ncGridCells,
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = ncSheetListPadding()
+            contentPadding = ncSheetListPadding(),
+            horizontalArrangement = Arrangement.spacedBy(NcGridGap)
         ) {
 
-            item {
+            item(span = StaggeredGridItemSpan.FullLine) {
                 NcWatermarkCard(
                     watermark = Icons.Rounded.Tune,
                     container = colorScheme.primaryContainer,
@@ -248,8 +254,8 @@ fun TweakScreen(
                 }
             }
 
-            item { TweaksSectionTitle(text = stringResource(R.string.section_performance)) }
-            item {
+            item { Column {
+                TweaksSectionTitle(text = stringResource(R.string.section_performance), help = stringResource(R.string.nc_help_tweaks_perf))
                 var socType by remember { mutableStateOf<String?>(null) }
                 LaunchedEffect(Unit) {
                     socType = withContext(Dispatchers.IO) { getChipsetVendor(context) }
@@ -295,10 +301,10 @@ fun TweakScreen(
                 } else {
                     SectionLoadingIndicator()
                 }
-            }
+            } }
 
-            item { TweaksSectionTitle(stringResource(R.string.section_additionalsettings)) }
-            item {
+            item { Column {
+                TweaksSectionTitle(stringResource(R.string.section_additionalsettings), help = stringResource(R.string.nc_help_tweaks_additional))
                 if (viewModel.preloadState != null && 
                     viewModel.memKillerState != null && 
                     viewModel.appPriorState != null && 
@@ -371,9 +377,6 @@ fun TweakScreen(
                 } else {
                     SectionLoadingIndicator()
                 }
-            }
-
-            item {
                 Spacer(modifier = Modifier.height(10.dp))
                 if (viewModel.currentRefreshRate != null && viewModel.currentRenderer != null) {
                     Row(
@@ -408,10 +411,10 @@ fun TweakScreen(
                 } else {
                     SectionLoadingIndicator()
                 }
-            }
+            } }
 
-            item { TweaksSectionTitle(text = stringResource(R.string.section_power_thermal)) }
-            item {
+            item { Column {
+                TweaksSectionTitle(text = stringResource(R.string.section_power_thermal), help = stringResource(R.string.nc_help_tweaks_thermal))
                 if (viewModel.thermalState != null) {
                     ExpressiveList(
                         content = listOf(
@@ -438,10 +441,10 @@ fun TweakScreen(
                 } else {
                     SectionLoadingIndicator()
                 }
-            }
+            } }
 
-            item { TweaksSectionTitle(stringResource(R.string.section_addons)) }
-            item {
+            item { Column {
+                TweaksSectionTitle(stringResource(R.string.section_addons))
                 ExpressiveList(
                     content = listOf(
                         {
@@ -464,7 +467,7 @@ fun TweakScreen(
                         }
                     )
                 )
-            }
+            } }
         }
         }
     }
@@ -618,18 +621,38 @@ fun SectionLoadingIndicator() {
 }
 
 @Composable
-fun TweaksSectionTitle(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(
-            start = 12.dp,
-            end = 12.dp,
-            top = 16.dp,
-            bottom = 8.dp
+fun TweaksSectionTitle(text: String, help: String? = null) {
+    var showHelp by remember { mutableStateOf(false) }
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .weight(1f)
+                .padding(
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = 16.dp,
+                    bottom = 8.dp
+                )
         )
-    )
+        if (help != null) {
+            IconButton(onClick = { showHelp = true }, modifier = Modifier.size(36.dp)) {
+                Icon(
+                    Icons.AutoMirrored.Rounded.HelpOutline,
+                    contentDescription = stringResource(R.string.nc_help),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+    if (help != null) {
+        RootAppDialog {
+            NcHelpSheet(visible = showHelp, title = text, body = help, onDismiss = { showHelp = false })
+        }
+    }
 }
 
 @Composable
