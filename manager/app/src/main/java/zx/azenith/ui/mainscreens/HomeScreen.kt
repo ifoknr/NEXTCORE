@@ -245,7 +245,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
             }
 
             item { DeviceInfoCard() }
-            item { LinkCard(Icons.Rounded.Favorite, R.string.support_us, R.string.support_us_desc) { uriHandler.openUri("https://github.com/ifoknr/NEXTCORE") } }
+            item { LinkCard(Icons.Rounded.Favorite, R.string.support_us, R.string.support_us_desc) { uriHandler.openUri("https://t.me/IFOKNR1") } }
             item { LinkCard(Icons.Rounded.Info, R.string.learn_more, R.string.learn_more_desc) { uriHandler.openUri("https://github.com/ifoknr/NEXTCORE#readme") } }
         }
     }

@@ -155,6 +155,18 @@ fun AboutScreen(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         FilledTonalButton(
+                            onClick = { openLink("https://t.me/IFOKNR1") }
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_telegram), 
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(stringResource(R.string.str_channel))
+                        }
+
+                        OutlinedButton(
                             onClick = { openLink("https://github.com/ifoknr/NEXTCORE") }
                         ) {
                             Icon(
@@ -164,18 +176,6 @@ fun AboutScreen(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(stringResource(R.string.about_github))
-                        }
-
-                        OutlinedButton(
-                            onClick = { openLink("https://github.com/ifoknr/NEXTCORE/issues") }
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_github), 
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(stringResource(R.string.about_report_issue))
                         }
                     }
                 }
@@ -210,6 +210,14 @@ fun AboutScreen(navController: NavController) {
                                                 painter = painterResource(id = R.drawable.ic_github),
                                                 contentDescription = stringResource(R.string.cd_github),
                                                 modifier = Modifier.size(29.dp),
+                                                tint = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                        IconButton(onClick = { openLink("https://t.me/IFOKNR1") }) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_telegram),
+                                                contentDescription = stringResource(R.string.cd_telegram),
+                                                modifier = Modifier.size(26.dp),
                                                 tint = MaterialTheme.colorScheme.primary
                                             )
                                         }

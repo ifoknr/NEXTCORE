@@ -342,7 +342,7 @@
     <string name="str_welcome_to">مرحبًا بك في</string>
     <string name="str_you_re_all_set">لقد انتهيت</string>
     <string name="support_us">ادعمنا</string>
-    <string name="support_us_desc">ادعم NextCore بنجمة على GitHub وساعده في الاستمرار والتحسن</string>
+    <string name="support_us_desc">انضم لقناة NextCore على Telegram للتحديثات والدعم</string>
     <string name="theme">السمة</string>
     <string name="theme_desc">تخصيص السمة ولون التركيز</string>
     <string name="thermalcore_service">خدمة التحكم الحراري ThermalCore</string>
@@ -384,7 +384,6 @@
     <string name="str_original_author">مطوّر AZenith الأصلي</string>
     <string name="str_credits">شكر وتقدير (فريق AZenith)</string>
     <string name="about_github">GitHub</string>
-    <string name="about_report_issue">الإبلاغ عن مشكلة</string>
     <string name="tile_bypass_charge">الشحن الجانبي</string>
     <string name="only_snapdragon">هذا الخيار متاح فقط لأجهزة Snapdragon.</string>
     <string name="only_mediatek">هذا الخيار متاح فقط لأجهزة MediaTek.</string>

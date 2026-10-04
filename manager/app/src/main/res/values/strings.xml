@@ -348,7 +348,7 @@
     <string name="str_welcome_to">Welcome to</string>
     <string name="str_you_re_all_set">You\'re all set</string>
     <string name="support_us">Support Us</string>
-    <string name="support_us_desc">Star NextCore on GitHub and help it keep improving</string>
+    <string name="support_us_desc">Join the NextCore Telegram channel for updates and support</string>
     <string name="theme">Theme</string>
     <string name="theme_applying">Applying theme…</string>
     <string name="theme_desc">Customize theme and accent color</string>
@@ -395,7 +395,6 @@
     <string name="str_original_author">Original AZenith author</string>
     <string name="str_credits">Credits (AZenith team)</string>
     <string name="about_github">GitHub</string>
-    <string name="about_report_issue">Report an issue</string>
     <string name="tile_bypass_charge">Bypass Charge</string>
     <string name="only_snapdragon">This option is only available for Snapdragon devices.</string>
     <string name="only_mediatek">This option is only available for MediaTek devices.</string>
