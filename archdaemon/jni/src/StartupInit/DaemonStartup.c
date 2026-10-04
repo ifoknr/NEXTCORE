@@ -24,6 +24,8 @@ void verify_system_integrity(void) {
         fprintf(stderr, "\033[31mERROR:\033[0m Daemon is already running!\n");
         exit(EXIT_FAILURE);
     }
+    /* The app may not have created its API dir yet (fresh install / before first launch) */
+    systemv("mkdir -p /data/data/zx.azenith/API");
     systemv("touch %s", PROFILE_MODE_APP);
     systemv("touch %s", GAME_INFO_APP);
 

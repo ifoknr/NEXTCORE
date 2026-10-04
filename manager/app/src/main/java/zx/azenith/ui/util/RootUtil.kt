@@ -207,7 +207,8 @@ object RootUtils {
     }.flowOn(Dispatchers.IO)
 
     fun getCurrentProfileRes(): Int {
-        val content = readRootFile(PROFILE_PATH)
+        // Fall back to the daemon's own file when the app mirror is missing or empty
+        val content = getCurrentProfileValue()
 
         return when (content) {
             "0" -> R.string.status_initializing

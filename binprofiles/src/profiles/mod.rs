@@ -121,7 +121,7 @@ pub fn performance_profile() {
             "3" => exynos_performance(),
             "4" => unisoc_performance(),
             "5" => tensor_performance(),
-            _ => {}
+            _ => log_info("Unknown SoC: chipset-specific tweaks skipped, general tweaks applied"),
         }
     }
 
@@ -228,7 +228,7 @@ pub fn balanced_profile() {
         "3" => exynos_balance(),
         "4" => unisoc_balance(),
         "5" => tensor_balance(),
-        _ => {}
+        _ => log_info("Unknown SoC: chipset-specific tweaks skipped, general tweaks applied"),
     }
 
     log_verbose("Balanced Profile applied successfully!");
@@ -311,7 +311,7 @@ pub fn eco_mode() {
         "3" => exynos_powersave(),
         "4" => unisoc_powersave(),
         "5" => tensor_powersave(),
-        _ => {}
+        _ => log_info("Unknown SoC: chipset-specific tweaks skipped, general tweaks applied"),
     }
 
     log_verbose("ECO Mode applied successfully!");

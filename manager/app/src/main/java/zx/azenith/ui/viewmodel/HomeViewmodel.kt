@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import zx.azenith.R
+import zx.azenith.ui.util.DeviceMonitor
+import zx.azenith.ui.util.DeviceProfile
+import zx.azenith.ui.util.LiveStats
 import zx.azenith.ui.util.RootUtils
 import zx.azenith.ui.util.isBannerImageEnabled
 import zx.azenith.ui.util.PropertyUtils
@@ -44,7 +47,11 @@ data class HomeUiState(
     val currentProfileRes: Int = R.string.status_initializing,
     val currentProfileValue: String = "",
     val runningGamePkg: String? = null,
-    val runningGameStartTime: String? = null
+    val runningGameStartTime: String? = null,
+    val moduleVersion: String = "",
+    val deviceProfile: DeviceProfile = DeviceProfile(),
+    val profileLoaded: Boolean = false,
+    val live: LiveStats = LiveStats()
 )
 
 
@@ -108,6 +115,44 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 moduleInstalled = isModuleInstalled,
                 autoMode = mode
             )
+
+            val version = RootUtils.readRootFile("/data/adb/modules/nextcore/module.prop")
+                ?.lineSequence()?.firstOrNull { it.startsWith("version=") }
+                ?.substringAfter('=')?.trim().orEmpty()
+            val profile = DeviceMonitor.loadProfile()
+            _uiState.value = _uiState.value.copy(
+                moduleVersion = version,
+                deviceProfile = profile,
+                profileLoaded = true
+            )
+        }
+    }
+
+    /** One live-monitoring sample. The Home screen calls this in a loop while visible. */
+    suspend fun pollLiveStats() {
+        val state = _uiState.value
+        if (!state.profileLoaded) return
+        val stats = kotlinx.coroutines.withContext(Dispatchers.IO) {
+            DeviceMonitor.sample(context, state.deviceProfile)
+        }
+        _uiState.value = _uiState.value.copy(live = stats)
+    }
+
+    fun setAutoMode(enabled: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val v = if (enabled) "1" else "0"
+            Shell.cmd(
+                "setprop persist.sys.azenithconf.AIenabled $v",
+                "echo $v > /data/adb/.config/AZenith/API/current_modes"
+            ).exec()
+            _uiState.value = _uiState.value.copy(autoMode = v)
+        }
+    }
+
+    fun restartService(onDone: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service --rerun").exec()
+            viewModelScope.launch(Dispatchers.Main) { onDone() }
         }
     }
 
