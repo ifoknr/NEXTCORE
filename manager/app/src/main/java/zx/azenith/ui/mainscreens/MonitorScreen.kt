@@ -431,7 +431,7 @@ private fun DisplayCard(refresh: Int?, maxRefresh: Int?) {
         val w = mode?.physicalWidth ?: metrics.widthPixels
         val h = mode?.physicalHeight ?: metrics.heightPixels
         val inches = sqrt((w / metrics.xdpi).let { it * it } + (h / metrics.ydpi).let { it * it })
-        val hdr = dm?.hdrCapabilities?.supportedHdrTypes?.mapNotNull {
+        val hdr = dm?.hdrCapabilities?.supportedHdrTypes?.toList()?.mapNotNull {
             when (it) {
                 Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> "Dolby Vision"
                 Display.HdrCapabilities.HDR_TYPE_HDR10 -> "HDR10"
@@ -440,7 +440,10 @@ private fun DisplayCard(refresh: Int?, maxRefresh: Int?) {
                 else -> null
             }
         }.orEmpty()
-        listOf("${minOf(w, h)}×${maxOf(w, h)}", String.format(Locale.US, "%.1f", inches), "${metrics.densityDpi} dpi") to hdr
+        Pair<List<String>, List<String>>(
+            listOf("${minOf(w, h)}×${maxOf(w, h)}", String.format(Locale.US, "%.1f", inches), "${metrics.densityDpi} dpi"),
+            hdr
+        )
     }
     NcWatermarkCard(watermark = Icons.Rounded.TabletAndroid) {
         Text(
