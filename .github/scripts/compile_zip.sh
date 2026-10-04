@@ -95,7 +95,21 @@ else
 fi
 
 # Parse version info to module prop
-zipName="NextCore-$version-$version_code.zip"
+if [ "${GITHUB_REF_TYPE:-}" = "tag" ]; then
+	# Stable name for releases so update.json can point at it
+	zipName="NextCore-$version.zip"
+	mkdir -p dist
+	cat >dist/update.json <<EOF_JSON
+{
+  "version": "$display_version",
+  "versionCode": $version_code,
+  "zipUrl": "https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/$zipName",
+  "changelog": "https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/changelog.md"
+}
+EOF_JSON
+else
+	zipName="NextCore-$version-$version_code.zip"
+fi
 echo "zipName=$zipName" >>"$GITHUB_OUTPUT"
 artifactName="${zipName%.zip}"
 echo "artifactName=$artifactName" >>"$GITHUB_OUTPUT"
