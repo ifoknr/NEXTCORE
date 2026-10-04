@@ -147,7 +147,7 @@ void external_log(LogLevel level, const char* tag, const char* message, ...) {
     vsnprintf(logMesg, sizeof(logMesg), message, args);
     va_end(args);
 
-    write2file(LOG_FILE, true, true, "%s %s %s: %s\n", timestamp, level_str[level], tag, message);
+    write2file(LOG_FILE, true, true, "%s %s %s: %s\n", timestamp, level_str[level], tag, logMesg);
 
     int android_log_level;
     switch (level) {
@@ -182,7 +182,7 @@ void external_vlog(LogLevel level, const char* tag, const char* message, ...) {
     vsnprintf(logMesg, sizeof(logMesg), message, args);
     va_end(args);
 
-    write2file(LOG_VFILE, true, true, "%s %s %s: %s\n", timestamp, level_str[level], tag, message);
+    write2file(LOG_VFILE, true, true, "%s %s %s: %s\n", timestamp, level_str[level], tag, logMesg);
 
     int android_log_level;
     switch (level) {
