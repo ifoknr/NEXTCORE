@@ -102,6 +102,7 @@ private const val DYNAMIC_KEY = 0
 
 private val keyColorOptions = listOf(
     zx.azenith.ui.theme.NEXTCORE_SEED_COLOR,
+    Color(0xFFE0703F).toArgb(), // previous NextCore orange
     Color(0xFFF44336).toArgb(),
     Color(0xFFE91E63).toArgb(),
     Color(0xFF9C27B0).toArgb(),

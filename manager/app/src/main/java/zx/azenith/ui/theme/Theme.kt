@@ -142,8 +142,8 @@ enum class ColorMode(val value: Int) {
     }
 }
 
-/** NextCore brand orange; the default key color until the user picks another (0 = wallpaper colors). */
-const val NEXTCORE_SEED_COLOR: Int = 0xFFE0703F.toInt()
+/** NextCore brand coral; the default key color until the user picks another (0 = wallpaper colors). */
+const val NEXTCORE_SEED_COLOR: Int = 0xFFFF9A8B.toInt()
 
 data class AppSettings(val colorMode: ColorMode, val keyColor: Int, val colorSpec: ColorSpec.SpecVersion)
 

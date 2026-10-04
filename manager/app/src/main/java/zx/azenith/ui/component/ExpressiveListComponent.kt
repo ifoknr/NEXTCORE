@@ -97,8 +97,10 @@ import androidx.compose.foundation.shape.CircleShape
 import zx.azenith.ExpressiveShapes
 
 
-private val largeCorner = 26.dp
-private val smallCorner = 4.dp
+// Separate rounded cards with a gap between them (RvSystem Monitor style)
+private val largeCorner = 28.dp
+private val smallCorner = 28.dp
+private val itemGap = 10.dp
 
 private val topShape = RoundedCornerShape(
     topStart = largeCorner,
@@ -133,10 +135,8 @@ fun ExpressiveList(
             )
         }
         Column(
-            modifier = Modifier.clip(
-                if (content.size == 1) singleShape else RoundedCornerShape(largeCorner)
-            ),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            modifier = Modifier,
+            verticalArrangement = Arrangement.spacedBy(itemGap)
         ) {
             content.forEachIndexed { index, itemContent ->
                 val shape = when {
@@ -148,7 +148,7 @@ fun ExpressiveList(
                 Column(
                     modifier = Modifier
                         .clip(shape)
-                        .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp), shape)
+                        .background(MaterialTheme.colorScheme.surfaceContainer, shape)
                 ) {
                     itemContent()
                 }
@@ -179,7 +179,7 @@ fun <T> ExpressiveLazyList(
         LazyColumn(
             state = state,
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+            verticalArrangement = Arrangement.spacedBy(itemGap),
             contentPadding = contentPadding
         ) {
             itemsIndexed(
@@ -204,7 +204,7 @@ fun <T> ExpressiveLazyList(
                             )
                         )
                         .clip(shape)
-                        .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainer)
                 ) {
                     itemContent(item)
                 }
@@ -236,7 +236,7 @@ fun ExpressiveListItem(
                 }
             }
             .then(modifier)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 18.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (leadingContent != null) {
@@ -252,12 +252,14 @@ fun ExpressiveListItem(
                 .weight(1f)
                 .padding(vertical = 8.dp)
         ) {
-            headlineContent()
+            ProvideTextStyle(value = MaterialTheme.typography.titleMedium) {
+                headlineContent()
+            }
             if (supportingContent != null) {
                 CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.outline
+                    LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
                 ) {
-                    ProvideTextStyle(value = MaterialTheme.typography.bodySmall) {
+                    ProvideTextStyle(value = MaterialTheme.typography.bodyMedium) {
                         supportingContent()
                     }
                 }
@@ -300,7 +302,7 @@ fun ExpressiveListItemHighlight(
                 }
             }
             .then(modifier)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 18.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (leadingContent != null) {
@@ -316,12 +318,14 @@ fun ExpressiveListItemHighlight(
                 .weight(1f)
                 .padding(vertical = 8.dp)
         ) {
-            headlineContent()
+            ProvideTextStyle(value = MaterialTheme.typography.titleMedium) {
+                headlineContent()
+            }
             if (supportingContent != null) {
                 CompositionLocalProvider(
-                    LocalContentColor provides MaterialTheme.colorScheme.outline
+                    LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant
                 ) {
-                    ProvideTextStyle(value = MaterialTheme.typography.bodySmall) {
+                    ProvideTextStyle(value = MaterialTheme.typography.bodyMedium) {
                         supportingContent()
                     }
                 }
@@ -363,7 +367,7 @@ fun ExpressiveInfoCard(
                 }
             }
             .then(modifier)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 18.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (leadingContent != null) {
@@ -699,7 +703,7 @@ private fun OptionPickerSheet(
                         .fillMaxWidth()
                         .heightIn(max = 420.dp)
                         .padding(vertical = 4.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    verticalArrangement = Arrangement.spacedBy(itemGap),
                 ) {
                     itemsIndexed(items) { index, text ->
                         OptionRow(
@@ -799,10 +803,8 @@ fun ExpressiveColumn(
             )
         }
         Column(
-            modifier = Modifier.clip(
-                if (content.size == 1) singleShape else RoundedCornerShape(largeCorner)
-            ),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
+            modifier = Modifier,
+            verticalArrangement = Arrangement.spacedBy(itemGap)
         ) {
             content.forEachIndexed { index, itemContent ->
                 val shape = when {
@@ -814,7 +816,7 @@ fun ExpressiveColumn(
                 Column(
                     modifier = Modifier
                         .clip(shape)
-                        .background(MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp), shape)
+                        .background(MaterialTheme.colorScheme.surfaceContainer, shape)
                 ) {
                     itemContent()
                 }
@@ -827,20 +829,20 @@ fun ExpressiveColumn(
 fun LeadingIcon(
     icon: ImageVector,
     contentDescription: String? = null,
-    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-    contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary
+    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.primary,
+    contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onPrimary
 ) {
     Box(
         modifier = Modifier
-            .size(36.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .size(46.dp)
+            .clip(RoundedCornerShape(15.dp))
             .background(containerColor),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            modifier = Modifier.size(22.dp),
+            modifier = Modifier.size(25.dp),
             tint = contentColor
         )
     }
@@ -848,21 +850,7 @@ fun LeadingIcon(
 
 @Composable
 fun SmallLeadingIcon(icon: ImageVector) {
-    val cs = MaterialTheme.colorScheme
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = cs.primary.copy(alpha = 0.12f),
-        modifier = Modifier.size(36.dp)
-    ) {
-        Icon(
-            icon,
-            contentDescription = null,
-            tint = cs.primary,
-            modifier = Modifier
-                .padding(7.dp)
-                .size(22.dp)
-        )
-    }
+    LeadingIcon(icon = icon)
 }
 
 /**

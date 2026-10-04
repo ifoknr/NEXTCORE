@@ -109,15 +109,10 @@ fun DeviceCardScreen(navController: NavController) {
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.surface
     ) { inner ->
-        val wide = LocalConfiguration.current.screenWidthDp >= 600
+        NcSheet(topPadding = inner.calculateTopPadding()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(
-                top = inner.calculateTopPadding(),
-                start = if (wide) 64.dp else 16.dp,
-                end = if (wide) 64.dp else 16.dp,
-                bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            ),
+            contentPadding = ncSheetListPadding(bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item { SupportBanner(profile, loaded) }
@@ -203,6 +198,7 @@ fun DeviceCardScreen(navController: NavController) {
                 }
             }
         }
+        }
     }
 }
 
@@ -263,40 +259,13 @@ private fun SupportBanner(profile: DeviceProfile, loaded: Boolean) {
 
 @Composable
 private fun DeviceCardTopBar(onBack: () -> Unit, onRescan: () -> Unit, scanning: Boolean) {
-    val cs = MaterialTheme.colorScheme
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Brush.verticalGradient(0f to cs.surface, 0.6f to cs.surface.copy(alpha = 0.9f), 1f to Color.Transparent))
-            .statusBarsPadding()
-    ) {
-        TopAppBar(
-            title = {
-                Column {
-                    Text(stringResource(R.string.nc_device_card), fontWeight = FontWeight.Bold)
-                    Text(
-                        stringResource(R.string.nc_device_card_desc),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = cs.onSurfaceVariant
-                    )
-                }
-            },
-            navigationIcon = {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
-                }
-            },
-            actions = {
-                if (scanning) {
-                    LoadingIndicator(modifier = Modifier.size(36.dp).padding(end = 8.dp))
-                } else {
-                    IconButton(onClick = onRescan) {
-                        Icon(Icons.Rounded.Refresh, contentDescription = stringResource(R.string.nc_rescan))
-                    }
-                }
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent),
-            windowInsets = WindowInsets(0, 0, 0, 0)
-        )
+    NcPageHeader(subtitle = stringResource(R.string.nc_device_card), onBack = onBack) {
+        if (scanning) {
+            LoadingIndicator(modifier = Modifier.size(40.dp).padding(end = 8.dp))
+        } else {
+            IconButton(onClick = onRescan) {
+                Icon(Icons.Rounded.Refresh, contentDescription = stringResource(R.string.nc_rescan), modifier = Modifier.size(28.dp))
+            }
+        }
     }
 }

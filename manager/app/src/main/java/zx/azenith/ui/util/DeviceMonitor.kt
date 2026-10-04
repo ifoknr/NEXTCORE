@@ -67,7 +67,14 @@ data class DeviceProfile(
         get() = clusters.joinToString(" · ") { "${it.cores}× ${coreNames[it.firstCpu] ?: "CPU${it.firstCpu}"}" }
 }
 
-data class ClusterStat(val label: String, val curKhz: Long, val maxKhz: Long)
+data class ClusterStat(
+    val label: String,
+    val curKhz: Long,
+    val maxKhz: Long,
+    val minLimitKhz: Long = 0L,
+    val maxLimitKhz: Long = 0L,
+    val governor: String = "",
+)
 
 /** One sample of live values. Null means "could not read". */
 data class LiveStats(
@@ -81,7 +88,20 @@ data class LiveStats(
     val batteryCurrentMa: Int? = null,
     val refreshHz: Int? = null,
     val maxRefreshHz: Int? = null,
-)
+    val gpuMaxMhz: Int? = null,
+    val memTotalKb: Long? = null,
+    val memAvailKb: Long? = null,
+    val swapTotalKb: Long? = null,
+    val swapFreeKb: Long? = null,
+    val batteryStatus: String = "",
+    val batteryHealth: String = "",
+    val batteryVoltageMv: Int? = null,
+    val batteryCycles: Int? = null,
+    val batteryDesignMah: Int? = null,
+) {
+    /** Peak of all clusters' hardware max frequency, in kHz. */
+    val peakKhz: Long get() = clusters.maxOfOrNull { it.maxKhz } ?: 0L
+}
 
 object DeviceMonitor {
 
@@ -126,6 +146,18 @@ object DeviceMonitor {
             CpuCluster(first, last, max)
         }
 
+    /** Some ROMs put a joke in ro.hardware.egl (e.g. "meow"); fall back to the GPU family from the sysfs path. */
+    private fun normalizeGpuName(name: String, freqPath: String): String {
+        val n = name.lowercase()
+        return when {
+            n.contains("mali") || n.contains("adreno") || n.contains("powervr") || n.contains("xclipse") -> name
+            freqPath.contains("mali", ignoreCase = true) -> "Mali"
+            freqPath.contains("kgsl") -> "Adreno"
+            freqPath.contains("pvr", ignoreCase = true) -> "PowerVR"
+            else -> name
+        }
+    }
+
     /** Fallback when the module has not written a profile yet: read cpufreq policies directly. */
     private fun probeClusters(): List<CpuCluster> {
         val dir = File("/sys/devices/system/cpu/cpufreq")
@@ -158,7 +190,7 @@ object DeviceMonitor {
             coreNames = parseCoreNames(cpuinfo),
             cpuTempPath = kv["cpu_temp_path"].orEmpty(),
             cpuTempLabel = kv["cpu_temp_label"].orEmpty(),
-            gpuName = kv["gpu_name"].orEmpty(),
+            gpuName = normalizeGpuName(kv["gpu_name"].orEmpty(), kv["gpu_freq_path"].orEmpty()),
             gpuFreqPath = kv["gpu_freq_path"].orEmpty(),
             gpuLoadPath = kv["gpu_load_path"].orEmpty(),
             batteryDir = kv["battery_dir"].orEmpty().ifEmpty { "/sys/class/power_supply/battery" },
@@ -189,6 +221,15 @@ object DeviceMonitor {
         return cur to max
     }
 
+    /** /proc/meminfo values in kB; readable without root. */
+    private fun readMeminfo(): Map<String, Long> = runCatching {
+        File("/proc/meminfo").readLines().mapNotNull { line ->
+            val key = line.substringBefore(':').trim()
+            val value = line.substringAfter(':').trim().substringBefore(' ').toLongOrNull()
+            if (value == null) null else key to value
+        }.toMap()
+    }.getOrDefault(emptyMap())
+
     /**
      * Reads every live value with a single root shell round trip, so a poll
      * costs one command instead of a dozen. Blocking; call from Dispatchers.IO.
@@ -196,12 +237,22 @@ object DeviceMonitor {
     fun sample(context: Context, profile: DeviceProfile): LiveStats {
         val files = linkedMapOf<String, String>()
         profile.clusters.forEach { c ->
-            files["c${c.firstCpu}"] = "/sys/devices/system/cpu/cpu${c.firstCpu}/cpufreq/scaling_cur_freq"
+            val dir = "/sys/devices/system/cpu/cpu${c.firstCpu}/cpufreq"
+            files["c${c.firstCpu}"] = "$dir/scaling_cur_freq"
+            files["cmin${c.firstCpu}"] = "$dir/scaling_min_freq"
+            files["cmax${c.firstCpu}"] = "$dir/scaling_max_freq"
+            files["cgov${c.firstCpu}"] = "$dir/scaling_governor"
         }
         files["gov"] = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
         if (profile.cpuTempPath.isNotEmpty()) files["ctemp"] = profile.cpuTempPath
         if (profile.gpuFreqPath.isNotEmpty()) files["gfreq"] = profile.gpuFreqPath
         if (profile.gpuLoadPath.isNotEmpty()) files["gload"] = profile.gpuLoadPath
+        if (profile.gpuFreqPath.endsWith("/cur_freq")) files["gmax"] = profile.gpuFreqPath.removeSuffix("cur_freq") + "max_freq"
+        files["bstat"] = "${profile.batteryDir}/status"
+        files["bhealth"] = "${profile.batteryDir}/health"
+        files["bvolt"] = "${profile.batteryDir}/voltage_now"
+        files["bcyc"] = "${profile.batteryDir}/cycle_count"
+        files["bdesign"] = "${profile.batteryDir}/charge_full_design"
         files["bcap"] = "${profile.batteryDir}/capacity"
         files["btemp"] = "${profile.batteryDir}/temp"
         if (profile.batteryCurrentPath.isNotEmpty()) files["bcur"] = profile.batteryCurrentPath
@@ -217,6 +268,9 @@ object DeviceMonitor {
                 label = profile.clusterLabel(c),
                 curKhz = ints(v["c${c.firstCpu}"]).firstOrNull() ?: 0L,
                 maxKhz = c.maxKhz,
+                minLimitKhz = ints(v["cmin${c.firstCpu}"]).firstOrNull() ?: 0L,
+                maxLimitKhz = ints(v["cmax${c.firstCpu}"]).firstOrNull() ?: 0L,
+                governor = v["cgov${c.firstCpu}"].orEmpty().trim(),
             )
         }
 
@@ -231,6 +285,10 @@ object DeviceMonitor {
         }
 
         val (refresh, maxRefresh) = runCatching { refreshRates(context) }.getOrDefault(null to null)
+        val mem = readMeminfo()
+
+        // voltage_now and charge_full_design are µV / µAh on most kernels, mV / mAh on some.
+        fun milli(raw: Long?): Int? = raw?.let { if (abs(it) > 100_000) (it / 1000).toInt() else it.toInt() }
 
         return LiveStats(
             clusters = clusters,
@@ -243,6 +301,16 @@ object DeviceMonitor {
             batteryCurrentMa = currentMa,
             refreshHz = refresh,
             maxRefreshHz = maxRefresh,
+            gpuMaxMhz = ints(v["gmax"]).maxOrNull()?.let { toMhz(it) },
+            memTotalKb = mem["MemTotal"],
+            memAvailKb = mem["MemAvailable"],
+            swapTotalKb = mem["SwapTotal"],
+            swapFreeKb = mem["SwapFree"],
+            batteryStatus = v["bstat"].orEmpty().trim(),
+            batteryHealth = v["bhealth"].orEmpty().trim(),
+            batteryVoltageMv = milli(ints(v["bvolt"]).firstOrNull()),
+            batteryCycles = ints(v["bcyc"]).firstOrNull()?.toInt(),
+            batteryDesignMah = milli(ints(v["bdesign"]).firstOrNull()),
         )
     }
 }

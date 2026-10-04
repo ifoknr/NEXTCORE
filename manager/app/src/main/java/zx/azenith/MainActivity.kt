@@ -168,7 +168,7 @@ fun MainScreen(fromTileType: String? = null) {
     val settingsPrefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
     var useScrollAnimation by remember { mutableStateOf(settingsPrefs.getBoolean("use_scroll_animation", true)) }
     
-    val pagerRoutes = remember { listOf("home", "applist", "tweaks", "settings") }
+    val pagerRoutes = remember { listOf("home", "monitor", "applist", "tweaks", "settings") }
     val pagerState = rememberPagerState(initialPage = 0) { pagerRoutes.size }
     
     val bottomBarRoutes = remember { setOf("main") }
@@ -246,8 +246,9 @@ fun MainScreen(fromTileType: String? = null) {
     val navItems = remember {
         listOf(
             NavItem("home", R.string.nav_home, Icons.Rounded.Home),
-            NavItem("applist", R.string.nav_applist, Icons.Rounded.Widgets),
-            NavItem("tweaks", R.string.nav_tweaks, Icons.Rounded.SettingsInputComponent),
+            NavItem("monitor", R.string.nav_monitor, Icons.Rounded.Insights),
+            NavItem("applist", R.string.nav_applist, Icons.Rounded.SportsEsports),
+            NavItem("tweaks", R.string.nav_tweaks, Icons.Rounded.Tune),
             NavItem("settings", R.string.nav_settings, Icons.Rounded.Settings)
         )
     }
@@ -457,6 +458,7 @@ fun MainScreen(fromTileType: String? = null) {
                             ) {
                                 when (pagerRoutes[page]) {
                                     "home" -> HomeScreen(navController, isVisible = pagerState.currentPage == page)
+                                    "monitor" -> MonitorScreen(navController, isVisible = pagerState.currentPage == page)
                                     "applist" -> ApplistScreen(navController)
                                     "tweaks" -> TweakScreen(navController)
                                     "settings" -> SettingsScreen(navController)
@@ -678,22 +680,23 @@ fun BottomNavBar(
         modifier = modifier
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.navigationBars)
-            .padding(horizontal = 26.dp, vertical = 20.dp),
+            .padding(horizontal = 16.dp, vertical = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Surface(
             modifier = Modifier
-                .widthIn(max = 350.dp)
+                .widthIn(max = 460.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(28.dp)) 
+                .border(1.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f), RoundedCornerShape(40.dp))
+                .clip(RoundedCornerShape(40.dp)) 
                 .then(if (isBlurEnabled && hazeState != null) Modifier.hazeBlur(
                                 input = HazeInput.Sources(hazeState),
                                 style = HazeBlurStyle.Material3(
                                     containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f)
                                 ) { blurRadius(24.dp) }
                             ) else Modifier),
-            shape = RoundedCornerShape(28.dp),
-            color = if (isBlurEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(40.dp),
+            color = if (isBlurEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.96f),
             shadowElevation = if (isBlurEnabled) 0.dp else 8.dp
         ) {
             // Measured label widths, so the selected pill can interpolate its
@@ -715,8 +718,8 @@ fun BottomNavBar(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+                    .padding(horizontal = 10.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 items.forEachIndexed { index, item ->
@@ -777,10 +780,10 @@ private fun NavPill(
     // than by the selected boolean, so during a drag they interpolate. The
     // boolean form only had two states, which is what made the bar appear to
     // freeze mid-swipe and then jump when the selection finally flipped.
-    val primary = MaterialTheme.colorScheme.primary
-    val onPrimary = MaterialTheme.colorScheme.onPrimary
-    val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
-    val unselectedBg = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
+    val primary = MaterialTheme.colorScheme.secondaryContainer
+    val onPrimary = MaterialTheme.colorScheme.onSecondaryContainer
+    val onSurfaceVariant = MaterialTheme.colorScheme.onSurface
+    val unselectedBg = Color.Transparent
 
     val bgColor by animateColorAsState(
         targetValue = if (isBlurEnabled) {
@@ -805,12 +808,12 @@ private fun NavPill(
     // A 48 dp tall pill with a 24 dp radius is already a circle, so the old
     // CircleShape/RoundedCornerShape(24.dp) switch had no visual effect to
     // interpolate. Kept as a plain rounded shape.
-    val shape = RoundedCornerShape(24.dp)
+    val shape = RoundedCornerShape(28.dp)
     
     Row(
         modifier = modifier
             .scale(scale)
-            .height(48.dp)
+            .height(54.dp)
             .defaultMinSize(minWidth = 48.dp)
             .clip(shape)
             .background(bgColor)
@@ -819,15 +822,15 @@ private fun NavPill(
                 indication = null,
                 onClick = onClick
             )
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         Icon(
             imageVector = item.icon,
-            contentDescription = null,
+            contentDescription = stringResource(item.labelRes),
             tint = contentColor,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(26.dp)
         )
 
         // The label is always composed and its width is interpolated with the

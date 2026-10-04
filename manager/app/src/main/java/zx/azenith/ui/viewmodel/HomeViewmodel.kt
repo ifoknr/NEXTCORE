@@ -51,7 +51,9 @@ data class HomeUiState(
     val moduleVersion: String = "",
     val deviceProfile: DeviceProfile = DeviceProfile(),
     val profileLoaded: Boolean = false,
-    val live: LiveStats = LiveStats()
+    val live: LiveStats = LiveStats(),
+    /** Recent battery current samples in mA, oldest first, for the Monitor chart. */
+    val currentHistory: List<Int> = emptyList()
 )
 
 
@@ -135,7 +137,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         val stats = kotlinx.coroutines.withContext(Dispatchers.IO) {
             DeviceMonitor.sample(context, state.deviceProfile)
         }
-        _uiState.value = _uiState.value.copy(live = stats)
+        kotlinx.coroutines.withContext(Dispatchers.IO) { refreshProfile() }
+        val history = stats.batteryCurrentMa?.let { (_uiState.value.currentHistory + it).takeLast(48) }
+            ?: _uiState.value.currentHistory
+        _uiState.value = _uiState.value.copy(live = stats, currentHistory = history)
     }
 
     fun setAutoMode(enabled: Boolean) {
@@ -158,9 +163,25 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun applyProfile(profileReason: String, onSuccess: () -> Unit) {
         if (profileReason !in setOf("1", "2", "3")) return
+        // Show the choice right away; the daemon's file is re-read below to confirm it.
+        _uiState.value = _uiState.value.copy(currentProfileValue = profileReason)
         viewModelScope.launch(Dispatchers.IO) {
-            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service -p $profileReason").submit()
+            Shell.cmd("/data/adb/modules/nextcore/system/bin/sys.azenith-service -p $profileReason").exec()
             viewModelScope.launch(Dispatchers.Main) { onSuccess() }
+            kotlinx.coroutines.delay(1500)
+            refreshProfile()
+        }
+    }
+
+    /** Re-read the active profile from the daemon (the file observer can miss writes). */
+    private fun refreshProfile() {
+        // The daemon's own file is the source of truth; the app mirror can lag behind it.
+        val value = RootUtils.readRootFile("/data/adb/.config/AZenith/API/current_profile")?.trim().orEmpty()
+        if (value.isNotEmpty() && value != _uiState.value.currentProfileValue) {
+            _uiState.value = _uiState.value.copy(
+                currentProfileValue = value,
+                currentProfileRes = RootUtils.profileResFor(value)
+            )
         }
     }
 
