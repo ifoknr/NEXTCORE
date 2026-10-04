@@ -447,7 +447,7 @@ fun SettingsScreen(
 
 
                                         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-                                        val fileName = "AZenith_Logs_$timeStamp.tar.gz"
+                                        val fileName = "NextCore_Logs_$timeStamp.tar.gz"
                                         createLogLauncher.launch(fileName)
                                     }
                                 )

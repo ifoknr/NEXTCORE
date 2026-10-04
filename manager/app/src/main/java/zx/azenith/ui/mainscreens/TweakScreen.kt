@@ -489,7 +489,7 @@ fun TweakScreen(
                 showBackupOptionsDialog = false
                 val sdf = java.text.SimpleDateFormat("ddMMyyyy_HHmmss", java.util.Locale.getDefault())
                 val timestamp = sdf.format(java.util.Date())
-                val dynamicFileName = "AZenithConfig_Backup_$timestamp.zx"
+                val dynamicFileName = "NextCoreConfig_Backup_$timestamp.zx"
                 createDocLauncher.launch(dynamicFileName) 
             }
         ) {
