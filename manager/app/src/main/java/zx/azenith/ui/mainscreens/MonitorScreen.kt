@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -88,7 +89,6 @@ fun MonitorScreen(
     val live = uiState.live
     val profile = uiState.deviceProfile
     val cs = MaterialTheme.colorScheme
-    val wide = ncIsWide()
 
     Scaffold(
         topBar = { NcPageHeader(subtitle = stringResource(R.string.nav_monitor)) },
@@ -129,14 +129,15 @@ fun MonitorScreen(
                             if (live.peakKhz > 0) BigChip(stringResource(R.string.nc_peak, freq(live.peakKhz)), cs.primary, cs.onPrimary)
                             live.cpuTempC?.let { BigChip(String.format(Locale.US, "%.1f °C", it), cs.primary, cs.onPrimary) }
                         }
-                        // On a tablet the four facts sit in one row rather than two.
+                        // In landscape on a tablet the four facts sit in one row; narrower
+                        // screens keep two per row so the core list has room to wrap.
                         val facts = listOf(
                             stringResource(R.string.nc_architecture) to (Build.SUPPORTED_ABIS.firstOrNull() ?: "—"),
                             stringResource(R.string.nc_governor) to live.governor.ifEmpty { "—" },
                             stringResource(R.string.nc_cores_label) to profile.clusterSummary.ifEmpty { "—" },
                             stringResource(R.string.nc_sensor) to profile.cpuTempLabel.substringAfter("· ", "").ifEmpty { "—" },
                         )
-                        facts.chunked(if (wide) 4 else 2).forEachIndexed { i, row ->
+                        facts.chunked(if (LocalConfiguration.current.screenWidthDp >= 1000) 4 else 2).forEachIndexed { i, row ->
                             Row(Modifier.padding(top = if (i == 0) 16.dp else 12.dp)) {
                                 row.forEach { (label, value) -> Fact(label, value, Modifier.weight(1f)) }
                             }
