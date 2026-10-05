@@ -93,6 +93,11 @@ data class LiveStats(
     val memAvailKb: Long? = null,
     val swapTotalKb: Long? = null,
     val swapFreeKb: Long? = null,
+    val memCachedKb: Long? = null,
+    val memBuffersKb: Long? = null,
+    val memActiveKb: Long? = null,
+    val memInactiveKb: Long? = null,
+    val memSlabKb: Long? = null,
     val batteryStatus: String = "",
     val batteryHealth: String = "",
     val batteryVoltageMv: Int? = null,
@@ -230,6 +235,45 @@ object DeviceMonitor {
         }.toMap()
     }.getOrDefault(emptyMap())
 
+    /** What the floating overlay needs each tick; a smaller read than [sample]. */
+    data class OverlaySample(
+        /** SurfaceFlinger's running count of composited frames, or null if unreadable. */
+        val frameCount: Long?,
+        val cpuTempC: Float?,
+        val gpuLoad: Int?,
+        val memTotalKb: Long?,
+        val memAvailKb: Long?,
+    )
+
+    // "Result: Parcel(0001a2b3 '....')": the first word is the frame counter in hex.
+    private val parcelWord = Regex("Parcel\\(\\s*([0-9a-fA-F]{8})")
+
+    /**
+     * One root shell call for the overlay. The frame count comes from
+     * SurfaceFlinger transaction 1013, which returns how many frames have been
+     * composited since boot; two readings a second apart give the FPS.
+     * Blocking; call from Dispatchers.IO.
+     */
+    fun sampleOverlay(profile: DeviceProfile, wantFps: Boolean): OverlaySample {
+        val parts = mutableListOf<String>()
+        if (wantFps) parts += "echo \"sf=\$(service call SurfaceFlinger 1013 2>/dev/null | head -n 1)\""
+        listOf("ctemp" to profile.cpuTempPath, "gload" to profile.gpuLoadPath)
+            .filter { it.second.isNotEmpty() && safePath.matches(it.second) }
+            .forEach { (k, p) -> parts += "echo \"$k=\$(head -c 64 '$p' 2>/dev/null | tr '\\n' ' ')\"" }
+        val v = if (parts.isEmpty()) emptyMap() else parseKeyValues(
+            runCatching { Shell.cmd(parts.joinToString("; ")).exec().out.joinToString("\n") }.getOrDefault("")
+        )
+        val frames = v["sf"]?.let { parcelWord.find(it)?.groupValues?.get(1)?.toLongOrNull(16) }
+        val mem = readMeminfo()
+        return OverlaySample(
+            frameCount = frames,
+            cpuTempC = ints(v["ctemp"]).firstOrNull()?.let { toCelsius(it) },
+            gpuLoad = ints(v["gload"]).firstOrNull()?.toInt()?.coerceIn(0, 100),
+            memTotalKb = mem["MemTotal"],
+            memAvailKb = mem["MemAvailable"],
+        )
+    }
+
     /**
      * Reads every live value with a single root shell round trip, so a poll
      * costs one command instead of a dozen. Blocking; call from Dispatchers.IO.
@@ -306,6 +350,11 @@ object DeviceMonitor {
             memAvailKb = mem["MemAvailable"],
             swapTotalKb = mem["SwapTotal"],
             swapFreeKb = mem["SwapFree"],
+            memCachedKb = mem["Cached"],
+            memBuffersKb = mem["Buffers"],
+            memActiveKb = mem["Active"],
+            memInactiveKb = mem["Inactive"],
+            memSlabKb = mem["Slab"],
             batteryStatus = v["bstat"].orEmpty().trim(),
             batteryHealth = v["bhealth"].orEmpty().trim(),
             batteryVoltageMv = milli(ints(v["bvolt"]).firstOrNull()),

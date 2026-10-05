@@ -28,7 +28,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BatteryFull
@@ -62,6 +63,7 @@ import zx.azenith.R
 import zx.azenith.ui.component.*
 import zx.azenith.ui.theme.BrandFontFamily
 import zx.azenith.ui.util.ClusterStat
+import zx.azenith.ui.util.LiveStats
 import zx.azenith.ui.viewmodel.HomeViewModel
 import java.util.Locale
 import kotlin.math.abs
@@ -87,20 +89,23 @@ fun MonitorScreen(
     val live = uiState.live
     val profile = uiState.deviceProfile
     val cs = MaterialTheme.colorScheme
-    val wide = LocalConfiguration.current.screenWidthDp >= 600
 
     Scaffold(
         topBar = { NcPageHeader(subtitle = stringResource(R.string.nav_monitor)) },
         containerColor = cs.surface
     ) { innerPadding ->
         NcSheet(topPadding = innerPadding.calculateTopPadding()) {
-            LazyColumn(
+            // One column on phones; tablets fit more phone-sized cards per row
+            // instead of stretching each card across the screen.
+            LazyVerticalStaggeredGrid(
+                columns = ncGridCells,
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = ncSheetListPadding(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(NcGridGap),
+                verticalItemSpacing = NcGridGap
             ) {
                 // SoC hero
-                item(key = "soc") {
+                item(key = "soc", span = StaggeredGridItemSpan.FullLine) {
                     NcWatermarkCard(
                         watermark = Icons.Rounded.Memory,
                         onClick = { navController?.navigate("devicecard") { launchSingleTop = true } }
@@ -124,132 +129,198 @@ fun MonitorScreen(
                             if (live.peakKhz > 0) BigChip(stringResource(R.string.nc_peak, freq(live.peakKhz)), cs.primary, cs.onPrimary)
                             live.cpuTempC?.let { BigChip(String.format(Locale.US, "%.1f °C", it), cs.primary, cs.onPrimary) }
                         }
-                        Row(Modifier.padding(top = 16.dp)) {
-                            Fact(stringResource(R.string.nc_architecture), Build.SUPPORTED_ABIS.firstOrNull() ?: "—", Modifier.weight(1f))
-                            Fact(stringResource(R.string.nc_governor), live.governor.ifEmpty { "—" }, Modifier.weight(1f))
-                        }
-                        Row(Modifier.padding(top = 12.dp)) {
-                            Fact(stringResource(R.string.nc_cores_label), profile.clusterSummary.ifEmpty { "—" }, Modifier.weight(1f))
-                            Fact(stringResource(R.string.nc_sensor), profile.cpuTempLabel.substringAfter("· ", "").ifEmpty { "—" }, Modifier.weight(1f))
+                        // In landscape on a tablet the four facts sit in one row; narrower
+                        // screens keep two per row so the core list has room to wrap.
+                        val facts = listOf(
+                            stringResource(R.string.nc_architecture) to (Build.SUPPORTED_ABIS.firstOrNull() ?: "—"),
+                            stringResource(R.string.nc_governor) to live.governor.ifEmpty { "—" },
+                            stringResource(R.string.nc_cores_label) to profile.clusterSummary.ifEmpty { "—" },
+                            stringResource(R.string.nc_sensor) to profile.cpuTempLabel.substringAfter("· ", "").ifEmpty { "—" },
+                        )
+                        facts.chunked(if (LocalConfiguration.current.screenWidthDp >= 1000) 4 else 2).forEachIndexed { i, row ->
+                            Row(Modifier.padding(top = if (i == 0) 16.dp else 12.dp)) {
+                                row.forEach { (label, value) -> Fact(label, value, Modifier.weight(1f)) }
+                            }
                         }
                     }
                 }
 
-                item(key = "coresHeader") { NcSheetSection(stringResource(R.string.nc_cores_section)) }
+                item(key = "coresHeader", span = StaggeredGridItemSpan.FullLine) {
+                    NcHelpSection(stringResource(R.string.nc_cores_section), stringResource(R.string.nc_help_cpu))
+                }
                 // Biggest cores first, like the mockup
                 val clusters = live.clusters.reversed()
-                if (wide) {
-                    items(clusters.chunked(2).size) { i ->
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                            clusters.chunked(2)[i].forEach { ClusterCard(it, live.cpuTempC, Modifier.weight(1f)) }
-                            if (clusters.chunked(2)[i].size == 1) Spacer(Modifier.weight(1f))
-                        }
-                    }
-                } else {
-                    items(clusters.size) { i -> ClusterCard(clusters[i], live.cpuTempC) }
-                }
+                items(clusters.size, key = { "cluster$it" }) { i -> ClusterCard(clusters[i], live.cpuTempC) }
 
-                item(key = "gpuHeader") { NcSheetSection(stringResource(R.string.nc_gpu)) }
                 item(key = "gpu") {
-                    NcWatermarkCard(watermark = Icons.Rounded.DeveloperBoard) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
-                            WavyRing((live.gpuLoad ?: 0) / 100f, live.gpuLoad?.let { "$it%" } ?: "--", cs.primary)
-                            Column {
-                                Text(profile.gpuName.ifEmpty { "GPU" }, style = MaterialTheme.typography.bodyMedium, color = cs.onSecondaryContainer.copy(alpha = 0.75f))
-                                BigNumber(live.gpuMhz?.toString() ?: "--", "MHz")
-                                live.gpuMaxMhz?.let {
-                                    BigChip(stringResource(R.string.nc_max_freq, "$it MHz"), cs.tertiary, cs.onTertiary, Modifier.padding(top = 8.dp))
+                    Column {
+                        NcHelpSection(stringResource(R.string.nc_gpu), stringResource(R.string.nc_help_gpu))
+                        NcWatermarkCard(watermark = Icons.Rounded.DeveloperBoard) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                                WavyRing((live.gpuLoad ?: 0) / 100f, live.gpuLoad?.let { "$it%" } ?: "--", cs.primary)
+                                Column {
+                                    Text(profile.gpuName.ifEmpty { "GPU" }, style = MaterialTheme.typography.bodyMedium, color = cs.onSecondaryContainer.copy(alpha = 0.75f))
+                                    BigNumber(live.gpuMhz?.toString() ?: "--", "MHz")
+                                    live.gpuMaxMhz?.let {
+                                        BigChip(stringResource(R.string.nc_max_freq, "$it MHz"), cs.tertiary, cs.onTertiary, Modifier.padding(top = 8.dp))
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                item(key = "memHeader") { NcSheetSection(stringResource(R.string.nc_memory)) }
                 item(key = "mem") {
-                    NcWatermarkCard(watermark = Icons.Rounded.SdStorage) {
-                        val total = live.memTotalKb
-                        val avail = live.memAvailKb
-                        if (total != null && avail != null && total > 0) {
-                            val used = total - avail
-                            MemRow(
-                                label = stringResource(R.string.nc_ram),
-                                fraction = used.toFloat() / total,
-                                value = "${gb(used)} / ${gb(total)} GB",
-                                free = stringResource(R.string.nc_free, "${gb(avail)} GB"),
-                                color = cs.primary
-                            )
+                    Column {
+                        NcHelpSection(stringResource(R.string.nc_memory), stringResource(R.string.nc_help_memory))
+                        NcWatermarkCard(watermark = Icons.Rounded.SdStorage) {
+                            val total = live.memTotalKb
+                            val avail = live.memAvailKb
+                            if (total != null && avail != null && total > 0) {
+                                val used = total - avail
+                                MemRow(
+                                    label = stringResource(R.string.nc_ram),
+                                    fraction = used.toFloat() / total,
+                                    value = "${gb(used)} / ${gb(total)} GB",
+                                    free = stringResource(R.string.nc_free, "${gb(avail)} GB"),
+                                    color = cs.primary
+                                )
+                            }
+                            val st = live.swapTotalKb
+                            val sf = live.swapFreeKb
+                            if (st != null && sf != null && st > 0) {
+                                Spacer(Modifier.height(16.dp))
+                                MemRow(
+                                    label = stringResource(R.string.nc_swap),
+                                    fraction = (st - sf).toFloat() / st,
+                                    value = "${gb(st - sf)} / ${gb(st)} GB",
+                                    free = stringResource(R.string.nc_free, "${gb(sf)} GB"),
+                                    color = cs.tertiary
+                                )
+                            }
+                            if (total == null) Text(stringResource(R.string.nc_not_available))
                         }
-                        val st = live.swapTotalKb
-                        val sf = live.swapFreeKb
-                        if (st != null && sf != null && st > 0) {
-                            Spacer(Modifier.height(16.dp))
-                            MemRow(
-                                label = stringResource(R.string.nc_swap),
-                                fraction = (st - sf).toFloat() / st,
-                                value = "${gb(st - sf)} / ${gb(st)} GB",
-                                free = stringResource(R.string.nc_free, "${gb(sf)} GB"),
-                                color = cs.tertiary
-                            )
-                        }
-                        if (total == null) Text(stringResource(R.string.nc_not_available))
                     }
                 }
 
-                item(key = "battHeader") { NcSheetSection(stringResource(R.string.nc_battery)) }
+                if (live.memTotalKb != null) {
+                    item(key = "memDetail") {
+                        Column {
+                            NcHelpSection(stringResource(R.string.nc_mem_breakdown), stringResource(R.string.nc_help_mem_breakdown))
+                            MemBreakdownCard(live)
+                        }
+                    }
+                }
+
                 item(key = "batt") {
-                    NcWatermarkCard(watermark = Icons.Rounded.BatteryFull) {
-                        Text(
-                            live.batteryPct?.let { "$it%" } ?: "--",
-                            fontFamily = BrandFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 46.sp,
-                            style = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr)
-                        )
-                        Text(batteryStatusText(live.batteryStatus), style = MaterialTheme.typography.bodyLarge, color = cs.onSecondaryContainer.copy(alpha = 0.75f))
-                        FlowRow(Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            if (live.batteryHealth.isNotBlank()) BigChip(live.batteryHealth, cs.primary, cs.onPrimary)
-                            live.batteryTempC?.let { BigChip(String.format(Locale.US, "%.1f °C", it), cs.tertiary, cs.onTertiary) }
-                        }
-                    }
-                }
-                item(key = "current") {
-                    Surface(shape = RoundedCornerShape(30.dp), color = cs.surfaceContainer, modifier = Modifier.fillMaxWidth()) {
-                        Column(Modifier.padding(20.dp)) {
-                            val ma = live.batteryCurrentMa
-                            val charging = live.batteryStatus.equals("Charging", true)
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text(
-                                        stringResource(if (charging) R.string.nc_charge_speed else R.string.nc_discharge_speed),
-                                        style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant
-                                    )
-                                    Text(
-                                        ma?.let { "$it mA" } ?: "--",
-                                        fontFamily = BrandFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 32.sp,
-                                        color = cs.primary,
-                                        style = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr)
-                                    )
-                                }
-                                val mv = live.batteryVoltageMv
-                                if (ma != null && mv != null) {
-                                    BigChip(String.format(Locale.US, "%.2f W", abs(ma) * mv / 1_000_000f), cs.primary, cs.onPrimary)
-                                }
-                            }
-                            CurrentChart(uiState.currentHistory, cs.primary, Modifier.fillMaxWidth().height(96.dp).padding(top = 12.dp))
-                            Row(Modifier.padding(top = 14.dp)) {
-                                Fact(stringResource(R.string.nc_voltage), live.batteryVoltageMv?.let { "$it mV" } ?: "—", Modifier.weight(1f), onCard = false)
-                                Fact(stringResource(R.string.nc_cycles), live.batteryCycles?.toString() ?: "—", Modifier.weight(1f), onCard = false)
-                            }
-                            Row(Modifier.padding(top = 12.dp)) {
-                                Fact(stringResource(R.string.nc_design_capacity), live.batteryDesignMah?.let { "$it mAh" } ?: "—", Modifier.weight(1f), onCard = false)
-                                val up = SystemClock.elapsedRealtime() / 60000
-                                Fact(stringResource(R.string.nc_uptime), stringResource(R.string.nc_hours_minutes, (up / 60).toInt(), (up % 60).toInt()), Modifier.weight(1f), onCard = false)
+                    Column(verticalArrangement = Arrangement.spacedBy(NcGridGap)) {
+                        NcHelpSection(stringResource(R.string.nc_battery), stringResource(R.string.nc_help_battery))
+                        NcWatermarkCard(watermark = Icons.Rounded.BatteryFull) {
+                            Text(
+                                live.batteryPct?.let { "$it%" } ?: "--",
+                                fontFamily = BrandFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 46.sp,
+                                style = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr)
+                            )
+                            Text(batteryStatusText(live.batteryStatus), style = MaterialTheme.typography.bodyLarge, color = cs.onSecondaryContainer.copy(alpha = 0.75f))
+                            FlowRow(Modifier.padding(top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                if (live.batteryHealth.isNotBlank()) BigChip(live.batteryHealth, cs.primary, cs.onPrimary)
+                                live.batteryTempC?.let { BigChip(String.format(Locale.US, "%.1f °C", it), cs.tertiary, cs.onTertiary) }
                             }
                         }
+                        CurrentCard(live, uiState.currentHistory)
                     }
                 }
 
-                item(key = "dispHeader") { NcSheetSection(stringResource(R.string.nc_display)) }
-                item(key = "disp") { DisplayCard(live.refreshHz, live.maxRefreshHz) }
+                item(key = "disp") {
+                    Column {
+                        NcHelpSection(stringResource(R.string.nc_display), stringResource(R.string.nc_help_display))
+                        DisplayCard(live.refreshHz, live.maxRefreshHz)
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** Charging / discharging speed with the live current chart. */
+@Composable
+private fun CurrentCard(live: LiveStats, history: List<Int>) {
+    val cs = MaterialTheme.colorScheme
+    Surface(shape = RoundedCornerShape(30.dp), color = cs.surfaceContainer, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(20.dp)) {
+            val ma = live.batteryCurrentMa
+            val charging = live.batteryStatus.equals("Charging", true)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        stringResource(if (charging) R.string.nc_charge_speed else R.string.nc_discharge_speed),
+                        style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant
+                    )
+                    Text(
+                        ma?.let { "$it mA" } ?: "--",
+                        fontFamily = BrandFontFamily, fontWeight = FontWeight.SemiBold, fontSize = 32.sp,
+                        color = cs.primary,
+                        style = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr)
+                    )
+                }
+                val mv = live.batteryVoltageMv
+                if (ma != null && mv != null) {
+                    BigChip(String.format(Locale.US, "%.2f W", abs(ma) * mv / 1_000_000f), cs.primary, cs.onPrimary)
+                }
+            }
+            CurrentChart(history, cs.primary, Modifier.fillMaxWidth().height(96.dp).padding(top = 12.dp))
+            if (history.size >= 2) {
+                Row(Modifier.padding(top = 8.dp)) {
+                    Fact(stringResource(R.string.nc_lowest), "${history.min()} mA", Modifier.weight(1f), onCard = false)
+                    Fact(stringResource(R.string.nc_highest), "${history.max()} mA", Modifier.weight(1f), onCard = false)
+                }
+            }
+            Row(Modifier.padding(top = 12.dp)) {
+                Fact(stringResource(R.string.nc_voltage), live.batteryVoltageMv?.let { "$it mV" } ?: "—", Modifier.weight(1f), onCard = false)
+                Fact(stringResource(R.string.nc_cycles), live.batteryCycles?.toString() ?: "—", Modifier.weight(1f), onCard = false)
+            }
+            Row(Modifier.padding(top = 12.dp)) {
+                Fact(stringResource(R.string.nc_design_capacity), live.batteryDesignMah?.let { "$it mAh" } ?: "—", Modifier.weight(1f), onCard = false)
+                val up = SystemClock.elapsedRealtime() / 60000
+                Fact(stringResource(R.string.nc_uptime), stringResource(R.string.nc_hours_minutes, (up / 60).toInt(), (up % 60).toInt()), Modifier.weight(1f), onCard = false)
+            }
+        }
+    }
+}
+
+/** Where the RAM goes, from /proc/meminfo, each as a thin bar against total RAM. */
+@Composable
+private fun MemBreakdownCard(live: LiveStats) {
+    val cs = MaterialTheme.colorScheme
+    val total = live.memTotalKb ?: return
+    val rows = listOf(
+        stringResource(R.string.nc_mem_cached) to live.memCachedKb,
+        stringResource(R.string.nc_mem_buffers) to live.memBuffersKb,
+        stringResource(R.string.nc_mem_active) to live.memActiveKb,
+        stringResource(R.string.nc_mem_inactive) to live.memInactiveKb,
+        stringResource(R.string.nc_mem_slab) to live.memSlabKb,
+    ).filter { it.second != null }
+    Surface(shape = RoundedCornerShape(30.dp), color = cs.surfaceContainer, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            rows.forEach { (label, kb) ->
+                val fraction = (kb!!.toFloat() / total).coerceIn(0f, 1f)
+                Column {
+                    Row {
+                        Text(label, style = MaterialTheme.typography.bodyMedium, color = cs.onSurfaceVariant, modifier = Modifier.weight(1f))
+                        Text(
+                            if (kb >= 1048576L) "${gb(kb)} GB" else "${kb / 1024} MB",
+                            style = MaterialTheme.typography.titleSmall.copy(textDirection = TextDirection.Ltr),
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    LinearProgressIndicator(
+                        progress = { fraction },
+                        modifier = Modifier.fillMaxWidth().padding(top = 6.dp).height(6.dp),
+                        color = cs.primary,
+                        trackColor = cs.surfaceContainerHighest,
+                        drawStopIndicator = {}
+                    )
+                }
             }
         }
     }
