@@ -414,7 +414,7 @@
     <string name="nc_profile_perf">أداء</string>
     <string name="nc_profile_eco_desc">أقل استهلاك للبطارية</string>
     <string name="nc_profile_balanced_desc">أداء يومي مع حرارة معتدلة</string>
-    <string name="nc_profile_perf_desc">أقصى سرعة للألعاب</string>
+    <string name="nc_profile_perf_desc">أداء عالي وثابت في الألعاب</string>
     <string name="nc_profile_auto_hint">الوضع التلقائي يبدّل الملف عند فتح لعبة. اضغط على أي ملف للتحويل للوضع اليدوي.</string>
     <string name="nc_live_header">المراقبة الحية</string>
     <string name="nc_cpu_freq">تردد المعالج</string>
@@ -434,6 +434,8 @@
     <string name="nc_banner_pick">اختيار صورة</string>
     <string name="nc_banner_reset">البنر الافتراضي</string>
     <string name="nc_banner_more">فيديو وقص وخيارات أكثر</string>
+    <string name="nc_perf_max">الأداء الأقصى</string>
+    <string name="nc_perf_max_desc">يقفل المعالج وكرت الرسوميات على أعلى تردد ويخفف حماية الحرارة. الجهاز يسخن أكثر، وممكن ينزل الأداء بعد ما يسخن. يتطبق في المرة الجاية اللي تختار فيها ملف الأداء.</string>
     <string name="nc_restart_service">إعادة تشغيل الخدمة</string>
     <string name="nc_restarting">جارٍ إعادة تشغيل الخدمة…</string>
     <string name="nc_full_desc">كل التحسينات العامة والخاصة بـ %1$s مفعّلة</string>

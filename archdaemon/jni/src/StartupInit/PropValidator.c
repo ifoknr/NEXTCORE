@@ -55,6 +55,7 @@ const char* VALID_AZENITH_PROPS[] = {
     "persist.sys.azenithconf.justintime",
     "persist.sys.azenithconf.litemode",
     "persist.sys.azenithconf.logd",
+    "persist.sys.azenithconf.perfmax",
     "persist.sys.azenithconf.malisched",
     "persist.sys.azenithconf.preloadbudget",
     "persist.sys.azenithconf.renderer",
