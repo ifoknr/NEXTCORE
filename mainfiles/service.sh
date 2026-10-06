@@ -74,7 +74,10 @@ fi
 if [ -f "$MODDIR/devprobe.sh" ]; then
     . "$MODDIR/devprobe.sh"
     devprobe_run quiet
-    blog "Device probe: $DP_SOC_VENDOR $DP_SOC_MODEL, support $DP_SUPPORT, cpu temp ${DP_CPU_TEMP_LABEL:-none}, gpu ${DP_GPU_FREQ_PATH:-none}"
+    # Re-read every boot, so a ROM update or a better match takes effect
+    # without reinstalling; the profiles pick their chipset tweaks from it.
+    setprop persist.sys.azenith.soctype "$DP_SOC_TYPE"
+    blog "Device probe: $DP_SOC_VENDOR $DP_SOC_MODEL (via $DP_SOC_SOURCE), support $DP_SUPPORT, cpu temp ${DP_CPU_TEMP_LABEL:-none}, gpu ${DP_GPU_FREQ_PATH:-none}"
     [ "$DP_SUPPORT" = "PARTIAL" ] && blog "Unknown SoC: only general tweaks will be applied"
 fi
 

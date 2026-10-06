@@ -8,19 +8,45 @@ use crate::chipsets::exynos::*;
 use crate::chipsets::unisoc::*;
 use crate::chipsets::tensor::*;
 
+/// The device's everyday CPU governor: the user's pick, else the one saved
+/// at boot, else schedutil.
+fn default_cpu_gov() -> String {
+    let mut gov = getprop("persist.sys.azenith.custom_default_cpu_gov");
+    if gov.is_empty() {
+        gov = getprop("persist.sys.azenith.default_cpu_gov");
+    }
+    if gov.is_empty() {
+        gov = "schedutil".to_string();
+    }
+    gov
+}
+
+/// Performance profile.
+///
+/// Sustained mode (default): keeps the device governor and raises the clock
+/// floor instead of pinning every core at max, boosts the app on screen with
+/// uclamp, caps background work, and leaves thermal and battery protection
+/// on. Frame rates hold longer because the chip does not hit its thermal
+/// limit in the first minutes.
+///
+/// Max mode (`persist.sys.azenithconf.perfmax=1`): the previous behaviour,
+/// CPU and GPU pinned at their top clocks with MediaTek limits relaxed.
 pub fn performance_profile() {
 
     // Check if tweaks are disabled
     if is_tweak_disabled() {
         return;
     }
-    
+
+    let perfmax = get_perfmax();
+    let lite_mode = get_litemode();
+
+    // Max mode pins min=max, so the governor has nothing to decide there.
+    // Sustained mode needs a real governor to scale above the floor.
     let mut performance_gov = getprop("persist.sys.azenith.custom_performance_cpu_gov");
     if performance_gov.is_empty() {
-        performance_gov = "powersave".to_string();
+        performance_gov = if perfmax { "powersave".to_string() } else { default_cpu_gov() };
     }
-    
-    let lite_mode = get_litemode();
 
     // I/O Scheduler Tweaks
     let mut custom_perf_io = getprop("persist.sys.azenith.custom_performance_IO");
@@ -47,22 +73,31 @@ pub fn performance_profile() {
 
     apply_custom_governor_io(&performance_gov, &custom_perf_io, &custom_perf_mali);
 
-    if Path::new("/proc/ppm").exists() {
-        setgamefreqppm();
+    if perfmax {
+        if Path::new("/proc/ppm").exists() {
+            setgamefreqppm();
+        } else {
+            setgamefreq();
+        }
+        log_info("Max mode: CPU pinned at top frequencies");
     } else {
-        setgamefreq();
+        setperffreq();
+        log_info("Sustained mode: CPU floor raised, governor keeps scaling");
+    }
+    if lite_mode {
+        log_info("Lite mode: CPU ceiling at about 80%");
     }
 
-    if !lite_mode {
-        log_info("Set CPU freq to max available Frequencies");
-    } else {
-        log_info("Set CPU freq to normal Frequencies");
-    }
+    // App on screen gets a 30% utilization floor, foreground apps 10%,
+    // background work is capped at half a core's capacity.
+    set_uclamp("30", "10", "50");
 
+    // Page cache is kept: dropping it on every switch made games reload
+    // their assets from storage right when they started.
     write_lock("80", "/proc/sys/vm/vfs_cache_pressure");
-    write_lock("3", "/proc/sys/vm/drop_caches");
     write_lock("N", "/sys/module/workqueue/parameters/power_efficient");
-    write_lock("0", "/sys/devices/system/cpu/eas/enable");
+    // EAS off spreads tasks over the big cores; only worth the heat in max mode.
+    write_lock(if perfmax { "0" } else { "1" }, "/sys/devices/system/cpu/eas/enable");
 
     if let Ok(paths) = glob::glob("/dev/stune/*") {
         for path in paths.flatten() {
@@ -93,16 +128,17 @@ pub fn performance_profile() {
         write_lock("NEXT_BUDDY", sched_feat);
         write_lock("NO_TTWU_QUEUE", sched_feat);
     }
-    
-    // I/O Tweaks
+
+    // I/O Tweaks: bigger read-ahead and queue for faster game asset loading
+    // (sd* also covers UFS storage).
     std::thread::spawn(|| {
         if let Ok(paths) = glob::glob("/sys/block/*") {
             for path in paths.flatten() {
                 if let Some(file_name) = path.file_name().and_then(|n| n.to_str()) {
                     if file_name == "mmcblk0" || file_name == "mmcblk1" || file_name.starts_with("sd") {
                         if let Some(p_str) = path.to_str() {
-                            write_lock("32", &format!("{}/queue/read_ahead_kb", p_str));
-                            write_lock("32", &format!("{}/queue/nr_requests", p_str));
+                            write_lock("256", &format!("{}/queue/read_ahead_kb", p_str));
+                            write_lock("128", &format!("{}/queue/nr_requests", p_str));
                         }
                     }
                 }
@@ -116,7 +152,7 @@ pub fn performance_profile() {
 
     if !lite_mode {
         match getprop("persist.sys.azenith.soctype").as_str() {
-            "1" => mediatek_performance(),
+            "1" => mediatek_performance(perfmax),
             "2" => snapdragon_performance(),
             "3" => exynos_performance(),
             "4" => unisoc_performance(),
@@ -125,7 +161,7 @@ pub fn performance_profile() {
         }
     }
 
-    log_verbose("Performance Profile Applied Successfully!");
+    log_verbose(if perfmax { "Performance Profile (max) Applied Successfully!" } else { "Performance Profile (sustained) Applied Successfully!" });
 }
 
 pub fn balanced_profile() {
@@ -135,13 +171,7 @@ pub fn balanced_profile() {
         return;
     }
     
-    let mut default_gov = getprop("persist.sys.azenith.custom_default_cpu_gov");
-    if default_gov.is_empty() {
-        default_gov = getprop("persist.sys.azenith.default_cpu_gov");
-    }
-    if default_gov.is_empty() {
-        default_gov = "schedutil".to_string();
-    }
+    let default_gov = default_cpu_gov();
 
     // I/O Scheduler Tweaks
     let mut default_io = getprop("persist.sys.azenith.custom_default_balanced_IO");
@@ -175,6 +205,7 @@ pub fn balanced_profile() {
     write_lock("120", "/proc/sys/vm/vfs_cache_pressure");
     write_lock("Y", "/sys/module/workqueue/parameters/power_efficient");
     write_lock("1", "/sys/devices/system/cpu/eas/enable");
+    restore_uclamp();
 
     if let Ok(paths) = glob::glob("/dev/stune/*") {
         for path in paths.flatten() {
@@ -274,6 +305,10 @@ pub fn eco_mode() {
     write_lock("120", "/proc/sys/vm/vfs_cache_pressure");
     write_lock("Y", "/sys/module/workqueue/parameters/power_efficient");
     write_lock("1", "/sys/devices/system/cpu/eas/enable");
+    // Device defaults, then background work capped harder to save power.
+    restore_uclamp();
+    write_unlock("30", "/dev/cpuctl/background/cpu.uclamp.max");
+    write_unlock("30", "/dev/cpuctl/system-background/cpu.uclamp.max");
 
     if let Ok(paths) = glob::glob("/dev/stune/*") {
         for path in paths.flatten() {
@@ -352,6 +387,9 @@ pub fn initialize() {
     if is_tweak_disabled() {
         return;
     }
+
+    // Save the vendor uclamp values before any profile changes them
+    backup_uclamp();
 
     // Initialize CPU & I/O & Mali GPU
     init_cpu_governor();

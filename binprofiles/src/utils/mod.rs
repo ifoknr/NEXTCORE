@@ -142,6 +142,10 @@ pub fn applyfreqbalance() {
 }
 
 pub fn applyfreqgame() {
+    if !get_perfmax() {
+        setperffreq();
+        return;
+    }
     if Path::new("/proc/ppm").exists() {
         dsetgamefreqppm();
     } else {
@@ -323,7 +327,7 @@ pub fn setgamefreqppm() {
             let cpu_maxfreq: u64 = fs::read_to_string(format!("{}/cpuinfo_max_freq", p_str))
                 .unwrap_or_default().trim().parse().unwrap_or(0);
 
-            let new_midtarget = cpu_maxfreq;
+            let new_midtarget = cpu_maxfreq * 80 / 100;
             let avail_file = format!("{}/scaling_available_frequencies", p_str);
             let new_midfreq = setfreqs(&avail_file, new_midtarget);
 
@@ -361,7 +365,7 @@ pub fn setgamefreq() {
             let cpu_maxfreq: u64 = fs::read_to_string(format!("{}/cpuinfo_max_freq", p_str))
                 .unwrap_or_default().trim().parse().unwrap_or(0);
 
-            let new_midtarget = cpu_maxfreq;
+            let new_midtarget = cpu_maxfreq * 80 / 100;
             let avail_file = format!("{}/scaling_available_frequencies", p_str);
             let new_midfreq = setfreqs(&avail_file, new_midtarget);
 
@@ -895,4 +899,122 @@ pub fn init_renderer() {
     
     log_info(&format!("Applying renderer: {}", renderer));
     setrender(&renderer);
+}
+
+/// Opt-in "max" mode: pins CPU and GPU at their top clocks and relaxes
+/// MediaTek thermal and battery limits, the way the performance profile
+/// always worked before. Off by default; the default is sustained mode.
+pub fn get_perfmax() -> bool {
+    getprop("persist.sys.azenithconf.perfmax") == "1"
+}
+
+fn read_u64(path: &str) -> u64 {
+    fs::read_to_string(path).unwrap_or_default().trim().parse().unwrap_or(0)
+}
+
+/// Sustained performance clocks. Max stays at the top frequency (about 80%
+/// in lite mode) and min is raised to a floor: 70% of max on the bigger
+/// clusters and 50% on the smallest one. The governor keeps scaling above
+/// the floor, so idle cores cool down and thermal management still works,
+/// which holds frame rates longer than pinning every core at max.
+pub fn setperffreq() {
+    let litemode = get_litemode();
+    let use_ppm = Path::new("/proc/ppm").exists();
+
+    let policies: Vec<std::path::PathBuf> = match glob("/sys/devices/system/cpu/cpufreq/policy*") {
+        Ok(paths) => paths.flatten().collect(),
+        Err(_) => return,
+    };
+    let maxes: Vec<u64> = policies
+        .iter()
+        .map(|p| read_u64(&format!("{}/cpuinfo_max_freq", p.display())))
+        .collect();
+    let smallest = maxes.iter().copied().filter(|&m| m > 0).min().unwrap_or(0);
+
+    for (cluster, path) in policies.iter().enumerate() {
+        let cpu_max = maxes[cluster];
+        if cpu_max == 0 {
+            continue;
+        }
+        let p_str = path.to_string_lossy();
+        let policy_name = path.file_name().unwrap_or_default().to_string_lossy();
+        let avail = format!("{}/scaling_available_frequencies", p_str);
+
+        let max_target = if litemode { cpu_max * 80 / 100 } else { cpu_max };
+        let new_max = setfreqs(&avail, max_target);
+
+        let floor = if maxes.len() > 1 && cpu_max == smallest { 50 } else { 70 };
+        let floor = if litemode { floor - 20 } else { floor };
+        let new_min = setfreqs(&avail, cpu_max * floor / 100).min(new_max);
+
+        if use_ppm {
+            write_lock(&format!("{} {}", cluster, new_max), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
+            write_lock(&format!("{} {}", cluster, new_min), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
+        } else {
+            // Max first, so the new floor never lands above the old ceiling.
+            write_unlock(&new_max.to_string(), &format!("{}/scaling_max_freq", p_str));
+            write_unlock(&new_min.to_string(), &format!("{}/scaling_min_freq", p_str));
+        }
+        log_info(&format!("Set {} maxfreq={} minfreq={} (floor {}%)", policy_name, new_max, new_min, floor));
+    }
+}
+
+/// cpuctl utilization-clamp nodes the profiles change (GKI kernels).
+const UCLAMP_NODES: [&str; 4] = [
+    "/dev/cpuctl/top-app/cpu.uclamp.min",
+    "/dev/cpuctl/foreground/cpu.uclamp.min",
+    "/dev/cpuctl/background/cpu.uclamp.max",
+    "/dev/cpuctl/system-background/cpu.uclamp.max",
+];
+
+fn uclamp_backup_path() -> String {
+    format!("{}/API/uclamp_default", CONFIG_PATH)
+}
+
+/// Saves the device's own uclamp values once, so balanced mode can put back
+/// whatever the vendor set instead of a guess.
+pub fn backup_uclamp() {
+    let backup = uclamp_backup_path();
+    if Path::new(&backup).exists() {
+        return;
+    }
+    let lines: Vec<String> = UCLAMP_NODES
+        .iter()
+        .filter(|node| Path::new(node).exists())
+        .filter_map(|node| {
+            let value = fs::read_to_string(node).ok()?.trim().to_string();
+            (!value.is_empty()).then(|| format!("{}={}", node, value))
+        })
+        .collect();
+    if !lines.is_empty() {
+        let _ = fs::write(&backup, lines.join("\n") + "\n");
+    }
+}
+
+/// Sets utilization clamps: `top_min` and `fg_min` raise the floor for the
+/// app on screen and foreground apps, `bg_max` caps background work so it
+/// does not steal the big cores. Not locked, so the vendor power HAL can
+/// still boost on touch.
+pub fn set_uclamp(top_min: &str, fg_min: &str, bg_max: &str) {
+    write_unlock(top_min, UCLAMP_NODES[0]);
+    write_unlock(fg_min, UCLAMP_NODES[1]);
+    write_unlock(bg_max, UCLAMP_NODES[2]);
+    write_unlock(bg_max, UCLAMP_NODES[3]);
+}
+
+/// Puts back the values saved by [backup_uclamp], or neutral ones if there
+/// is no backup.
+pub fn restore_uclamp() {
+    match fs::read_to_string(uclamp_backup_path()) {
+        Ok(saved) => {
+            for line in saved.lines() {
+                if let Some((node, value)) = line.split_once('=') {
+                    if UCLAMP_NODES.contains(&node) {
+                        write_unlock(value, node);
+                    }
+                }
+            }
+        }
+        Err(_) => set_uclamp("0", "0", "max"),
+    }
 }
