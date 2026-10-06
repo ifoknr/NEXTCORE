@@ -96,6 +96,7 @@ class TweakViewModel : ViewModel() {
     var memKillerState by mutableStateOf<Boolean?>(null)
     var appPriorState by mutableStateOf<Boolean?>(null)
     var dndState by mutableStateOf<Boolean?>(null)
+    var perfMaxState by mutableStateOf<Boolean?>(null)
     var fstrimState by mutableStateOf<Boolean?>(null)
 
 
@@ -117,6 +118,7 @@ class TweakViewModel : ViewModel() {
         "persist.sys.azenithconf.clearbg",
         "persist.sys.azenithconf.iosched",
         "persist.sys.azenithconf.dnd",
+        "persist.sys.azenithconf.perfmax",
         "persist.sys.azenithconf.fstrim",
         "persist.sys.azenithconf.thermalcore",
         "persist.sys.azenithconf.schedtunes",
@@ -263,6 +265,7 @@ class TweakViewModel : ViewModel() {
                 memKillerState = PropertyUtils.get("persist.sys.azenithconf.clearbg") == "1"
                 appPriorState = PropertyUtils.get("persist.sys.azenithconf.iosched") == "1"
                 dndState = PropertyUtils.get("persist.sys.azenithconf.dnd") == "1"
+                perfMaxState = PropertyUtils.get("persist.sys.azenithconf.perfmax") == "1"
                 fstrimState = PropertyUtils.get("persist.sys.azenithconf.fstrim") == "1"
                 thermalState = PropertyUtils.get("persist.sys.azenithconf.thermalcore") == "1"
 
@@ -552,6 +555,14 @@ class TweakViewModel : ViewModel() {
         appPriorState = checked
         viewModelScope.launch(Dispatchers.IO) {
             PropertyUtils.set("persist.sys.azenithconf.iosched", if (checked) "1" else "0")
+        }
+    }
+
+    /** Max performance mode; takes effect the next time the performance profile is applied. */
+    fun updatePerfMax(checked: Boolean) {
+        perfMaxState = checked
+        viewModelScope.launch(Dispatchers.IO) {
+            PropertyUtils.set("persist.sys.azenithconf.perfmax", if (checked) "1" else "0")
         }
     }
 

@@ -303,6 +303,7 @@ fun TweakScreen(
                     viewModel.memKillerState != null && 
                     viewModel.appPriorState != null && 
                     viewModel.dndState != null && 
+                    viewModel.perfMaxState != null && 
                     viewModel.fstrimState != null) {
                     ExpressiveList(
                         content = buildList {
@@ -336,6 +337,15 @@ fun TweakScreen(
                                         onCheckedChange = { viewModel.updateAppPriority(it) }
                                     )
                                 }
+                            }
+                            add {
+                                ExpressiveSwitchItem(
+                                    icon = Icons.Rounded.Whatshot,
+                                    title = stringResource(R.string.nc_perf_max),
+                                    summary = stringResource(R.string.nc_perf_max_desc),
+                                    checked = viewModel.perfMaxState!!,
+                                    onCheckedChange = { viewModel.updatePerfMax(it) }
+                                )
                             }
                             add {
                                 ExpressiveSwitchItem(

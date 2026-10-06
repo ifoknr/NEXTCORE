@@ -414,7 +414,7 @@
     <string name="nc_profile_perf">Performance</string>
     <string name="nc_profile_eco_desc">Lowest battery drain</string>
     <string name="nc_profile_balanced_desc">Everyday speed, moderate heat</string>
-    <string name="nc_profile_perf_desc">Maximum speed for games</string>
+    <string name="nc_profile_perf_desc">Fast and steady in games</string>
     <string name="nc_profile_auto_hint">Auto mode switches the profile when a game opens. Tap a profile to switch to manual mode.</string>
     <string name="nc_live_header">Live monitoring</string>
     <string name="nc_cpu_freq">CPU frequency</string>
@@ -434,6 +434,8 @@
     <string name="nc_banner_pick">Choose image</string>
     <string name="nc_banner_reset">Default banner</string>
     <string name="nc_banner_more">Video, crop and more</string>
+    <string name="nc_perf_max">Max performance</string>
+    <string name="nc_perf_max_desc">Pins CPU and GPU at full clocks and relaxes thermal limits. Hotter, and frame rates may drop once the device heats up. Applies next time Performance is selected.</string>
     <string name="nc_restart_service">Restart service</string>
     <string name="nc_restarting">Restarting service…</string>
     <string name="nc_full_desc">All general and %1$s tweaks are active</string>
