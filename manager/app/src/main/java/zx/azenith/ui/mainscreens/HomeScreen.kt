@@ -257,13 +257,32 @@ fun HomeScreen(
             ) {
                 if (uiState.isBannerEnabled) {
                     item(key = "banner") {
+                        // A picked picture keeps the picture's shape; the drawn banner
+                        // grows to fit its text instead of being cropped.
+                        val custom = bannerUri
                         Box(
                             Modifier
                                 .fillMaxWidth()
-                                .then(if (wide) Modifier.height(240.dp) else Modifier.aspectRatio(1280f / 560f))
+                                .then(
+                                    when {
+                                        custom != null && wide -> Modifier.height(240.dp)
+                                        custom != null -> Modifier.aspectRatio(1280f / 560f)
+                                        else -> Modifier
+                                    }
+                                )
                                 .clip(RoundedCornerShape(30.dp))
                         ) {
-                            MediaBannerRenderer(uriString = bannerUri, modifier = Modifier.fillMaxSize())
+                            if (custom != null) {
+                                MediaBannerRenderer(uriString = custom, modifier = Modifier.fillMaxSize())
+                            } else {
+                                NextCoreBanner(
+                                    socModel = uiState.deviceProfile.socModel,
+                                    support = uiState.deviceProfile.support,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .heightIn(min = if (wide) 200.dp else 150.dp)
+                                )
+                            }
                             BannerEditButton(
                                 hasCustom = bannerUri != null,
                                 modifier = Modifier.align(Alignment.TopEnd).padding(10.dp),
