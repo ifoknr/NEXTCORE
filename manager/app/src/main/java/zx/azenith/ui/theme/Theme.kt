@@ -142,8 +142,8 @@ enum class ColorMode(val value: Int) {
     }
 }
 
-/** NextCore brand coral; the default key color until the user picks another (0 = wallpaper colors). */
-const val NEXTCORE_SEED_COLOR: Int = 0xFFFF9A8B.toInt()
+/** NextCore slate blue; the default key color until the user picks another (0 = wallpaper colors). */
+const val NEXTCORE_SEED_COLOR: Int = 0xFF5D74A8.toInt()
 
 data class AppSettings(val colorMode: ColorMode, val keyColor: Int, val colorSpec: ColorSpec.SpecVersion)
 
@@ -151,7 +151,8 @@ object ThemeController {
     fun getAppSettings(context: Context): AppSettings {
         val prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
         val colorMode = ColorMode.fromValue(
-            prefs.getInt("color_mode", ColorMode.SYSTEM.value)
+            // Dark until the user picks a mode: the slate theme is designed dark-first.
+            prefs.getInt("color_mode", ColorMode.DARK.value)
         )
         val keyColor = prefs.getInt("key_color", NEXTCORE_SEED_COLOR)
         
