@@ -28,6 +28,7 @@ _dp_int() {
 # SoC vendor -> sets DP_SOC_VENDOR, DP_SOC_TYPE, DP_SOC_MODEL
 _dp_soc() {
 	DP_SOC_MODEL="$(getprop ro.soc.model)"
+	DP_SOC_SOURCE="ro.soc"
 	_raw=""
 	case "$(getprop ro.soc.manufacturer | tr '[:upper:]' '[:lower:]')" in
 	*mediatek*) _raw="mt $DP_SOC_MODEL" ;;
@@ -36,8 +37,8 @@ _dp_soc() {
 	*google*) _raw="tensor $DP_SOC_MODEL" ;;
 	*unisoc* | *spreadtrum*) _raw="unisoc $DP_SOC_MODEL" ;;
 	esac
-	[ -z "$_raw" ] && _raw=$(grep -i 'hardware' /proc/cpuinfo | uniq | cut -d ':' -f2 | sed 's/^[ \t]*//')
-	[ -z "$_raw" ] && _raw="$(getprop ro.board.platform) $(getprop ro.hardware)"
+	[ -z "$_raw" ] && DP_SOC_SOURCE="cpuinfo" && _raw=$(grep -i 'hardware' /proc/cpuinfo | uniq | cut -d ':' -f2 | sed 's/^[ \t]*//')
+	[ -z "$_raw" ] && DP_SOC_SOURCE="platform" && _raw="$(getprop ro.board.platform) $(getprop ro.hardware)"
 	[ -z "$DP_SOC_MODEL" ] && DP_SOC_MODEL="$(getprop ro.board.platform)"
 	DP_SOC_RAW="$_raw"
 
@@ -49,6 +50,25 @@ _dp_soc() {
 	*gs* | *tensor*) DP_SOC_VENDOR="Tensor"; DP_SOC_TYPE=5 ;;
 	*) DP_SOC_VENDOR="Unknown"; DP_SOC_TYPE=0 ;;
 	esac
+
+	[ "$DP_SOC_TYPE" -eq 0 ] && _dp_soc_by_nodes
+}
+
+# The name gave nothing: recognise the SoC family by the kernel drivers it
+# exposes, so a renamed or unlisted chip still gets its family's tweaks.
+_dp_soc_by_nodes() {
+	if [ -d /proc/gpufreqv2 ] || [ -d /proc/gpufreq ] || [ -d /sys/kernel/fpsgo ] || [ -d /proc/ppm ]; then
+		DP_SOC_VENDOR="MediaTek"; DP_SOC_TYPE=1
+	elif [ -d /sys/class/kgsl/kgsl-3d0 ]; then
+		DP_SOC_VENDOR="Snapdragon"; DP_SOC_TYPE=2
+	elif [ -d /sys/kernel/gpu ] && [ -n "$(ls -d /sys/devices/platform/*.mali 2>/dev/null)" ]; then
+		DP_SOC_VENDOR="Exynos"; DP_SOC_TYPE=3
+	elif ls /sys/class/devfreq 2>/dev/null | grep -qi 'sprd\|unisoc'; then
+		DP_SOC_VENDOR="Unisoc"; DP_SOC_TYPE=4
+	else
+		return 0
+	fi
+	DP_SOC_SOURCE="kernel nodes"
 }
 
 # CPU clusters as "first-last:maxkhz" separated by spaces
@@ -175,6 +195,7 @@ kernel=$(uname -r)
 soc_vendor=$DP_SOC_VENDOR
 soc_type=$DP_SOC_TYPE
 soc_model=$DP_SOC_MODEL
+soc_source=$DP_SOC_SOURCE
 soc_raw=$DP_SOC_RAW
 support=$DP_SUPPORT
 cpu_count=$DP_CPU_COUNT
