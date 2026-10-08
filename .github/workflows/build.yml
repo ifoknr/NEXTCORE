@@ -170,12 +170,16 @@ jobs:
 
       # Telegram channel: releases (a pushed v* tag) and betas (every push to
       # main). A manual run can post a beta too, to test the bot. Pull
-      # requests never post. Needs the BOT_TOKEN and CHAT_ID secrets.
+      # requests never post. Needs the TELEGRAM_TOKEN and TELEGRAM_TO secrets
+      # (TELEGRAM_TOPIC optional, for a topic in a forum group).
       - name: Post To Telegram
         if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.telegram)
         env:
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          # Same secret names as the other repositories posting to the channel;
+          # BOT_TOKEN / CHAT_ID still work as a fallback.
+          BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN || secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_TO || secrets.CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC }}
           KIND: ${{ startsWith(github.ref, 'refs/tags/v') && 'release' || 'beta' }}
           TAG: ${{ github.ref_name }}
           REPO: ${{ github.repository }}
@@ -185,5 +189,5 @@ jobs:
           if [ -n "$CHAT_ID" ] && [ -n "$BOT_TOKEN" ]; then
             bash .github/scripts/telebot.sh "${{ steps.compileZip.outputs.zipName }}"
           else
-            echo "::warning::BOT_TOKEN or CHAT_ID secret is missing, skipping the Telegram post."
+            echo "::warning::TELEGRAM_TOKEN or TELEGRAM_TO secret is missing, skipping the Telegram post."
           fi
