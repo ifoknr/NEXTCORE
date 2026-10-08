@@ -5,6 +5,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      telegram:
+        description: "Post this build to the Telegram channel"
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -147,20 +152,21 @@ jobs:
         id: compileZip
         run: bash .github/scripts/compile_zip.sh
 
-      - name: Upload To Telegram
+      # Posts releases (a pushed v* tag) to the Telegram channel. A manual run
+      # can post too, to test the bot. Needs the BOT_TOKEN and CHAT_ID secrets.
+      - name: Post To Telegram
+        if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.telegram)
         env:
           CHAT_ID: ${{ secrets.CHAT_ID }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-          COMMIT_URL: ${{ github.event.head_commit.url }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          TITLE: NextCore
         run: |
           if [ -n "$CHAT_ID" ] && [ -n "$BOT_TOKEN" ]; then
-            export VERSION=$(git rev-list --count HEAD)
             bash .github/scripts/telebot.sh "${{ steps.compileZip.outputs.zipName }}"
           else
-            echo "Telegram bot token or chatid is undefined, skipping upload."
+            echo "::warning::BOT_TOKEN or CHAT_ID secret is missing, skipping the Telegram post."
           fi
 
       - name: Upload Module Zip
