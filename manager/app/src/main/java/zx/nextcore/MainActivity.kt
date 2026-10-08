@@ -422,7 +422,7 @@ fun MainScreen(fromTileType: String? = null) {
                                 ScreenWrapper(navController = navController, animatedVisibilityScope = this) { DeviceCardScreen(navController) }
                             }
                             composable("monitoring") {
-                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { MonitoringSettingsScreen(navController) }
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudMonitorScreen(navController) }
                             }
                             composable("governorsettings") {
                                 ScreenWrapper(navController = navController, animatedVisibilityScope = this) { GovSettings(navController) }

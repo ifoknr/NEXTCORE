@@ -37,7 +37,6 @@ import kotlinx.coroutines.withContext
 import zx.nextcore.R
 import zx.nextcore.ui.navigation.safePopBackStack
 import zx.nextcore.ui.theme.BrandFontFamily
-import zx.nextcore.ui.util.DeviceMonitor
 import zx.nextcore.ui.util.PropertyUtils
 import zx.nextcore.ui.util.RootUtils
 import zx.nextcore.ui.viewmodel.AppSettingsViewModel
@@ -222,29 +221,32 @@ fun HudFramesEngineScreen(navController: NavController, vm: HomeViewModel = view
     val samples = remember { mutableStateListOf<Float>() }
     var unavailable by remember { mutableStateOf(false) }
     var fpsgo by remember { mutableStateOf<String?>(null) }
+    var frameTime by remember { mutableStateOf<Float?>(null) }
+    var measuredPkg by remember { mutableStateOf<String?>(null) }
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(ui.profileLoaded) {
         if (!ui.profileLoaded) return@LaunchedEffect
         fpsgo = withContext(Dispatchers.IO) { RootUtils.readRootFile("/sys/kernel/fpsgo/common/force_onoff")?.trim() }
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            var last: Long? = null
-            var lastAt = 0L
-            var misses = 0
-            while (true) {
-                val frames = withContext(Dispatchers.IO) { DeviceMonitor.sampleOverlay(ui.deviceProfile, wantFps = true).frameCount }
-                val at = System.nanoTime()
-                val prev = last
-                if (frames != null && prev != null && frames >= prev) {
-                    val fps = (frames - prev) / ((at - lastAt) / 1e9).toFloat()
-                    samples.add(fps.coerceIn(0f, 240f))
-                    while (samples.size > 120) samples.removeAt(0)
+            // Its own root shell; closed when the page stops so time stats do not stay on.
+            val meter = zx.nextcore.overlay.FrameMeter()
+            try {
+                var misses = 0
+                while (true) {
+                    val stats = withContext(Dispatchers.IO) { meter.sample(ui.runningGamePkg) }
+                    stats.fps?.let {
+                        samples.add(it.coerceIn(0f, 240f))
+                        while (samples.size > 120) samples.removeAt(0)
+                    }
+                    frameTime = stats.frameTimeMs
+                    measuredPkg = stats.pkg
+                    if (stats.fps == null) misses++ else misses = 0
+                    unavailable = misses >= 3
+                    delay(1000)
                 }
-                if (frames == null) misses++ else misses = 0
-                unavailable = misses >= 3
-                last = frames
-                lastAt = at
-                delay(1000)
+            } finally {
+                withContext(kotlinx.coroutines.NonCancellable + Dispatchers.IO) { meter.close() }
             }
         }
     }
@@ -265,6 +267,10 @@ fun HudFramesEngineScreen(navController: NavController, vm: HomeViewModel = view
             HudCard(Modifier.fillMaxWidth(), accent = true) {
                 Text(stringResource(R.string.hud_fps_now), color = Hud.muted, fontSize = 12.sp)
                 Text(now?.let { one(it) } ?: "--", color = hudAccent, fontFamily = BrandFontFamily, fontWeight = FontWeight.Black, fontSize = 52.sp)
+                Text(
+                    listOfNotNull(frameTime?.let { one(it) + " ms" }, measuredPkg).joinToString(" · "),
+                    color = Hud.muted, fontSize = 12.sp, maxLines = 1,
+                )
             }
         }
         item(key = "chart") {
