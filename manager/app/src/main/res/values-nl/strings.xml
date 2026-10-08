@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Over NextCore</string>
+    <string name="about_nextcore">Over NextCore</string>
     <string name="about_source_code">Bekijk broncode op %1$s&lt;br/&gt;Word lid van ons %2$s kanaal</string>
     <string name="accent_color">Accentkleur</string>
     <string name="all_checks_finished">Alle controles voltooid</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">App-instellingen</string>
     <string name="appearance">Uiterlijk</string>
     <string name="applist_title">App-lijst</string>
-    <string name="azenith_version">NextCore-versie</string>
+    <string name="nextcore_version">NextCore-versie</string>
     <string name="balanced_io_scheduler">Gebalanceerde I/O-planner</string>
     <string name="balanced_io_scheduler_desc">Planner gebruikt door gebalanceerd profiel</string>
     <string name="balanced_mali_gov">Gebalanceerde Mali GPU-gov</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Auteur</string>
     <string name="str_auto_mode">Automatische modus</string>
     <string name="str_available_nodes">Beschikbare doelknooppunten (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore is klaar!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore is klaar!</string>
     <string name="str_backup_configuration">Configuratie back-uppen</string>
     <string name="str_backup_content_detected_select">Back-upinhoud gedetecteerd, selecteer items om te herstellen:</string>
     <string name="str_backup_restore">Back-up en herstel</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Verloopdekking</string>
     <string name="str_installing_update">Update installeren…</string>
     <string name="str_interface">Interface</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">App starten</string>
     <string name="str_launch_compatibility_check">Compatibiliteitscontrole starten</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Laten we een paar basisinstellingen aanpassen</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Geef NextCore root-toegang</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Geef NextCore root-toegang</string>
     <string name="str_load_a_previously_saved_backup">Laad eerder opgeslagen back-upbestand</string>
     <string name="str_logs_diagnostics">Logboeken en diagnose</string>
     <string name="str_maintainer">Onderhouder</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Geen oplaadverbinding gedetecteerd, sluit oplader aan voordat u diagnose uitvoert</string>
     <string name="str_preview">Voorbeeld</string>
     <string name="str_restore_configuration">Configuratie herstellen</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root-toegang geweigerd, NextCore heeft root-toegang nodig om te werken</string>
     <string name="str_root_access_granted">Root-toegang verkregen, alles klaar!</string>
     <string name="str_run_diagnostics_above_or_check">Voer bovenstaande diagnose uit of controleer of kernel bypass-laadknooppunten bevat</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versie %1$s</string>
     <string name="walt_tunes">WALT-gov optimaliseren</string>
     <string name="walt_tunes_desc">Optimaliseer WALT-gov-parameters om CPU-planningrespons te verbeteren</string>
-    <string name="welcome_azenith">Welkom bij NextCore</string>
+    <string name="welcome_nextcore">Welkom bij NextCore</string>
     <string name="yes">Ja</string>
     <string name="str_use_scroll_animation">Scrollanimatie gebruiken</string>
     <string name="str_use_scroll_animation_summary">Veeganimatie tussen pagina\'s inschakelen</string>

@@ -11,9 +11,9 @@ use crate::chipsets::tensor::*;
 /// The device's everyday CPU governor: the user's pick, else the one saved
 /// at boot, else schedutil.
 fn default_cpu_gov() -> String {
-    let mut gov = getprop("persist.sys.azenith.custom_default_cpu_gov");
+    let mut gov = getprop("persist.sys.nextcore.custom_default_cpu_gov");
     if gov.is_empty() {
-        gov = getprop("persist.sys.azenith.default_cpu_gov");
+        gov = getprop("persist.sys.nextcore.default_cpu_gov");
     }
     if gov.is_empty() {
         gov = "schedutil".to_string();
@@ -29,7 +29,7 @@ fn default_cpu_gov() -> String {
 /// on. Frame rates hold longer because the chip does not hit its thermal
 /// limit in the first minutes.
 ///
-/// Max mode (`persist.sys.azenithconf.perfmax=1`): the previous behaviour,
+/// Max mode (`persist.sys.nextcoreconf.perfmax=1`): the previous behaviour,
 /// CPU and GPU pinned at their top clocks with MediaTek limits relaxed.
 pub fn performance_profile() {
 
@@ -43,17 +43,17 @@ pub fn performance_profile() {
 
     // Max mode pins min=max, so the governor has nothing to decide there.
     // Sustained mode needs a real governor to scale above the floor.
-    let mut performance_gov = getprop("persist.sys.azenith.custom_performance_cpu_gov");
+    let mut performance_gov = getprop("persist.sys.nextcore.custom_performance_cpu_gov");
     if performance_gov.is_empty() {
         performance_gov = if perfmax { "powersave".to_string() } else { default_cpu_gov() };
     }
 
     // I/O Scheduler Tweaks
-    let mut custom_perf_io = getprop("persist.sys.azenith.custom_performance_IO");
+    let mut custom_perf_io = getprop("persist.sys.nextcore.custom_performance_IO");
     if custom_perf_io.is_empty() {
-        let mut default_io = getprop("persist.sys.azenith.custom_default_balanced_IO");
+        let mut default_io = getprop("persist.sys.nextcore.custom_default_balanced_IO");
         if default_io.is_empty() {
-            default_io = getprop("persist.sys.azenith.default_balanced_IO");
+            default_io = getprop("persist.sys.nextcore.default_balanced_IO");
         }
         if default_io.is_empty() {
             default_io = "none".to_string();
@@ -62,11 +62,11 @@ pub fn performance_profile() {
     }
 
     // Mali GPU Governor Tweaks
-    let mut custom_perf_mali = getprop("persist.sys.azenith.custom_performance_maligpu_gov");
+    let mut custom_perf_mali = getprop("persist.sys.nextcore.custom_performance_maligpu_gov");
     if custom_perf_mali.is_empty() {
-        let mut default_mali = getprop("persist.sys.azenith.custom_default_maligpu_gov");
+        let mut default_mali = getprop("persist.sys.nextcore.custom_default_maligpu_gov");
         if default_mali.is_empty() {
-            default_mali = getprop("persist.sys.azenith.default_maligpu_gov");
+            default_mali = getprop("persist.sys.nextcore.default_maligpu_gov");
         }
         custom_perf_mali = default_mali;
     }
@@ -151,7 +151,7 @@ pub fn performance_profile() {
     }
 
     if !lite_mode {
-        match getprop("persist.sys.azenith.soctype").as_str() {
+        match getprop("persist.sys.nextcore.soctype").as_str() {
             "1" => mediatek_performance(perfmax),
             "2" => snapdragon_performance(),
             "3" => exynos_performance(),
@@ -174,18 +174,18 @@ pub fn balanced_profile() {
     let default_gov = default_cpu_gov();
 
     // I/O Scheduler Tweaks
-    let mut default_io = getprop("persist.sys.azenith.custom_default_balanced_IO");
+    let mut default_io = getprop("persist.sys.nextcore.custom_default_balanced_IO");
     if default_io.is_empty() {
-        default_io = getprop("persist.sys.azenith.default_balanced_IO");
+        default_io = getprop("persist.sys.nextcore.default_balanced_IO");
     }
     if default_io.is_empty() {
         default_io = "none".to_string();
     }
 
     // Mali GPU Governor Tweaks
-    let mut default_mali = getprop("persist.sys.azenith.custom_default_maligpu_gov");
+    let mut default_mali = getprop("persist.sys.nextcore.custom_default_maligpu_gov");
     if default_mali.is_empty() {
-        default_mali = getprop("persist.sys.azenith.default_maligpu_gov");
+        default_mali = getprop("persist.sys.nextcore.default_maligpu_gov");
     }
 
     apply_custom_governor_io(&default_gov, &default_io, &default_mali);
@@ -196,7 +196,7 @@ pub fn balanced_profile() {
         setfreq();
     }
 
-    if getprop("persist.sys.azenithconf.freqoffset") == "Disabled" {
+    if getprop("persist.sys.nextcoreconf.freqoffset") == "Disabled" {
         log_info("Set CPU freq to normal Frequencies");
     } else {
         log_info("Set CPU freq to normal selected Frequencies");
@@ -253,7 +253,7 @@ pub fn balanced_profile() {
         }
     });
 
-    match getprop("persist.sys.azenith.soctype").as_str() {
+    match getprop("persist.sys.nextcore.soctype").as_str() {
         "1" => mediatek_balance(),
         "2" => snapdragon_balance(),
         "3" => exynos_balance(),
@@ -272,23 +272,23 @@ pub fn eco_mode() {
         return;
     }
     
-    let mut powersave_gov = getprop("persist.sys.azenith.custom_powersave_cpu_gov");
+    let mut powersave_gov = getprop("persist.sys.nextcore.custom_powersave_cpu_gov");
     if powersave_gov.is_empty() {
         powersave_gov = "powersave".to_string();
     }
 
     // I/O Scheduler Tweaks
-    let mut powersave_io = getprop("persist.sys.azenith.custom_powersave_IO");
+    let mut powersave_io = getprop("persist.sys.nextcore.custom_powersave_IO");
     if powersave_io.is_empty() {
         powersave_io = "none".to_string();
     }
 
     // Mali GPU Governor Tweaks
-    let mut custom_eco_mali = getprop("persist.sys.azenith.custom_powersave_maligpu_gov");
+    let mut custom_eco_mali = getprop("persist.sys.nextcore.custom_powersave_maligpu_gov");
     if custom_eco_mali.is_empty() {
-        let mut default_mali = getprop("persist.sys.azenith.custom_default_maligpu_gov");
+        let mut default_mali = getprop("persist.sys.nextcore.custom_default_maligpu_gov");
         if default_mali.is_empty() {
-            default_mali = getprop("persist.sys.azenith.default_maligpu_gov");
+            default_mali = getprop("persist.sys.nextcore.default_maligpu_gov");
         }
         custom_eco_mali = default_mali;
     }
@@ -340,7 +340,7 @@ pub fn eco_mode() {
         write_lock("NO_TTWU_QUEUE", sched_feat);
     }
 
-    match getprop("persist.sys.azenith.soctype").as_str() {
+    match getprop("persist.sys.nextcore.soctype").as_str() {
         "1" => mediatek_powersave(),
         "2" => snapdragon_powersave(),
         "3" => exynos_powersave(),
@@ -353,14 +353,12 @@ pub fn eco_mode() {
 }
 
 pub fn initialize() {
-    // Initial kernel panics & sync
-    for param in &["panic", "panic_on_warn", "panic_on_oops", "softlockup_panic"] {
-        write_lock("0", &format!("/proc/sys/kernel/{}", param));
-    }
+    // Kernel panic settings are left to the ROM: forcing them to 0 made a
+    // crashed kernel keep running instead of rebooting.
     let _ = Command::new("sync").status();
     
     // Display / SurfaceFlinger config
-    let scheme = getprop("persist.sys.azenithconf.schemeconfig");
+    let scheme = getprop("persist.sys.nextcoreconf.schemeconfig");
     if scheme != "1000 1000 1000 1000" && !scheme.is_empty() {
         let parts: Vec<&str> = scheme.split_whitespace().collect();
         if parts.len() >= 4 {
@@ -390,6 +388,7 @@ pub fn initialize() {
 
     // Save the vendor uclamp values before any profile changes them
     backup_uclamp();
+    backup_nodes(&crate::chipsets::mediatek::DVFSRC_GOVERNORS);
 
     // Initialize CPU & I/O & Mali GPU
     init_cpu_governor();
@@ -397,15 +396,9 @@ pub fn initialize() {
     init_maligpu_governor();
     init_renderer();
     
-    // Thermal governor
-    if let Ok(paths) = glob::glob("/sys/class/thermal/thermal_zone*") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("step_wise", &format!("{}/policy", p_str));
-            }
-        }
-    }
-    
+    // Thermal zone governors are left to the vendor: many devices rely on
+    // power_allocator or their own governor, and step_wise there breaks throttling.
+
     // I/O Tweaks
     if let Ok(paths) = glob::glob("/sys/block/*") {
         for path in paths.flatten() {
@@ -460,8 +453,8 @@ pub fn initialize() {
     write_lock(libs, "/proc/sys/kernel/sched_lib_name");
     write_lock("255", "/proc/sys/kernel/sched_lib_mask_force");
 
-    systemv("sys.azenith-utilityconf FSTrim");
-    let _ = Command::new("sys.azenith-preferencedtweaks").status();
+    systemv("sys.nextcore-utilityconf FSTrim");
+    let _ = Command::new("sys.nextcore-preferencedtweaks").status();
     
     // Final Sync & Logs
     let _ = Command::new("sync").status();

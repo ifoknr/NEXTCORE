@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief Loads the initial config file values from disk into context.
@@ -24,7 +24,7 @@ void load_initial_config_files(DaemonContext* ctx) {
     FILE* fp;
     char val[16];
 
-    if ((fp = fopen("/data/adb/.config/AZenith/freqoffset", "r"))) {
+    if ((fp = fopen("/data/adb/.config/NextCore/freqoffset", "r"))) {
         if (fgets(ctx->config_freqoffset, sizeof(ctx->config_freqoffset), fp)) {
             trim_newline(ctx->config_freqoffset);
         }
@@ -33,20 +33,20 @@ void load_initial_config_files(DaemonContext* ctx) {
         strcpy(ctx->config_freqoffset, "Disabled");
     }
 
-    if ((fp = fopen("/data/adb/.config/AZenith/bypasschgconfig/bypasspath", "r"))) {
+    if ((fp = fopen("/data/adb/.config/NextCore/bypasschgconfig/bypasspath", "r"))) {
         if (fgets(ctx->config_bypasspath, sizeof(ctx->config_bypasspath), fp)) {
             trim_newline(ctx->config_bypasspath);
         }
         fclose(fp);
     }
 
-    if ((fp = fopen("/data/adb/.config/AZenith/bypasschgconfig/bypasschg", "r"))) {
+    if ((fp = fopen("/data/adb/.config/NextCore/bypasschgconfig/bypasschg", "r"))) {
         if (fgets(val, sizeof(val), fp))
             ctx->config_bypasschg = atoi(val);
         fclose(fp);
     }
 
-    if ((fp = fopen("/data/adb/.config/AZenith/bypasschgconfig/bypasschgthreshold", "r"))) {
+    if ((fp = fopen("/data/adb/.config/NextCore/bypasschgconfig/bypasschgthreshold", "r"))) {
         if (fgets(val, sizeof(val), fp))
             ctx->config_bypasschgthreshold = atoi(val);
         fclose(fp);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore haqida</string>
+    <string name="about_nextcore">NextCore haqida</string>
     <string name="about_source_code">Manba kodini %1$s da ko‘ring&lt;br/&gt;Bizning %2$s kanaliga qo‘shiling</string>
     <string name="accent_color">Mavzu rangi</string>
     <string name="all_checks_finished">Barcha tekshiruvlar yakunlandi</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Ilova sozlamalari</string>
     <string name="appearance">Tashqi ko‘rinish</string>
     <string name="applist_title">Ilovalar ro‘yxati</string>
-    <string name="azenith_version">NextCore versiyasi</string>
+    <string name="nextcore_version">NextCore versiyasi</string>
     <string name="balanced_io_scheduler">Balanslangan I/O rejalashtiruvchisi</string>
     <string name="balanced_io_scheduler_desc">Balanslangan konfiguratsiyada ishlatiladigan rejalashtiruvchi</string>
     <string name="balanced_mali_gov">Balanslangan Mali GPU boshqaruvchisi</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Muallif</string>
     <string name="str_auto_mode">Avtomatik rejim</string>
     <string name="str_available_nodes">Mavjud maqsadli tugunlar (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore tayyor!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore tayyor!</string>
     <string name="str_backup_configuration">Konfiguratsiyani zaxiralash</string>
     <string name="str_backup_content_detected_select">Zaxira tarkibi aniqlandi, tiklanadigan elementlarni tanlang:</string>
     <string name="str_backup_restore">Zaxiralash va tiklash</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradient shaffofligi</string>
     <string name="str_installing_update">Yangilanish o‘rnatilmoqda…</string>
     <string name="str_interface">Interfeys</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Ilovani ishga tushirish</string>
     <string name="str_launch_compatibility_check">Moslik tekshiruvini ishga tushirish</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Bir necha asosiy sozlamalarni sozlaymiz</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCore ga Root huquqlarini bering</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCore ga Root huquqlarini bering</string>
     <string name="str_load_a_previously_saved_backup">Avval saqlangan zaxira faylini yuklash</string>
     <string name="str_logs_diagnostics">Jurnallar va diagnostika</string>
     <string name="str_maintainer">Xizmat ko‘rsatuvchi</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Zaryadlovchi ulanganligi aniqlanmadi, diagnostikani ishga tushirishdan oldin zaryadlovchini ulang</string>
     <string name="str_preview">Ko‘rib chiqish</string>
     <string name="str_restore_configuration">Konfiguratsiyani tiklash</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root huquqlari rad etildi, NextCore ishlashi uchun Root huquqlari kerak</string>
     <string name="str_root_access_granted">Root huquqlari olindi, hammasi tayyor!</string>
     <string name="str_run_diagnostics_above_or_check">Yuqoridagi diagnostikani ishga tushiring yoki yadroda quvvatni aylanib o‘tish tuguni borligini tekshiring</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versiya %1$s</string>
     <string name="walt_tunes">WALT boshqaruvchisini sozlash</string>
     <string name="walt_tunes_desc">WALT boshqaruvchisi parametrlarini optimallashtirish, CPU rejalashtirish tezligini oshirish</string>
-    <string name="welcome_azenith">NextCore ga xush kelibsiz</string>
+    <string name="welcome_nextcore">NextCore ga xush kelibsiz</string>
     <string name="yes">Ha</string>
     <string name="str_use_scroll_animation">Aylantirish animatsiyasidan foydalanish</string>
     <string name="str_use_scroll_animation_summary">Sahifalar orasida surish animatsiyasini yoqish</string>

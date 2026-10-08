@@ -55,7 +55,7 @@ pub fn get_data_path() -> PathBuf {
 
     if let Err(e) = fs::create_dir_all(&path) {
         eprintln!("Failed to create data dir {:?}: {}. Falling back.", path, e);
-        let fallback_path = PathBuf::from("/data/local/tmp/rianixia_thermal_data");
+        let fallback_path = PathBuf::from("/data/local/tmp/thermal_data");
         if fs::create_dir_all(&fallback_path).is_ok() {
             return fallback_path;
         }

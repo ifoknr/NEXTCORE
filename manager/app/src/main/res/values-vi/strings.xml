@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Về NextCore</string>
+    <string name="about_nextcore">Về NextCore</string>
     <string name="about_source_code">Xem mã nguồn tại %1$s&lt;br/&gt;Tham gia kênh %2$s của chúng tôi</string>
     <string name="accent_color">Màu chủ đạo</string>
     <string name="all_checks_finished">Đã kiểm tra xong tất cả</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Cài đặt ứng dụng</string>
     <string name="appearance">Giao diện</string>
     <string name="applist_title">Danh sách ứng dụng</string>
-    <string name="azenith_version">Phiên bản NextCore</string>
+    <string name="nextcore_version">Phiên bản NextCore</string>
     <string name="balanced_io_scheduler">Trình lập lịch I/O cân bằng</string>
     <string name="balanced_io_scheduler_desc">Trình lập lịch được sử dụng trong cấu hình cân bằng</string>
     <string name="balanced_mali_gov">Bộ điều tốc Mali GPU cân bằng</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Tác giả</string>
     <string name="str_auto_mode">Chế độ tự động</string>
     <string name="str_available_nodes">Nút mục tiêu khả dụng (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore đã sẵn sàng!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore đã sẵn sàng!</string>
     <string name="str_backup_configuration">Sao lưu cấu hình</string>
     <string name="str_backup_content_detected_select">Đã phát hiện nội dung sao lưu, vui lòng chọn mục cần khôi phục:</string>
     <string name="str_backup_restore">Sao lưu và khôi phục</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Độ mờ gradient</string>
     <string name="str_installing_update">Đang cài đặt bản cập nhật…</string>
     <string name="str_interface">Giao diện</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Khởi động ứng dụng</string>
     <string name="str_launch_compatibility_check">Bắt đầu kiểm tra tương thích</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Chúng tôi điều chỉnh một vài cài đặt cơ bản</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Vui lòng cấp quyền Root cho NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Vui lòng cấp quyền Root cho NextCore</string>
     <string name="str_load_a_previously_saved_backup">Tải tệp sao lưu đã lưu</string>
     <string name="str_logs_diagnostics">Nhật ký và chẩn đoán</string>
     <string name="str_maintainer">Người bảo trì</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Không phát hiện kết nối sạc, vui lòng cắm sạc trước khi chạy chẩn đoán</string>
     <string name="str_preview">Xem trước</string>
     <string name="str_restore_configuration">Khôi phục cấu hình</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Quyền Root bị từ chối, NextCore cần quyền Root để chạy</string>
     <string name="str_root_access_granted">Đã cấp quyền Root, mọi thứ đã sẵn sàng!</string>
     <string name="str_run_diagnostics_above_or_check">Chạy chẩn đoán ở trên, hoặc kiểm tra kernel có chứa nút nguồn bypass không</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Phiên bản %1$s</string>
     <string name="walt_tunes">Tối ưu bộ điều tốc WALT</string>
     <string name="walt_tunes_desc">Tối ưu tham số bộ điều tốc WALT, cải thiện tốc độ phản hồi lập lịch CPU</string>
-    <string name="welcome_azenith">Chào mừng đến với NextCore</string>
+    <string name="welcome_nextcore">Chào mừng đến với NextCore</string>
     <string name="yes">Có</string>
     <string name="str_use_scroll_animation">Sử dụng hiệu ứng cuộn</string>
     <string name="str_use_scroll_animation_summary">Bật hiệu ứng vuốt chuyển giữa các Trang</string>

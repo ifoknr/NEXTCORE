@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief Persists critical runtime state (renderer, refresh rate, zen mode) to disk
@@ -75,6 +75,6 @@ void restore_daemon_state(DaemonContext* ctx) {
     }
 
     fclose(fp);
-    systemv("rm -rf /data/adb/.config/AZenith/daemon_state");
+    systemv("rm -rf /data/adb/.config/NextCore/daemon_state");
     log_zenith(LOG_INFO, "Restored daemon state from previous session, will reconcile on next profile checkup");
 }

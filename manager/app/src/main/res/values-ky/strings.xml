@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore жөнүндө</string>
+    <string name="about_nextcore">NextCore жөнүндө</string>
     <string name="about_source_code">%1$s булагын көрүү&lt;br/&gt;%2$s каналына кошулуңуз</string>
     <string name="accent_color">Тема түсү</string>
     <string name="all_checks_finished">Бардык текшерүүлөр бүттү</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Колдонмо жөндөөлөрү</string>
     <string name="appearance">Көрүнүш</string>
     <string name="applist_title">Колдонмолор тизмеси</string>
-    <string name="azenith_version">NextCore версиясы</string>
+    <string name="nextcore_version">NextCore версиясы</string>
     <string name="balanced_io_scheduler">Теңдештирилген I/O графикчиси</string>
     <string name="balanced_io_scheduler_desc">Теңдештирилген конфигурация колдонгон графикчи</string>
     <string name="balanced_mali_gov">Теңдештирилген Mali GPU ылдамдык жөнгө салгычы</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматтык режим</string>
     <string name="str_available_nodes">Жеткиликтүү максаттуу түйүндөр (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore колдонууга даяр!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore колдонууга даяр!</string>
     <string name="str_backup_configuration">Конфигурациянын камдык көчүрмөсү</string>
     <string name="str_backup_content_detected_select">Камдык көчүрмө мазмуну табылды, калыбына келтирүү үчүн пункттарды тандаңыз:</string>
     <string name="str_backup_restore">Камдык көчүрмө жана калыбына келтирүү</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Градиенттин тунук эместиги</string>
     <string name="str_installing_update">Жаңыртуу орнотулууда…</string>
     <string name="str_interface">Интерфейс</string>
-    <string name="str_kanaochar">Канаочар</string>
     <string name="str_launch_app">Колдонмону ишке киргизүү</string>
     <string name="str_launch_compatibility_check">Шайкештик текшерүүсүн баштоо</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Бир нече негизги жөндөөлөрдү ыңгайлаштыралы</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCoreке Root укугун берүүнү өтүнөбүз</string>
-    <string name="str_liliya">Лилия</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCoreке Root укугун берүүнү өтүнөбүз</string>
     <string name="str_load_a_previously_saved_backup">Мурда сакталган камдык көчүрмө файлын жүктөө</string>
     <string name="str_logs_diagnostics">Журналдар жана диагностика</string>
     <string name="str_maintainer">Сактоочу</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Кубаттоо туташтырылгандыгы аныкталбады, диагностиканы иштетүү үчүн заряддагычты туташтырыңыз</string>
     <string name="str_preview">Алдын ала көрүү</string>
     <string name="str_restore_configuration">Конфигурацияны калыбына келтирүү</string>
-    <string name="str_rianixia">Рианиксия</string>
+    <string name="str_thermalcore">Рианиксия</string>
     <string name="str_root_access_denied">Root укугу четке кагылды, NextCore иштеши үчүн Root укугу керек</string>
     <string name="str_root_access_granted">Root укугу алынды, баары даяр!</string>
     <string name="str_run_diagnostics_above_or_check">Жогорудагы диагностиканы иштетиңиз же ядродо күйүүчү кубаттоо түйүнү бар экенин текшериңиз</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Версия %1$s</string>
     <string name="walt_tunes">WALT ылдамдык жөнгө салгычын ыңгайлаштыруу</string>
     <string name="walt_tunes_desc">WALT ылдамдык жөнгө салгычынын параметрлерин оптималдаштыруу, CPU график жооп берүү ылдамдыгын жогорулатуу</string>
-    <string name="welcome_azenith">NextCoreке кош келиңиз</string>
+    <string name="welcome_nextcore">NextCoreке кош келиңиз</string>
     <string name="yes">Ооба</string>
     <string name="str_use_scroll_animation">Түрүү анимациясын колдонуу</string>
     <string name="str_use_scroll_animation_summary">Барактар ортосунда сүрүү анимациясын иштетүү</string>

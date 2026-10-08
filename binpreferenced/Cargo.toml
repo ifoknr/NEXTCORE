@@ -1,8 +1,8 @@
 [package]
-name = "azenith-preferencedtweaks"
+name = "nextcore-preferencedtweaks"
 version = "1.0.0"
 edition = "2024"
-description = "AZenith Preference tweaks binary"
+description = "NextCore Preference tweaks binary"
 
 [dependencies]
 glob = "0.3.1"

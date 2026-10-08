@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Tentang NextCore</string>
+    <string name="about_nextcore">Tentang NextCore</string>
     <string name="about_source_code">Lihat kode sumber di %1$s&lt;br/&gt;Bergabung dengan saluran %2$s kami</string>
     <string name="accent_color">Warna aksen</string>
     <string name="all_checks_finished">Semua pemeriksaan selesai</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Pengaturan aplikasi</string>
     <string name="appearance">Tampilan</string>
     <string name="applist_title">Daftar aplikasi</string>
-    <string name="azenith_version">Versi NextCore</string>
+    <string name="nextcore_version">Versi NextCore</string>
     <string name="balanced_io_scheduler">Penjadwal I/O seimbang</string>
     <string name="balanced_io_scheduler_desc">Penjadwal yang digunakan oleh profil seimbang</string>
     <string name="balanced_mali_gov">Governor GPU Mali seimbang</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Penulis</string>
     <string name="str_auto_mode">Mode otomatis</string>
     <string name="str_available_nodes">Node target tersedia (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore sudah siap!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore sudah siap!</string>
     <string name="str_backup_configuration">Cadangan konfigurasi</string>
     <string name="str_backup_content_detected_select">Konten cadangan terdeteksi, pilih item yang akan dipulihkan:</string>
     <string name="str_backup_restore">Cadangan dan pemulihan</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Opacity gradien</string>
     <string name="str_installing_update">Memasang pembaruan…</string>
     <string name="str_interface">Antarmuka</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Buka aplikasi</string>
     <string name="str_launch_compatibility_check">Mulai pemeriksaan kompatibilitas</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Kami akan menyesuaikan beberapa pengaturan dasar</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Harap berikan NextCore akses Root</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Harap berikan NextCore akses Root</string>
     <string name="str_load_a_previously_saved_backup">Muat file cadangan yang disimpan</string>
     <string name="str_logs_diagnostics">Log dan diagnostik</string>
     <string name="str_maintainer">Maintainer</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Tidak terdeteksi sambungan pengisian daya, harap colokkan pengisi daya sebelum menjalankan diagnostik</string>
     <string name="str_preview">Pratinjau</string>
     <string name="str_restore_configuration">Pulihkan konfigurasi</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Akses Root ditolak, NextCore memerlukan akses Root untuk berjalan</string>
     <string name="str_root_access_granted">Akses Root diperoleh, semuanya siap!</string>
     <string name="str_run_diagnostics_above_or_check">Jalankan diagnostik di atas, atau periksa apakah kernel berisi node bypass pengisian daya</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versi %1$s</string>
     <string name="walt_tunes">Penyesuaian governor WALT</string>
     <string name="walt_tunes_desc">Optimalkan parameter governor WALT, tingkatkan respons penjadwalan CPU</string>
-    <string name="welcome_azenith">Selamat datang di NextCore</string>
+    <string name="welcome_nextcore">Selamat datang di NextCore</string>
     <string name="yes">Ya</string>
     <string name="str_use_scroll_animation">Gunakan Animasi Gulir</string>
     <string name="str_use_scroll_animation_summary">Aktifkan animasi geser antar halaman</string>

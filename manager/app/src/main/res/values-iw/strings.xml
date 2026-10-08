@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">על NextCore</string>
+    <string name="about_nextcore">על NextCore</string>
     <string name="about_source_code">צפה בקוד המקור ב-%1$s&lt;br/&gt;הצטרף לערוץ %2$s שלנו</string>
     <string name="accent_color">צבע מבטא</string>
     <string name="all_checks_finished">כל הבדיקות הסתיימו</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">הגדרות אפליקציה</string>
     <string name="appearance">מראה</string>
     <string name="applist_title">רשימת אפליקציות</string>
-    <string name="azenith_version">גרסת NextCore</string>
+    <string name="nextcore_version">גרסת NextCore</string>
     <string name="balanced_io_scheduler">מתזמן קלט/פלט מאוזן</string>
     <string name="balanced_io_scheduler_desc">מתזמן המשמש בתצורה המאוזנת</string>
     <string name="balanced_mali_gov">מווסת GPU Mali מאוזן</string>
@@ -253,7 +253,7 @@
     <string name="str_author">מחבר</string>
     <string name="str_auto_mode">מצב אוטומטי</string>
     <string name="str_available_nodes">צמתים זמינים (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore מוכן לפעולה!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore מוכן לפעולה!</string>
     <string name="str_backup_configuration">גיבוי תצורה</string>
     <string name="str_backup_content_detected_select">זוהה תוכן גיבוי, אנא בחר פריטים לשחזור:</string>
     <string name="str_backup_restore">גיבוי ושחזור</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">אטימות מעבר צבע</string>
     <string name="str_installing_update">מתקין עדכון…</string>
     <string name="str_interface">ממשק</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">הפעל אפליקציה</string>
     <string name="str_launch_compatibility_check">הפעל בדיקת תאימות</string>
     <string name="str_let_s_adjust_a_few_basic_setti">בוא נתאים מספר הגדרות בסיסיות</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">אנא הענק ל-NextCore הרשאת Root</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">אנא הענק ל-NextCore הרשאת Root</string>
     <string name="str_load_a_previously_saved_backup">טען קובץ גיבוי שנשמר בעבר</string>
     <string name="str_logs_diagnostics">יומנים ואבחון</string>
     <string name="str_maintainer">מתחזק</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">לא זוהה חיבור טעינה, אנא חבר מטען לפני הרצת האבחון</string>
     <string name="str_preview">תצוגה מקדימה</string>
     <string name="str_restore_configuration">שחזור תצורה</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">הרשאת Root נדחתה, NextCore זקוקה להרשאת Root כדי לפעול</string>
     <string name="str_root_access_granted">הרשאת Root התקבלה, הכל מוכן!</string>
     <string name="str_run_diagnostics_above_or_check">הרץ אבחון למעלה, או בדוק אם הליבה מכילה צומת טעינת מעקף</string>
@@ -368,7 +366,7 @@
     <string name="version_format">גרסה %1$s</string>
     <string name="walt_tunes">כוונון מווסת WALT</string>
     <string name="walt_tunes_desc">אופטימיזציה של פרמטרי מווסת WALT לשיפור מהירות תגובת תזמון CPU</string>
-    <string name="welcome_azenith">ברוכים הבאים ל-NextCore</string>
+    <string name="welcome_nextcore">ברוכים הבאים ל-NextCore</string>
     <string name="yes">כן</string>
     <string name="str_use_scroll_animation">השתמש בהנפשת גלילה</string>
     <string name="str_use_scroll_animation_summary">הפעל הנפשת החלקה בין דפים</string>

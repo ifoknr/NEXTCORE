@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">ስለ NextCore</string>
+    <string name="about_nextcore">ስለ NextCore</string>
     <string name="about_source_code">ምንጭ ኮድ በ %1$s ይመልከቱ&lt;br/&gt;በእኛ %2$s ቻናል ይቀላቀሉ</string>
     <string name="accent_color">ዋና ቀለም</string>
     <string name="all_checks_finished">ሁሉም ማረጋገጫዎች ተጠናቀዋል</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">የመተግበሪያ ቅንብሮች</string>
     <string name="appearance">መልክ</string>
     <string name="applist_title">የመተግበሪያዎች ዝርዝር</string>
-    <string name="azenith_version">NextCore ስሪት</string>
+    <string name="nextcore_version">NextCore ስሪት</string>
     <string name="balanced_io_scheduler">ሚዛናዊ I/O መርሐግብር</string>
     <string name="balanced_io_scheduler_desc">በሚዛናዊ ውቅር ስር የሚጠቀመው መርሐግብር</string>
     <string name="balanced_mali_gov">ሚዛናዊ Mali GPU አስተዳዳሪ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ደራሲ</string>
     <string name="str_auto_mode">ራስ-ሰር ሁነታ</string>
     <string name="str_available_nodes">የሚገኙ ዒላማ ኖዶች (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ለመጠቀም ዝግጁ ነው!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ለመጠቀም ዝግጁ ነው!</string>
     <string name="str_backup_configuration">ውቅር ያስቀምጡ</string>
     <string name="str_backup_content_detected_select">የመጠባበቂያ ይዘት ተገኝቷል፣ እባክዎ ወደ መልሰው የሚፈልጉትን ይምረጡ፦</string>
     <string name="str_backup_restore">የመጠባበቂያ ቅጂ እና መልሶ ማስገባት</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">የግራዲየንት ግልጽነት</string>
     <string name="str_installing_update">ዝማኔ እየተጫነ ነው…</string>
     <string name="str_interface">በይነገጽ</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">መተግበሪያ አስጀምር</string>
     <string name="str_launch_compatibility_check">ተኳሃኝነት ማረጋገጫ አስጀምር</string>
     <string name="str_let_s_adjust_a_few_basic_setti">ጥቂት መሰረታዊ ቅንብሮችን እናስተካክል</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">እባክዎ ለNextCore የRoot ፈቃድ ይስጡ</string>
-    <string name="str_liliya">ሊሊያ</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">እባክዎ ለNextCore የRoot ፈቃድ ይስጡ</string>
     <string name="str_load_a_previously_saved_backup">ቀድሞ የተቀመጠ የመጠባበቂያ ፋይል ጫን</string>
     <string name="str_logs_diagnostics">ሎጎች እና ምርመራ</string>
     <string name="str_maintainer">ጠባቂ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">የባትሪ መሙያ ግንኙነት አልተገኘም፣ እባክዎ የባትሪ መሙያውን ይሰኩ እና ምርመራውን ያከናውኑ</string>
     <string name="str_preview">ቅድመ-እይታ</string>
     <string name="str_restore_configuration">ውቅር መልስ</string>
-    <string name="str_rianixia">ሪያኒክስያ</string>
+    <string name="str_thermalcore">ሪያኒክስያ</string>
     <string name="str_root_access_denied">የRoot ፈቃድ ተከልክሏል፣ NextCore ለመሥራት የRoot ፈቃድ ያስፈልገዋል</string>
     <string name="str_root_access_granted">የRoot ፈቃድ ተገኝቷል፣ ሁሉም ዝግጁ ነው!</string>
     <string name="str_run_diagnostics_above_or_check">ከላይ ያለውን ምርመራ ያከናውኑ፣ ወይም ከርነሉ የተለየ ሃይል አቅርቦት ኖዶች እንዳሉት ያረጋግጡ</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ስሪት %1$s</string>
     <string name="walt_tunes">WALT አስተዳዳሪ ማስተካከል</string>
     <string name="walt_tunes_desc">የWALT አስተዳዳሪ መመዘኛዎች ያሻሽሉ፣ የሲፒዩ መርሐግብር ምላሽ ፍጥነት ያሻሽሉ</string>
-    <string name="welcome_azenith">እንኳን ወደ NextCore በደህና መጡ</string>
+    <string name="welcome_nextcore">እንኳን ወደ NextCore በደህና መጡ</string>
     <string name="yes">አዎ</string>
     <string name="str_use_scroll_animation">የማሸብለል አኒሜሽን ተጠቀም</string>
     <string name="str_use_scroll_animation_summary">በገጾች መካከል የማንሸራተት አኒሜሽን አንቃ</string>

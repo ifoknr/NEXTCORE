@@ -13,11 +13,11 @@ plugins {
 
 
 android {
-    namespace = "zx.azenith"
+    namespace = "zx.nextcore"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "zx.azenith"
+        applicationId = "zx.nextcore"
         minSdk = 29
         targetSdk = 37
         versionCode = 1

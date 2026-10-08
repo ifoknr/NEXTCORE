@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief GLOBAL VARIABLES
@@ -52,7 +52,7 @@ void init_daemon_context(DaemonContext* ctx) {
     ctx->cur_mode = PERFCOMMON;
     strcpy(ctx->last_freqoffset, "Initial");
     strcpy(ctx->prev_ai_state, "0");
-    ctx->java_lock_path = "/data/adb/.config/AZenith/java.lock";
+    ctx->java_lock_path = "/data/adb/.config/NextCore/java.lock";
     ctx->resolution_applied = false;
     ctx->used_legacy_fallback = false;
     ctx->fg_away_active = false;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore Hakkında</string>
+    <string name="about_nextcore">NextCore Hakkında</string>
     <string name="about_source_code">%1$s kaynak kodunu görüntüleyin&lt;br/&gt;%2$s kanalımıza katılın</string>
     <string name="accent_color">Vurgu rengi</string>
     <string name="all_checks_finished">Tüm kontroller tamamlandı</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Uygulama ayarları</string>
     <string name="appearance">Görünüm</string>
     <string name="applist_title">Uygulama listesi</string>
-    <string name="azenith_version">NextCore sürümü</string>
+    <string name="nextcore_version">NextCore sürümü</string>
     <string name="balanced_io_scheduler">Dengeli G/Ç zamanlayıcısı</string>
     <string name="balanced_io_scheduler_desc">Dengeli profil tarafından kullanılan zamanlayıcı</string>
     <string name="balanced_mali_gov">Dengeli Mali GPU yöneticisi</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Yazar</string>
     <string name="str_auto_mode">Otomatik mod</string>
     <string name="str_available_nodes">Kullanılabilir hedef düğümler (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore kullanıma hazır!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore kullanıma hazır!</string>
     <string name="str_backup_configuration">Yapılandırmayı yedekle</string>
     <string name="str_backup_content_detected_select">Yedek içeriği algılandı, geri yüklenecek öğeleri seçin:</string>
     <string name="str_backup_restore">Yedekle ve geri yükle</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Geçiş opaklığı</string>
     <string name="str_installing_update">Güncelleme yükleniyor…</string>
     <string name="str_interface">Arayüz</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Uygulamayı başlat</string>
     <string name="str_launch_compatibility_check">Uyumluluk kontrolünü başlat</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Birkaç temel ayarı yapalım</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Lütfen NextCore\'e Root erişimi verin</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Lütfen NextCore\'e Root erişimi verin</string>
     <string name="str_load_a_previously_saved_backup">Daha önce kaydedilmiş bir yedek dosyasını yükle</string>
     <string name="str_logs_diagnostics">Günlükler ve tanılama</string>
     <string name="str_maintainer">Bakımcı</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Şarj bağlantısı algılanmadı, lütfen bir şarj cihazı bağlayın ve ardından tanılamayı çalıştırın.</string>
     <string name="str_preview">Ön izleme</string>
     <string name="str_restore_configuration">Yapılandırmayı geri yükle</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root erişimi reddedildi. NextCore\'in çalışması için Root erişimi gereklidir.</string>
     <string name="str_root_access_granted">Root erişimi alındı, her şey hazır!</string>
     <string name="str_run_diagnostics_above_or_check">Yukarıdaki tanılamayı çalıştırın veya çekirdeğin baypas şarj düğümleri içerip içermediğini kontrol edin.</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Sürüm %1$s</string>
     <string name="walt_tunes">WALT yönetici iyileştirmesi</string>
     <string name="walt_tunes_desc">WALT yönetici parametrelerini optimize ederek CPU zamanlama tepki hızını artır</string>
-    <string name="welcome_azenith">NextCore\'e hoş geldiniz</string>
+    <string name="welcome_nextcore">NextCore\'e hoş geldiniz</string>
     <string name="yes">Evet</string>
     <string name="str_use_scroll_animation">Kaydırma Animasyonunu Kullan</string>
     <string name="str_use_scroll_animation_summary">Sayfalar arasında kaydırma animasyonunu etkinleştir</string>

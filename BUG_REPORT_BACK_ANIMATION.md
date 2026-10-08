@@ -18,7 +18,7 @@ After migrating all 10 subscreens from `LargeFlexibleTopAppBar` + `exitUntilColl
 
 ## What Was Changed (Did Not Fix It)
 
-**Files modified** (all in `manager/app/src/main/java/zx/azenith/ui/subscreens/`):
+**Files modified** (all in `manager/app/src/main/java/zx/nextcore/ui/subscreens/`):
 - `FpsGoSettingsScreen.kt`
 - `GovSettingsScreen.kt`
 - `BypassChargeScreen.kt`

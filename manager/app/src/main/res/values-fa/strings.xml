@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">درباره NextCore</string>
+    <string name="about_nextcore">درباره NextCore</string>
     <string name="about_source_code">مشاهده کد منبع در %1$s&lt;br/&gt;به کانال %2$s ما بپیوندید</string>
     <string name="accent_color">رنگ تاکیدی</string>
     <string name="all_checks_finished">همه بررسی‌ها به پایان رسید</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">تنظیمات برنامه</string>
     <string name="appearance">ظاهر</string>
     <string name="applist_title">لیست برنامه‌ها</string>
-    <string name="azenith_version">نسخه NextCore</string>
+    <string name="nextcore_version">نسخه NextCore</string>
     <string name="balanced_io_scheduler">زمان‌بند I/O متوازن</string>
     <string name="balanced_io_scheduler_desc">زمان‌بند مورد استفاده در پیکربندی متوازن</string>
     <string name="balanced_mali_gov">Governor Mali متوازن</string>
@@ -253,7 +253,7 @@
     <string name="str_author">نویسنده</string>
     <string name="str_auto_mode">حالت خودکار</string>
     <string name="str_available_nodes">گره‌های هدف موجود (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore آماده است!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore آماده است!</string>
     <string name="str_backup_configuration">پشتیبان‌گیری از پیکربندی</string>
     <string name="str_backup_content_detected_select">محتوای پشتیبان شناسایی شد، لطفاً مواردی را که می‌خواهید بازیابی کنید انتخاب کنید:</string>
     <string name="str_backup_restore">پشتیبان و بازیابی</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">شفافیت گرادیان</string>
     <string name="str_installing_update">در حال نصب به‌روزرسانی...</string>
     <string name="str_interface">رابط کاربری</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">اجرای برنامه</string>
     <string name="str_launch_compatibility_check">اجرای بررسی سازگاری</string>
     <string name="str_let_s_adjust_a_few_basic_setti">بیایید چند تنظیمات پایه را تنظیم کنیم</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">لطفاً به NextCore دسترسی روت بدهید</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">لطفاً به NextCore دسترسی روت بدهید</string>
     <string name="str_load_a_previously_saved_backup">بارگیری یک فایل پشتیبان قبلاً ذخیره شده</string>
     <string name="str_logs_diagnostics">لاگ‌ها و تشخیص</string>
     <string name="str_maintainer">نگهدارنده</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">اتصال شارژ تشخیص داده نشد، لطفاً شارژر را وصل کرده و سپس تشخیص را اجرا کنید</string>
     <string name="str_preview">پیش‌نمایش</string>
     <string name="str_restore_configuration">بازیابی پیکربندی</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">دسترسی روت رد شد، NextCore برای اجرا به دسترسی روت نیاز دارد</string>
     <string name="str_root_access_granted">دسترسی روت دریافت شد، همه چیز آماده است!</string>
     <string name="str_run_diagnostics_above_or_check">تشخیص بالا را اجرا کنید، یا بررسی کنید که هسته شامل گره تغذیه بای‌پس است یا خیر</string>
@@ -368,7 +366,7 @@
     <string name="version_format">نسخه %1$s</string>
     <string name="walt_tunes">بهینه‌سازی Governor WALT</string>
     <string name="walt_tunes_desc">بهینه‌سازی پارامترهای Governor WALT برای بهبود سرعت پاسخگویی زمان‌بندی CPU</string>
-    <string name="welcome_azenith">به NextCore خوش آمدید</string>
+    <string name="welcome_nextcore">به NextCore خوش آمدید</string>
     <string name="yes">بله</string>
     <string name="str_use_scroll_animation">استفاده از پویانمایی پیمایش</string>
     <string name="str_use_scroll_animation_summary">فعال‌سازی پویانمایی کشیدن بین صفحات</string>

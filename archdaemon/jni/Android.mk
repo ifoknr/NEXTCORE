@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := sys.azenith-service
+LOCAL_MODULE := sys.nextcore-service
 
 ALL_ABS_FILES := $(wildcard $(LOCAL_PATH)/src/*/*.c)
 

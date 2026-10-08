@@ -1,8 +1,8 @@
 [package]
-name = "azenith-utilityconf"
+name = "nextcore-utilityconf"
 version = "1.0.0"
 edition = "2024"
-description = "AZenith Utility binaries"
+description = "NextCore Utility binaries"
 
 [dependencies]
 glob = "0.3.1"

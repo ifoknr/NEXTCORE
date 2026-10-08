@@ -1,8 +1,8 @@
 [package]
-name = "rianixia-thermalcore"
+name = "nextcore-thermalcore"
 version = "2.0.0"
 edition = "2024"
-authors = ["rianixia"]
+authors = ["NextCore"]
 
 [dependencies]
 nix = { version = "0.30", features = ["poll", "time"] }
@@ -24,6 +24,6 @@ strip = true
 simulator = []
 
 [[bin]]
-name = "rianixia-thermalcore"
+name = "nextcore-thermalcore"
 path = "src/main.rs"
 

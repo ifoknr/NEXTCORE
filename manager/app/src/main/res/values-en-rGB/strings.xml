@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">About NextCore</string>
+    <string name="about_nextcore">About NextCore</string>
     <string name="about_source_code">View source code on %1$s&lt;br/&gt;Join our %2$s channel</string>
     <string name="accent_color">Accent color</string>
     <string name="all_checks_finished">All checks finished</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">App settings</string>
     <string name="appearance">Appearance</string>
     <string name="applist_title">App list</string>
-    <string name="azenith_version">NextCore version</string>
+    <string name="nextcore_version">NextCore version</string>
     <string name="balanced_io_scheduler">Balanced I/O scheduler</string>
     <string name="balanced_io_scheduler_desc">Scheduler used by balanced profile</string>
     <string name="balanced_mali_gov">Balanced Mali GPU governor</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Author</string>
     <string name="str_auto_mode">Auto mode</string>
     <string name="str_available_nodes">Available target nodes (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore is now ready to go!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore is now ready to go!</string>
     <string name="str_backup_configuration">Backup configuration</string>
     <string name="str_backup_content_detected_select">Backup content detected, select items to restore:</string>
     <string name="str_backup_restore">Backup &amp; restore</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradient opacity</string>
     <string name="str_installing_update">Installing update…</string>
     <string name="str_interface">Interface</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Launch app</string>
     <string name="str_launch_compatibility_check">Launch compatibility check</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Let\'s adjust a few basic settings</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Please grant NextCore root access</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Please grant NextCore root access</string>
     <string name="str_load_a_previously_saved_backup">Load a previously saved backup file</string>
     <string name="str_logs_diagnostics">Logs &amp; diagnostics</string>
     <string name="str_maintainer">Maintainer</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">No charging connection detected. Please plug in a charger before running diagnostics.</string>
     <string name="str_preview">Preview</string>
     <string name="str_restore_configuration">Restore configuration</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root access denied. NextCore requires root access to run.</string>
     <string name="str_root_access_granted">Root access granted, all set!</string>
     <string name="str_run_diagnostics_above_or_check">Run diagnostics above, or check if kernel includes bypass charging nodes</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Version %1$s</string>
     <string name="walt_tunes">WALT governor tuning</string>
     <string name="walt_tunes_desc">Optimize WALT governor parameters to improve CPU scheduling responsiveness</string>
-    <string name="welcome_azenith">Welcome to NextCore</string>
+    <string name="welcome_nextcore">Welcome to NextCore</string>
     <string name="yes">Yes</string>
     <string name="str_use_scroll_animation">Use Scroll Animation</string>
     <string name="str_use_scroll_animation_summary">Enable swipe animation between Page</string>

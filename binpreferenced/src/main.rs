@@ -42,7 +42,7 @@ fn get_process_cmdline(pid: u32) -> Option<String> {
 fn verify_caller() -> bool {
     if let Some(ppid) = get_parent_pid() {
         if let Some(cmdline) = get_process_cmdline(ppid) {
-            return cmdline.contains("sys.azenith-service") || cmdline.contains("sys.azenith");
+            return cmdline.contains("sys.nextcore-service") || cmdline.contains("sys.nextcore");
         }
     }
     false
@@ -52,7 +52,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     if !verify_caller() {
-        eprintln!("\x1b[31mError: This utility can only be called by sys.azenith-service\x1b[0m");
+        eprintln!("\x1b[31mError: This utility can only be called by sys.nextcore-service\x1b[0m");
         std::process::exit(1);
     }
 

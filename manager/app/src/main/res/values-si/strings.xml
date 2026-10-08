@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore ගැන</string>
+    <string name="about_nextcore">NextCore ගැන</string>
     <string name="about_source_code">%1$s හි මූලාශ්‍ර කේතය බලන්න&lt;br/&gt;අපගේ %2$s නාලිකාවට සම්බන්ධ වන්න</string>
     <string name="accent_color">තේමා වර්ණය</string>
     <string name="all_checks_finished">සියලුම පරීක්ෂණ අවසන්</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">යෙදුම් සැකසුම්</string>
     <string name="appearance">පෙනුම</string>
     <string name="applist_title">යෙදුම් ලැයිස්තුව</string>
-    <string name="azenith_version">NextCore අනුවාදය</string>
+    <string name="nextcore_version">NextCore අනුවාදය</string>
     <string name="balanced_io_scheduler">සමතුලිත I/O උපලේඛකය</string>
     <string name="balanced_io_scheduler_desc">සමතුලිත වින්‍යාසයේ භාවිතා කරන උපලේඛකය</string>
     <string name="balanced_mali_gov">සමතුලිත Mali GPU නියාමකය</string>
@@ -253,7 +253,7 @@
     <string name="str_author">කතෘ</string>
     <string name="str_auto_mode">ස්වයංක්‍රීය ප්‍රකාරය</string>
     <string name="str_available_nodes">පවතින ඉලක්ක නෝඩ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore සූදානම්!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore සූදානම්!</string>
     <string name="str_backup_configuration">වින්‍යාසය උපස්ථ කරන්න</string>
     <string name="str_backup_content_detected_select">උපස්ථ අන්තර්ගතය හමු විය, ප්‍රතිස්ථාපනය කළ යුතු අයිතම තෝරන්න:</string>
     <string name="str_backup_restore">උපස්ථ සහ ප්‍රතිස්ථාපනය</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ග්‍රේඩියන්ට් පාරදෘශ්‍යතාව</string>
     <string name="str_installing_update">යාවත්කාලීනය ස්ථාපනය කරමින්...</string>
     <string name="str_interface">අතුරු මුහුණත</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">යෙදුම ආරම්භ කරන්න</string>
     <string name="str_launch_compatibility_check">ගැළපුම් පරීක්ෂාව ආරම්භ කරන්න</string>
     <string name="str_let_s_adjust_a_few_basic_setti">අපි මූලික සැකසුම් කිහිපයක් සකස් කරමු</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">කරුණාකර NextCore වෙත Root ප්‍රවේශය ලබා දෙන්න</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">කරුණාකර NextCore වෙත Root ප්‍රවේශය ලබා දෙන්න</string>
     <string name="str_load_a_previously_saved_backup">සුරකින ලද උපස්ථ ගොනුවක් පූරණය කරන්න</string>
     <string name="str_logs_diagnostics">ලොග් සහ රෝග විනිශ්චය</string>
     <string name="str_maintainer">නඩත්තුකරු</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ආරෝපණ සම්බන්ධතාවයක් හමු නොවීය, කරුණාකර ආරෝපකය සම්බන්ධ කර රෝග විනිශ්චය ධාවනය කරන්න</string>
     <string name="str_preview">පෙරදසුන</string>
     <string name="str_restore_configuration">වින්‍යාසය ප්‍රතිස්ථාපනය කරන්න</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root ප්‍රවේශය ප්‍රතික්ෂේප කර ඇත, NextCore ධාවනය වීමට Root ප්‍රවේශය අවශ්‍ය වේ</string>
     <string name="str_root_access_granted">Root ප්‍රවේශය ලබා දී ඇත, සියල්ල සූදානම්!</string>
     <string name="str_run_diagnostics_above_or_check">ඉහත රෝග විනිශ්චය ධාවනය කරන්න, නැතහොත් කර්නලයේ බයිපාස් බල සැපයුම් නෝඩයක් අඩංගු දැයි පරීක්ෂා කරන්න</string>
@@ -368,7 +366,7 @@
     <string name="version_format">අනුවාදය %1$s</string>
     <string name="walt_tunes">WALT නියාමක සුසර කිරීම</string>
     <string name="walt_tunes_desc">WALT නියාමක පරාමිතීන් ප්‍රශස්ත කර CPU උපලේඛන ප්‍රතිචාර වේගය වැඩි කරන්න</string>
-    <string name="welcome_azenith">NextCore වෙත සාදරයෙන් පිළිගනිමු</string>
+    <string name="welcome_nextcore">NextCore වෙත සාදරයෙන් පිළිගනිමු</string>
     <string name="yes">ඔව්</string>
     <string name="str_use_scroll_animation">අනුචලන සජීවිකරණය භාවිතා කරන්න</string>
     <string name="str_use_scroll_animation_summary">පිටු අතර ස්වයිප් සජීවිකරණය සක්‍රීය කරන්න</string>

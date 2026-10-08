@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <libgen.h>
 #include <string.h>
 #define IS_CMD(arg, long_cmd, short_cmd) (strcmp(arg, long_cmd) == 0 || strcmp(arg, short_cmd) == 0)

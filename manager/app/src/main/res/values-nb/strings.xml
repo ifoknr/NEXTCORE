@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Om NextCore</string>
+    <string name="about_nextcore">Om NextCore</string>
     <string name="about_source_code">Se kildekoden på %1$s&lt;br/&gt;Bli med i vår %2$s-kanal</string>
     <string name="accent_color">Aksentfarge</string>
     <string name="all_checks_finished">Alle kontroller fullført</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">App-innstillinger</string>
     <string name="appearance">Utseende</string>
     <string name="applist_title">App-liste</string>
-    <string name="azenith_version">NextCore-versjon</string>
+    <string name="nextcore_version">NextCore-versjon</string>
     <string name="balanced_io_scheduler">Balansert I/O-planlegger</string>
     <string name="balanced_io_scheduler_desc">Planlegger brukt i balansert profil</string>
     <string name="balanced_mali_gov">Balansert Mali GPU-regulator</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Forfatter</string>
     <string name="str_auto_mode">Automatisk modus</string>
     <string name="str_available_nodes">Tilgjengelige målnoder (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore er klar!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore er klar!</string>
     <string name="str_backup_configuration">Sikkerhetskopier konfigurasjon</string>
     <string name="str_backup_content_detected_select">Sikkerhetskopiinnhold oppdaget. Velg elementer å gjenopprette:</string>
     <string name="str_backup_restore">Sikkerhetskopiering og gjenoppretting</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradientgjennomsiktighet</string>
     <string name="str_installing_update">Installerer oppdatering…</string>
     <string name="str_interface">Grensesnitt</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Start app</string>
     <string name="str_launch_compatibility_check">Start kompatibilitetssjekk</string>
     <string name="str_let_s_adjust_a_few_basic_setti">La oss justere noen grunnleggende innstillinger</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Vennligst gi NextCore root-tilgang</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Vennligst gi NextCore root-tilgang</string>
     <string name="str_load_a_previously_saved_backup">Last en tidligere lagret sikkerhetskopifil</string>
     <string name="str_logs_diagnostics">Logger og diagnostikk</string>
     <string name="str_maintainer">Vedlikeholder</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Ingen lader oppdaget. Koble til laderen før du kjører diagnostikk.</string>
     <string name="str_preview">Forhåndsvisning</string>
     <string name="str_restore_configuration">Gjenopprett konfigurasjon</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root-tilgang nektet. NextCore trenger root-tilgang for å fungere.</string>
     <string name="str_root_access_granted">Root-tilgang oppnådd. Alt er klart!</string>
     <string name="str_run_diagnostics_above_or_check">Kjør diagnostikken over, eller sjekk om kjernen inneholder bypass-ladenoder</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versjon %1$s</string>
     <string name="walt_tunes">WALT-regulatortilpasning</string>
     <string name="walt_tunes_desc">Optimer WALT-regulatorparametere for å forbedre CPU-planleggingsrespons</string>
-    <string name="welcome_azenith">Velkommen til NextCore</string>
+    <string name="welcome_nextcore">Velkommen til NextCore</string>
     <string name="yes">Ja</string>
     <string name="str_use_scroll_animation">Bruk rulleanimasjon</string>
     <string name="str_use_scroll_animation_summary">Aktiver sveipeanimasjon mellom sider</string>

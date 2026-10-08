@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">អំពី NextCore</string>
+    <string name="about_nextcore">អំពី NextCore</string>
     <string name="about_source_code">មើលកូដប្រភពនៅ %1$s&lt;br/&gt;ចូលរួមប៉ុស្តិ៍ %2$s របស់យើង</string>
     <string name="accent_color">ពណ៌សង្កត់</string>
     <string name="all_checks_finished">ការត្រួតពិនិត្យទាំងអស់បានបញ្ចប់</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ការកំណត់កម្មវិធី</string>
     <string name="appearance">រូបរាង</string>
     <string name="applist_title">បញ្ជីកម្មវិធី</string>
-    <string name="azenith_version">កំណែ NextCore</string>
+    <string name="nextcore_version">កំណែ NextCore</string>
     <string name="balanced_io_scheduler">កម្មវិធីកំណត់ពេល I/O សមតុល្យ</string>
     <string name="balanced_io_scheduler_desc">កម្មវិធីកំណត់ពេលដែលប្រើក្នុងគម្រោងសមតុល្យ</string>
     <string name="balanced_mali_gov">អ្នកត្រួតពិនិត្យ Mali GPU សមតុល្យ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">អ្នកនិពន្ធ</string>
     <string name="str_auto_mode">របៀបស្វ័យប្រវត្តិ</string>
     <string name="str_available_nodes">ថ្នាំងគោលដៅដែលអាចប្រើបាន (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore បានត្រៀមរួចរាល់ហើយ!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore បានត្រៀមរួចរាល់ហើយ!</string>
     <string name="str_backup_configuration">បម្រុងទុកការកំណត់</string>
     <string name="str_backup_content_detected_select">បានរកឃើញមាតិកាបម្រុងទុក សូមជ្រើសរើសធាតុដែលត្រូវស្តារ៖</string>
     <string name="str_backup_restore">បម្រុងទុក និងស្តារ</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ភាពស្រអាប់នៃជម្រាល</string>
     <string name="str_installing_update">កំពុងដំឡើងបច្ចុប្បន្នភាព…</string>
     <string name="str_interface">ចំណុចប្រទាក់</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">ចាប់ផ្តើមកម្មវិធី</string>
     <string name="str_launch_compatibility_check">ចាប់ផ្តើមពិនិត្យភាពឆបគ្នា</string>
     <string name="str_let_s_adjust_a_few_basic_setti">តោះកែសម្រួលការកំណត់មូលដ្ឋានមួយចំនួន</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">សូមផ្តល់សិទ្ធិ Root ដល់ NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">សូមផ្តល់សិទ្ធិ Root ដល់ NextCore</string>
     <string name="str_load_a_previously_saved_backup">ផ្ទុកឯកសារបម្រុងទុកដែលបានរក្សាទុកពីមុន</string>
     <string name="str_logs_diagnostics">កំណត់ហេតុ និងការធ្វើរោគវិនិច្ឆ័យ</string>
     <string name="str_maintainer">អ្នកថែរក្សា</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">មិនបានរកឃើញការតភ្ជាប់សាកថ្មទេ សូមដោតឆ្នាំងសាក ហើយដំណើរការធ្វើរោគវិនិច្ឆ័យម្តងទៀត</string>
     <string name="str_preview">មើលជាមុន</string>
     <string name="str_restore_configuration">ស្តារការកំណត់</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">សិទ្ធិ Root ត្រូវបានបដិសេធ NextCore ត្រូវការសិទ្ធិ Root ដើម្បីដំណើរការ</string>
     <string name="str_root_access_granted">ទទួលបានសិទ្ធិ Root អ្វីៗគ្រប់យ៉ាងរួចរាល់!</string>
     <string name="str_run_diagnostics_above_or_check">ដំណើរការការធ្វើរោគវិនិច្ឆ័យខាងលើ ឬពិនិត្យមើលថាតើ Kernel មានថ្នាំង Bypass Charging ដែរឬទេ</string>
@@ -368,7 +366,7 @@
     <string name="version_format">កំណែ %1$s</string>
     <string name="walt_tunes">ការកែសម្រួលអ្នកត្រួតពិនិត្យ WALT</string>
     <string name="walt_tunes_desc">បង្កើនប្រសិទ្ធិភាពប៉ារ៉ាម៉ែត្រអ្នកត្រួតពិនិត្យ WALT បង្កើនល្បឿនឆ្លើយតប CPU Scheduling</string>
-    <string name="welcome_azenith">សូមស្វាគមន៍មកកាន់ NextCore</string>
+    <string name="welcome_nextcore">សូមស្វាគមន៍មកកាន់ NextCore</string>
     <string name="yes">បាទ</string>
     <string name="str_use_scroll_animation">ប្រើចលនារំកិល</string>
     <string name="str_use_scroll_animation_summary">បើកដំណើរការចលនាអូសរវាងទំព័រ</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Tungkol sa NextCore</string>
+    <string name="about_nextcore">Tungkol sa NextCore</string>
     <string name="about_source_code">Tingnan ang source code sa %1$s&lt;br/&gt;Sumali sa aming %2$s channel</string>
     <string name="accent_color">Kulay ng accent</string>
     <string name="all_checks_finished">Tapos na lahat ng pagsusuri</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Mga setting ng app</string>
     <string name="appearance">Hitsura</string>
     <string name="applist_title">Listahan ng app</string>
-    <string name="azenith_version">Bersyon ng NextCore</string>
+    <string name="nextcore_version">Bersyon ng NextCore</string>
     <string name="balanced_io_scheduler">Balanseng I/O scheduler</string>
     <string name="balanced_io_scheduler_desc">Scheduler na ginagamit ng balanced profile</string>
     <string name="balanced_mali_gov">Balanseng Mali GPU governor</string>
@@ -253,7 +253,7 @@
     <string name="str_author">May-akda</string>
     <string name="str_auto_mode">Auto mode</string>
     <string name="str_available_nodes">Mga available na target node (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">Handa na ang NextCore!</string>
+    <string name="str_nextcore_is_now_ready_to_go">Handa na ang NextCore!</string>
     <string name="str_backup_configuration">I-backup ang configuration</string>
     <string name="str_backup_content_detected_select">Natukoy ang backup content, pumili ng item na gusto mong i-restore:</string>
     <string name="str_backup_restore">Backup at restore</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Opacity ng gradient</string>
     <string name="str_installing_update">Nag-i-install ng update…</string>
     <string name="str_interface">Interface</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Ilunsad ang app</string>
     <string name="str_launch_compatibility_check">Ilunsad ang compatibility check</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ayusin natin ang ilang pangunahing setting</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Mangyaring bigyan ang NextCore ng Root permission</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Mangyaring bigyan ang NextCore ng Root permission</string>
     <string name="str_load_a_previously_saved_backup">I-load ang na-save na backup file</string>
     <string name="str_logs_diagnostics">Log at diagnosis</string>
     <string name="str_maintainer">Maintainer</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Hindi nahanap ang charging connection, mangyaring isaksak ang charger bago patakbuhin ang diagnosis</string>
     <string name="str_preview">Preview</string>
     <string name="str_restore_configuration">I-restore ang configuration</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Tinanggihan ang Root permission, kailangan ng NextCore ang Root permission para tumakbo</string>
     <string name="str_root_access_granted">Nakuha na ang Root permission, handa na ang lahat!</string>
     <string name="str_run_diagnostics_above_or_check">Patakbuhin ang diagnosis sa itaas, o suriin kung ang kernel ay naglalaman ng bypass charging node</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Bersyon %1$s</string>
     <string name="walt_tunes">WALT governor tuning</string>
     <string name="walt_tunes_desc">I-optimize ang WALT governor parameter, pataasin ang CPU scheduling response speed</string>
-    <string name="welcome_azenith">Maligayang pagdating sa NextCore</string>
+    <string name="welcome_nextcore">Maligayang pagdating sa NextCore</string>
     <string name="yes">Oo</string>
     <string name="str_use_scroll_animation">Gamitin ang Scroll Animation</string>
     <string name="str_use_scroll_animation_summary">Paganahin ang swipe animation sa pagitan ng mga Pahina</string>

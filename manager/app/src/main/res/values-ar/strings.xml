@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">حول NextCore</string>
+    <string name="about_nextcore">حول NextCore</string>
     <string name="about_source_code">عرض شفرة المصدر على %1$s&lt;br/&gt;انضم إلى قناتنا %2$s</string>
     <string name="accent_color">لون التركيز</string>
     <string name="all_checks_finished">جميع الفحوصات منتهية</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">إعدادات التطبيق</string>
     <string name="appearance">المظهر</string>
     <string name="applist_title">قائمة التطبيقات</string>
-    <string name="azenith_version">إصدار NextCore</string>
+    <string name="nextcore_version">إصدار NextCore</string>
     <string name="balanced_io_scheduler">جدولة I/O متوازنة</string>
     <string name="balanced_io_scheduler_desc">الجدولة المستخدمة في ملف تعريف التوازن</string>
     <string name="balanced_mali_gov">محافظ Mali GPU المتوازن</string>
@@ -253,7 +253,7 @@
     <string name="str_author">المؤلف</string>
     <string name="str_auto_mode">الوضع التلقائي</string>
     <string name="str_available_nodes">العقد المتاحة (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore جاهز الآن!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore جاهز الآن!</string>
     <string name="str_backup_configuration">نسخ احتياطي للتكوين</string>
     <string name="str_backup_content_detected_select">تم اكتشاف محتوى النسخة الاحتياطية، يرجى تحديد العناصر المراد استعادتها:</string>
     <string name="str_backup_restore">النسخ الاحتياطي والاستعادة</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">شفافية التدرج</string>
     <string name="str_installing_update">جاري تثبيت التحديث…</string>
     <string name="str_interface">الواجهة</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">تشغيل التطبيق</string>
     <string name="str_launch_compatibility_check">بدء فحص التوافق</string>
     <string name="str_let_s_adjust_a_few_basic_setti">دعنا نضبط بعض الإعدادات الأساسية</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">يرجى منح صلاحية الجذر لـ NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">يرجى منح صلاحية الجذر لـ NextCore</string>
     <string name="str_load_a_previously_saved_backup">تحميل ملف نسخة احتياطية محفوظة مسبقًا</string>
     <string name="str_logs_diagnostics">السجلات والتشخيص</string>
     <string name="str_maintainer">المشرف</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">لم يتم اكتشاف اتصال الشاحن، يرجى توصيل الشاحن ثم تشغيل التشخيص</string>
     <string name="str_preview">معاينة</string>
     <string name="str_restore_configuration">استعادة التكوين</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">تم رفض صلاحية الجذر، يحتاج NextCore إلى صلاحية الجذر ليعمل</string>
     <string name="str_root_access_granted">تم الحصول على صلاحية الجذر، كل شيء جاهز!</string>
     <string name="str_run_diagnostics_above_or_check">تشغيل التشخيص أعلاه، أو التحقق مما إذا كانت النواة تحتوي على عقد شحن جانبي</string>
@@ -368,7 +366,7 @@
     <string name="version_format">الإصدار %1$s</string>
     <string name="walt_tunes">ضبط محافظ WALT</string>
     <string name="walt_tunes_desc">تحسين معلمات محافظ WALT لزيادة سرعة استجابة جدولة CPU</string>
-    <string name="welcome_azenith">مرحبًا بك في NextCore</string>
+    <string name="welcome_nextcore">مرحبًا بك في NextCore</string>
     <string name="yes">نعم</string>
     <string name="str_use_scroll_animation">استخدام تأثيرات التمرير</string>
     <string name="str_use_scroll_animation_summary">تمكين تأثير التمرير السريع بين الصفحات</string>
@@ -380,9 +378,8 @@
     <string name="presets">الإعدادات المسبقة</string>
     <string name="str_bypass_need_setup">لم يتم إعداد مسار الشحن الجانبي بعد. يرجى إكمال الإعداد عبر فحص التوافق أولاً.</string>
     <string name="reboot_required_content">يتطلب هذا الخيار إعادة التشغيل ليتم تطبيقه. متابعة؟</string>
-    <string name="str_turki">تركي</string>
-    <string name="str_original_author">مطوّر AZenith الأصلي</string>
-    <string name="str_credits">شكر وتقدير (فريق AZenith)</string>
+    <string name="str_original_author">مطوّر NextCore الأصلي</string>
+    <string name="str_credits">شكر وتقدير (فريق NextCore)</string>
     <string name="about_github">GitHub</string>
     <string name="tile_bypass_charge">الشحن الجانبي</string>
     <string name="only_snapdragon">هذا الخيار متاح فقط لأجهزة Snapdragon.</string>

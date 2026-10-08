@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Sobre NextCore</string>
+    <string name="about_nextcore">Sobre NextCore</string>
     <string name="about_source_code">Veure el codi font a %1$s&lt;br/&gt;Uniu-vos al nostre canal %2$s</string>
     <string name="accent_color">Color d\'accent</string>
     <string name="all_checks_finished">Totes les comprovacions finalitzades</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Configuració de l\'aplicació</string>
     <string name="appearance">Aparença</string>
     <string name="applist_title">Llista d\'aplicacions</string>
-    <string name="azenith_version">Versió d\'NextCore</string>
+    <string name="nextcore_version">Versió d\'NextCore</string>
     <string name="balanced_io_scheduler">Planificador d\'E/S equilibrat</string>
     <string name="balanced_io_scheduler_desc">Planificador utilitzat pel perfil equilibrat</string>
     <string name="balanced_mali_gov">Governador de GPU Mali equilibrat</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Mode automàtic</string>
     <string name="str_available_nodes">Nodes objectiu disponibles (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore està a punt!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore està a punt!</string>
     <string name="str_backup_configuration">Còpia de seguretat de la configuració</string>
     <string name="str_backup_content_detected_select">S\'ha detectat contingut de còpia de seguretat, seleccioneu els elements a restaurar:</string>
     <string name="str_backup_restore">Còpia de seguretat i restauració</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Opacitat del degradat</string>
     <string name="str_installing_update">Instal·lant actualització…</string>
     <string name="str_interface">Interfície</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Iniciar aplicació</string>
     <string name="str_launch_compatibility_check">Iniciar comprovació de compatibilitat</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ajustem uns quants paràmetres bàsics</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Concediu permisos de root a NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Concediu permisos de root a NextCore</string>
     <string name="str_load_a_previously_saved_backup">Carregar fitxer de còpia de seguretat desat</string>
     <string name="str_logs_diagnostics">Registres i diagnòstic</string>
     <string name="str_maintainer">Mantenidor</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">No s\'ha detectat connexió de càrrega; endolleu el carregador abans d\'executar el diagnòstic</string>
     <string name="str_preview">Vista prèvia</string>
     <string name="str_restore_configuration">Restaurar configuració</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">S\'han denegat els permisos de root; NextCore necessita permisos de root per funcionar</string>
     <string name="str_root_access_granted">Permisos de root obtinguts, tot a punt!</string>
     <string name="str_run_diagnostics_above_or_check">Executeu el diagnòstic anterior, o comproveu si el nucli inclou nodes d\'alimentació de derivació</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versió %1$s</string>
     <string name="walt_tunes">Ajust del governador WALT</string>
     <string name="walt_tunes_desc">Optimitza els paràmetres del governador WALT per millorar la velocitat de resposta de la planificació de la CPU</string>
-    <string name="welcome_azenith">Benvingut a NextCore</string>
+    <string name="welcome_nextcore">Benvingut a NextCore</string>
     <string name="yes">Sí</string>
     <string name="str_use_scroll_animation">Utilitza l\'animació de desplaçament</string>
     <string name="str_use_scroll_animation_summary">Habilita l\'animació de lliscament entre pàgines</string>

@@ -17,8 +17,8 @@
 #
 
 readonly MODDIR="${0%/*}"
-LOCK_FILE="/dev/.azenithSingleInstance"
-MODULE_CONFIG="/data/adb/.config/AZenith"
+LOCK_FILE="/dev/.nextcoreSingleInstance"
+MODULE_CONFIG="/data/adb/.config/NextCore"
 
 # Single Instance Lock
 # Ksu in Metamodule mode, post-fs-data runs twice
@@ -36,7 +36,7 @@ BOOTCOUNT=$(( BOOTCOUNT + 1))
 if [ ! -f "$MODDIR/explicit_I_want_a_bootloop" ] && [ $BOOTCOUNT -gt 1 ]; then
     touch "$MODDIR/disable"
     rm -f "$MODDIR/count.sh"
-    rm -f /data/adb/service.d/.azenith_cleanup.sh
+    rm -f /data/adb/service.d/.nextcore_cleanup.sh
     string="description=anti-bootloop triggered. module disabled. enable to activate."
     sed -i "s/^description=.*/$string/g" "$MODDIR/module.prop"
     exit 1
@@ -52,10 +52,10 @@ fi
 # KSU Run Stop in Emulated Soft Reboot, but our daemon is running as detached process, making ksu failed to kill the daemon
 # So we have to kill it here...
 # Clear old process
-for p in $(/system/bin/toybox pidof sys.azenith-service); do
+for p in $(/system/bin/toybox pidof sys.nextcore-service); do
     kill -TERM "$p" 2>/dev/null
 done
-for p in $(/system/bin/toybox pidof sys.azenith-appmonitoring); do
+for p in $(/system/bin/toybox pidof sys.nextcore-appmonitoring); do
     kill -TERM "$p" 2>/dev/null
 done
 

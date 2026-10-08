@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Par NextCore</string>
+    <string name="about_nextcore">Par NextCore</string>
     <string name="about_source_code">Skatīt kodu %1$s&lt;br/&gt;Pievienojieties mūsu %2$s kanālam</string>
     <string name="accent_color">Akcenta krāsa</string>
     <string name="all_checks_finished">Visas pārbaudes pabeigtas</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Lietotnes iestatījumi</string>
     <string name="appearance">Izskats</string>
     <string name="applist_title">Lietotņu saraksts</string>
-    <string name="azenith_version">NextCore versija</string>
+    <string name="nextcore_version">NextCore versija</string>
     <string name="balanced_io_scheduler">Līdzsvarots I/O plānotājs</string>
     <string name="balanced_io_scheduler_desc">Līdzsvarotajā profilā izmantotais plānotājs</string>
     <string name="balanced_mali_gov">Līdzsvarots Mali GPU pārvaldnieks</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autors</string>
     <string name="str_auto_mode">Automātiskais režīms</string>
     <string name="str_available_nodes">Pieejamie mērķa mezgli (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ir gatavs darbam!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ir gatavs darbam!</string>
     <string name="str_backup_configuration">Dublēt konfigurāciju</string>
     <string name="str_backup_content_detected_select">Tika atklāts dublējuma saturs. Lūdzu, izvēlieties atjaunojamos vienumus:</string>
     <string name="str_backup_restore">Dublēšana un atjaunošana</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradienta necaurredzamība</string>
     <string name="str_installing_update">Tiek instalēts atjauninājums…</string>
     <string name="str_interface">Saskarne</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Palaist lietotni</string>
     <string name="str_launch_compatibility_check">Palaist saderības pārbaudi</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Pielāgosim dažus pamata iestatījumus</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Lūdzu, piešķiriet NextCore Root tiesības</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Lūdzu, piešķiriet NextCore Root tiesības</string>
     <string name="str_load_a_previously_saved_backup">Ielādēt iepriekš saglabātu dublējuma failu</string>
     <string name="str_logs_diagnostics">Žurnāli un diagnostika</string>
     <string name="str_maintainer">Uzturētājs</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Nav konstatēts uzlādes savienojums. Lūdzu, pievienojiet lādētāju un pēc tam palaidiet diagnostiku.</string>
     <string name="str_preview">Priekšskatījums</string>
     <string name="str_restore_configuration">Atjaunot konfigurāciju</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root piekļuve atteikta. NextCore nepieciešama Root piekļuve, lai darbotos.</string>
     <string name="str_root_access_granted">Root piekļuve iegūta, viss gatavs!</string>
     <string name="str_run_diagnostics_above_or_check">Palaidiet iepriekš minēto diagnostiku vai pārbaudiet, vai kodolā ir apvada uzlādes mezgli</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versija %1$s</string>
     <string name="walt_tunes">WALT pārvaldnieka iestatījumi</string>
     <string name="walt_tunes_desc">Optimizēt WALT pārvaldnieka parametrus, lai uzlabotu CPU plānošanas atsaucību</string>
-    <string name="welcome_azenith">Laipni lūdzam NextCore</string>
+    <string name="welcome_nextcore">Laipni lūdzam NextCore</string>
     <string name="yes">Jā</string>
     <string name="str_use_scroll_animation">Izmantot ritināšanas animāciju</string>
     <string name="str_use_scroll_animation_summary">Iespējot pārvilkšanas animāciju starp lapām</string>

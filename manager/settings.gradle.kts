@@ -21,5 +21,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AZenith"
+rootProject.name = "NextCore"
 include(":app")

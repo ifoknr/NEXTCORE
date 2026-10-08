@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := sys.azenith-preloadbin
+LOCAL_MODULE := sys.nextcore-preloadbin
 LOCAL_SRC_FILES := \
     main.c \
 

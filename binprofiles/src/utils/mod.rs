@@ -5,7 +5,7 @@ use std::process::Command;
 use glob::glob;
 use std::collections::HashSet;
 
-pub const CONFIG_PATH: &str = "/data/adb/.config/AZenith";
+pub const CONFIG_PATH: &str = "/data/adb/.config/NextCore";
 pub const MY_PATH: &str = "/system/bin:/system/xbin:/data/adb/ap/bin:/data/adb/ksu/bin:/data/adb/magisk:/debug_ramdisk:/sbin:/sbin/su:/su/bin:/su/xbin:/data/data/com.termux/files/usr/bin";
 
 pub fn getprop(key: &str) -> String {
@@ -36,15 +36,15 @@ pub fn setprop(key: &str, val: &str) {
 
 pub fn log_verbose(message: &str) {
     if get_debugmode() {
-        let _ = Command::new("sys.azenith-service")
+        let _ = Command::new("sys.nextcore-service")
             .args(["--verboselog", "AZLog", "0", message])
             .status();
     }
 }
 
 pub fn log_info(message: &str) {
-    let _ = Command::new("sys.azenith-service")
-        .args(["--log", "AZenith_Profiler", "1", message])
+    let _ = Command::new("sys.nextcore-service")
+        .args(["--log", "NextCore_Profiler", "1", message])
         .status();
 }
 
@@ -56,6 +56,9 @@ pub fn chmod(path: &str, mode: u32) {
     }
 }
 
+/// Writes a tweak value. Nodes are left writable (0644) even when `lock` is
+/// set: locking them read-only kept the vendor thermal and power services from
+/// stepping clocks down on a hot device, which is not safe on a public build.
 pub fn write_unlock_core(value: &str, path_str: &str, lock: bool) {
     let path = Path::new(path_str);
     let parent_name = path.parent().and_then(|p| p.file_name()).unwrap_or_default().to_string_lossy();
@@ -70,12 +73,12 @@ pub fn write_unlock_core(value: &str, path_str: &str, lock: bool) {
     
     if fs::write(path, val_with_newline).is_err() {
         log_verbose(&format!("Cannot write to /{} (permission denied)", pathname));
-        if lock { chmod(path_str, 0o444); }
+        if lock { chmod(path_str, 0o644); }
         return;
     }
 
     log_verbose(&format!("Set /{} to {}", pathname, value));
-    if lock { chmod(path_str, 0o444); }
+    if lock { chmod(path_str, 0o644); }
 }
 
 pub fn write_unlock(value: &str, path_str: &str) {
@@ -102,7 +105,7 @@ pub fn systemv(command: &str) -> i32 {
 }
 
 pub fn get_limiter() -> u64 {
-    let val = getprop("persist.sys.azenithconf.freqoffset");
+    let val = getprop("persist.sys.nextcoreconf.freqoffset");
     if val == "Disabled" || val.is_empty() {
         100
     } else {
@@ -111,15 +114,15 @@ pub fn get_limiter() -> u64 {
 }
 
 pub fn get_debugmode() -> bool {
-    getprop("persist.sys.azenith.debugmode") == "true"
+    getprop("persist.sys.nextcore.debugmode") == "true"
 }
 
 pub fn get_clearapps() -> bool {
-    getprop("persist.sys.azenithconf.clearbg") == "1"
+    getprop("persist.sys.nextcoreconf.clearbg") == "1"
 }
 
 pub fn get_litemode() -> bool {
-    getprop("persist.sys.azenithconf.litemode") == "1"
+    getprop("persist.sys.nextcoreconf.litemode") == "1"
 }
 
 pub fn get_curprofile() -> String {
@@ -159,7 +162,7 @@ pub fn applyppmnfreqsets(value: &str, path: &str) {
         // FIX: Tambahkan \n
         let val_with_newline = format!("{}\n", value);
         let _ = fs::write(path, val_with_newline);
-        chmod(path, 0o444);
+        chmod(path, 0o644);
     }
 }
 
@@ -198,14 +201,14 @@ pub fn setgov(gov: &str) {
             let p_str = path.to_str().unwrap();
             chmod(p_str, 0o644);
             let _ = fs::write(p_str, gov);
-            chmod(p_str, 0o444);
+            chmod(p_str, 0o644);
         }
     }
 
     // Lock additional policy paths
     if let Ok(paths) = glob::glob("/sys/devices/system/cpu/cpufreq/policy*/scaling_governor") {
         for path in paths.flatten() {
-            chmod(path.to_str().unwrap(), 0o444);
+            chmod(path.to_str().unwrap(), 0o644);
         }
     }
 }
@@ -216,7 +219,7 @@ pub fn sets_io(scheduler: &str) {
         if Path::new(&path).exists() {
             chmod(&path, 0o644);
             let _ = fs::write(&path, scheduler);
-            chmod(&path, 0o444);
+            chmod(&path, 0o644);
         }
     }
 }
@@ -303,7 +306,7 @@ pub fn setfreq() {
 
                 if let Ok(sc_paths) = glob("/sys/devices/system/cpu/cpufreq/policy*/scaling_*_freq") {
                     for sp in sc_paths.flatten() {
-                        chmod(sp.to_str().unwrap(), 0o444);
+                        chmod(sp.to_str().unwrap(), 0o644);
                     }
                 }
             }
@@ -453,7 +456,7 @@ pub fn dsetfreq() {
 
                 if let Ok(sc_paths) = glob("/sys/devices/system/cpu/cpufreq/policy*/scaling_*_freq") {
                     for sp in sc_paths.flatten() {
-                        chmod(sp.to_str().unwrap(), 0o444);
+                        chmod(sp.to_str().unwrap(), 0o644);
                     }
                 }
             }
@@ -529,7 +532,7 @@ pub fn dsetgamefreq() {
 
                 if let Ok(sc_paths) = glob("/sys/devices/system/cpu/cpufreq/policy*/scaling_*_freq") {
                     for sp in sc_paths.flatten() {
-                        chmod(sp.to_str().unwrap(), 0o444);
+                        chmod(sp.to_str().unwrap(), 0o644);
                     }
                 }
             }
@@ -539,44 +542,46 @@ pub fn dsetgamefreq() {
 
 pub fn devfreq_max_perf(path: &str) {
     let avail = format!("{}/available_frequencies", path);
-    if !Path::new(&avail).exists() { return; }
-
-    if let Some(max_freq) = which_maxfreq(&avail) {
-        write_unlock(&max_freq.to_string(), &format!("{}/max_freq", path));
-        write_unlock(&max_freq.to_string(), &format!("{}/min_freq", path));
+    if let Some(max) = which_maxfreq(&avail) {
+        write_range(&format!("{}/min_freq", path), &format!("{}/max_freq", path), max, max);
     }
 }
 
 pub fn devfreq_mid_perf(path: &str) {
     let avail = format!("{}/available_frequencies", path);
-    if !Path::new(&avail).exists() { return; }
-
-    if let (Some(max_freq), Some(mid_freq)) = (which_maxfreq(&avail), which_midfreq(&avail)) {
-        write_lock(&max_freq.to_string(), &format!("{}/max_freq", path));
-        write_unlock(&mid_freq.to_string(), &format!("{}/min_freq", path));
+    if let (Some(max), Some(mid)) = (which_maxfreq(&avail), which_midfreq(&avail)) {
+        write_range(&format!("{}/min_freq", path), &format!("{}/max_freq", path), mid, max);
     }
 }
 
 pub fn devfreq_unlock(path: &str) {
     let avail = format!("{}/available_frequencies", path);
-    if !Path::new(&avail).exists() { return; }
-
-    if let (Some(max_freq), Some(min_freq)) = (which_maxfreq(&avail), which_minfreq(&avail)) {
-        write_lock(&max_freq.to_string(), &format!("{}/max_freq", path));
-        write_lock(&min_freq.to_string(), &format!("{}/min_freq", path));
+    if let (Some(max), Some(min)) = (which_maxfreq(&avail), which_minfreq(&avail)) {
+        write_range(&format!("{}/min_freq", path), &format!("{}/max_freq", path), min, max);
     }
 }
 
-pub fn devfreq_min_perf(path: &str) {
+/// Writes a min/max pair in an order the kernel accepts: raising goes max
+/// first, lowering goes min first, so min never ends up above max midway
+/// (older kernels reject that write).
+pub fn write_range(min_path: &str, max_path: &str, min: u64, max: u64) {
+    let cur_max = read_u64(max_path);
+    if cur_max != 0 && min > cur_max {
+        write_unlock(&max.to_string(), max_path);
+        write_unlock(&min.to_string(), min_path);
+    } else {
+        write_unlock(&min.to_string(), min_path);
+        write_unlock(&max.to_string(), max_path);
+    }
+}
+
+/// Eco: caps a devfreq device at its middle frequency and lets it idle down.
+pub fn devfreq_cap_mid(path: &str) {
     let avail = format!("{}/available_frequencies", path);
-    if !Path::new(&avail).exists() { return; }
-
-    if let Some(freq) = which_minfreq(&avail) {
-        write_lock(&freq.to_string(), &format!("{}/min_freq", path));
-        write_lock(&freq.to_string(), &format!("{}/max_freq", path));
+    if let (Some(mid), Some(min)) = (which_midfreq(&avail), which_minfreq(&avail)) {
+        write_range(&format!("{}/min_freq", path), &format!("{}/max_freq", path), min, mid);
     }
 }
-
 
 pub fn clear_background_apps() {
     // Menjalankan dumpsys window displays
@@ -612,25 +617,52 @@ pub fn clear_background_apps() {
         }
     }
 
-    let exclude = ["com.android.systemui", "com.android.settings", "android", "system"];
+    // Only apps the user installed are candidates; system apps are never stopped.
+    let user_apps: HashSet<String> = Command::new("pm")
+        .args(["list", "packages", "-3"])
+        .output()
+        .map(|o| {
+            String::from_utf8_lossy(&o.stdout)
+                .lines()
+                .filter_map(|l| l.strip_prefix("package:").map(|p| p.trim().to_string()))
+                .collect()
+        })
+        .unwrap_or_default();
 
-    for pkg in invisible_pkgs {
-        if visible_pkgs.contains(&pkg) {
-            continue;
-        }
-
-        let is_excluded = exclude.iter().any(|&ex| pkg.contains(ex));
-
-        if !is_excluded {
-            let _ = Command::new("am")
-                .args(["force-stop", &pkg])
-                .status();
-
-            log_verbose(&format!("Stopped app: {}", pkg));
+    // Apps that must keep running in the background: the keyboard and launcher
+    // in use, and anything that delivers messages, calls, music or alarms.
+    let mut keep: HashSet<String> = HashSet::new();
+    for key in ["default_input_method", "sms_default_application", "dialer_default_application"] {
+        let v = getsetting_secure(key);
+        if let Some(pkg) = v.split('/').next().filter(|p| !p.is_empty()) {
+            keep.insert(pkg.to_string());
         }
     }
+    if let Ok(o) = Command::new("cmd").args(["package", "resolve-activity", "--brief", "-c", "android.intent.category.HOME", "-a", "android.intent.action.MAIN"]).output() {
+        if let Some(line) = String::from_utf8_lossy(&o.stdout).lines().last() {
+            if let Some(pkg) = line.split('/').next() {
+                keep.insert(pkg.trim().to_string());
+            }
+        }
+    }
+    const KEEP_WORDS: [&str; 22] = [
+        "whatsapp", "telegram", "messenger", "signal", "discord", "viber", "wechat", "naver.line",
+        "snapchat", "instagram", "skype", "teams", "slack", "zoom",
+        "music", "spotify", "deezer", "anghami", "podcast",
+        "alarm", "clock", "keyboard",
+    ];
 
-    log_info("Cleared background apps");
+    for pkg in invisible_pkgs {
+        if visible_pkgs.contains(&pkg) || !user_apps.contains(&pkg) || keep.contains(&pkg) {
+            continue;
+        }
+        let lower = pkg.to_lowercase();
+        if KEEP_WORDS.iter().any(|w| lower.contains(w)) {
+            continue;
+        }
+        let _ = Command::new("am").args(["force-stop", &pkg]).status();
+        log_verbose(&format!("Stopped app: {}", pkg));
+    }
 }
 
 pub fn get_mtk_gpu_max_freq() -> Option<u64> {
@@ -664,11 +696,11 @@ pub fn init_cpu_governor() {
     let performance_gov = "performance";
     let powersave_gov = "powersave";
 
-    setprop_cmd("persist.sys.azenith.default_cpu_gov", &default_gov);
+    setprop_cmd("persist.sys.nextcore.default_cpu_gov", &default_gov);
     log_info(&format!("Default CPU governor detected: {}", default_gov));
 
     // Handle fallback if default is 'performance'
-    if default_gov == "performance" && getprop("persist.sys.azenith.custom_default_cpu_gov").is_empty() {
+    if default_gov == "performance" && getprop("persist.sys.nextcore.custom_default_cpu_gov").is_empty() {
         log_info("Default governor is 'performance'");
         let avail_govs = fs::read_to_string(format!("{}/scaling_available_governors", cpu_path)).unwrap_or_default();
         let fallbacks = [
@@ -679,7 +711,7 @@ pub fn init_cpu_governor() {
 
         for gov in &fallbacks {
             if avail_govs.contains(gov) {
-                setprop_cmd("persist.sys.azenith.default_cpu_gov", gov);
+                setprop_cmd("persist.sys.nextcore.default_cpu_gov", gov);
                 default_gov = gov.to_string();
                 log_info(&format!("Fallback governor to: {}", gov));
                 break;
@@ -688,7 +720,7 @@ pub fn init_cpu_governor() {
     }
 
     // Apply custom governor if set
-    let custom_gov = getprop("persist.sys.azenith.custom_default_cpu_gov");
+    let custom_gov = getprop("persist.sys.nextcore.custom_default_cpu_gov");
     if !custom_gov.is_empty() {
         default_gov = custom_gov;
     }
@@ -697,11 +729,11 @@ pub fn init_cpu_governor() {
     setgov(&default_gov);
 
     // Set fallback props
-    if getprop("persist.sys.azenith.custom_powersave_cpu_gov").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_powersave_cpu_gov", &powersave_gov);
+    if getprop("persist.sys.nextcore.custom_powersave_cpu_gov").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_powersave_cpu_gov", &powersave_gov);
     }
-    if getprop("persist.sys.azenith.custom_performance_cpu_gov").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_performance_cpu_gov", &performance_gov);
+    if getprop("persist.sys.nextcore.custom_performance_cpu_gov").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_performance_cpu_gov", &performance_gov);
     }
     
     log_info("Parsing CPU Governor complete");
@@ -735,11 +767,11 @@ pub fn init_io_scheduler() {
         }
     }
 
-    setprop_cmd("persist.sys.azenith.default_balanced_IO", &default_io);
+    setprop_cmd("persist.sys.nextcore.default_balanced_IO", &default_io);
     log_info(&format!("Default IO Scheduler detected: {}", default_io));
 
     // Apply custom IO if set
-    let custom_io = getprop("persist.sys.azenith.custom_default_balanced_IO");
+    let custom_io = getprop("persist.sys.nextcore.custom_default_balanced_IO");
     if !custom_io.is_empty() {
         default_io = custom_io;
     }
@@ -748,11 +780,11 @@ pub fn init_io_scheduler() {
     sets_io(&default_io);
 
     // Set fallback props
-    if getprop("persist.sys.azenith.custom_powersave_IO").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_powersave_IO", &default_io);
+    if getprop("persist.sys.nextcore.custom_powersave_IO").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_powersave_IO", &default_io);
     }
-    if getprop("persist.sys.azenith.custom_performance_IO").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_performance_IO", &default_io);
+    if getprop("persist.sys.nextcore.custom_performance_IO").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_performance_IO", &default_io);
     }
     
     log_info("Parsing IO Scheduler complete");
@@ -783,10 +815,10 @@ pub fn init_maligpu_governor() {
         .trim()
         .to_string();
 
-    setprop_cmd("persist.sys.azenith.default_maligpu_gov", &default_maligpu_gov);
+    setprop_cmd("persist.sys.nextcore.default_maligpu_gov", &default_maligpu_gov);
     log_info(&format!("Default Mali GPU governor detected: {}", default_maligpu_gov));
 
-    let custom_maligpu_gov = getprop("persist.sys.azenith.custom_default_maligpu_gov");
+    let custom_maligpu_gov = getprop("persist.sys.nextcore.custom_default_maligpu_gov");
     if !custom_maligpu_gov.is_empty() {
         default_maligpu_gov = custom_maligpu_gov;
     }
@@ -794,11 +826,11 @@ pub fn init_maligpu_governor() {
     log_info(&format!("Using Mali GPU governor: {}", default_maligpu_gov));
     write_lock(&default_maligpu_gov, &gov_file);
 
-    if getprop("persist.sys.azenith.custom_powersave_maligpu_gov").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_powersave_maligpu_gov", &default_maligpu_gov);
+    if getprop("persist.sys.nextcore.custom_powersave_maligpu_gov").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_powersave_maligpu_gov", &default_maligpu_gov);
     }
-    if getprop("persist.sys.azenith.custom_performance_maligpu_gov").is_empty() {
-        setprop_cmd("persist.sys.azenith.custom_performance_maligpu_gov", &default_maligpu_gov);
+    if getprop("persist.sys.nextcore.custom_performance_maligpu_gov").is_empty() {
+        setprop_cmd("persist.sys.nextcore.custom_performance_maligpu_gov", &default_maligpu_gov);
     }
 
     log_info("Parsing Mali GPU Governor complete");
@@ -810,14 +842,14 @@ pub fn sets_mali_gov(gov: &str) {
             if let Some(p_str) = path.to_str() {
                 chmod(p_str, 0o644);
                 let _ = fs::write(p_str, gov);
-                chmod(p_str, 0o444); 
+                chmod(p_str, 0o644); 
             }
         }
     }
 }
 
 pub fn is_tweak_disabled() -> bool {
-    let disable_tweak = getprop("persist.sys.azenith.disabletweak");
+    let disable_tweak = getprop("persist.sys.nextcore.disabletweak");
     disable_tweak == "1"
 }
 
@@ -890,7 +922,7 @@ pub fn setrender(renderer: &str) {
 }
 
 pub fn init_renderer() {
-    let renderer = getprop("persist.sys.azenithconf.renderer");
+    let renderer = getprop("persist.sys.nextcoreconf.renderer");
     
     if renderer.is_empty() || renderer.eq_ignore_ascii_case("default") {
         log_info("Renderer setting is default, skipping renderer setup");
@@ -905,7 +937,7 @@ pub fn init_renderer() {
 /// MediaTek thermal and battery limits, the way the performance profile
 /// always worked before. Off by default; the default is sustained mode.
 pub fn get_perfmax() -> bool {
-    getprop("persist.sys.azenithconf.perfmax") == "1"
+    getprop("persist.sys.nextcoreconf.perfmax") == "1"
 }
 
 fn read_u64(path: &str) -> u64 {
@@ -1017,4 +1049,55 @@ pub fn restore_uclamp() {
         }
         Err(_) => set_uclamp("0", "0", "max"),
     }
+}
+
+fn node_defaults_path() -> String {
+    format!("{}/API/node_default", CONFIG_PATH)
+}
+
+/// Saves the current value of every node matching `patterns` the first time
+/// it is seen, so a profile can later put back what the vendor set.
+pub fn backup_nodes(patterns: &[&str]) {
+    let file = node_defaults_path();
+    let mut saved = fs::read_to_string(&file).unwrap_or_default();
+    let mut changed = false;
+    for pattern in patterns {
+        let Ok(paths) = glob(pattern) else { continue };
+        for path in paths.flatten() {
+            let p = path.to_string_lossy().into_owned();
+            if saved.lines().any(|l| l.split_once('=').map(|(k, _)| k == p).unwrap_or(false)) {
+                continue;
+            }
+            // A governor node reads like "performance", or "[a] b c" on some kernels.
+            let raw = fs::read_to_string(&path).unwrap_or_default();
+            let value = raw
+                .split_whitespace()
+                .find(|w| w.starts_with('['))
+                .map(|w| w.trim_matches(|c| c == '[' || c == ']').to_string())
+                .unwrap_or_else(|| raw.trim().to_string());
+            if !value.is_empty() {
+                saved.push_str(&format!("{}={}\n", p, value));
+                changed = true;
+            }
+        }
+    }
+    if changed {
+        let _ = fs::write(&file, saved);
+    }
+}
+
+/// Puts back the saved vendor value of `path`; does nothing when none was saved.
+pub fn restore_node(path: &str) {
+    let saved = fs::read_to_string(node_defaults_path()).unwrap_or_default();
+    if let Some(value) = saved.lines().find_map(|l| l.strip_prefix(path)?.strip_prefix('=')) {
+        write_unlock(value, path);
+    }
+}
+
+fn getsetting_secure(key: &str) -> String {
+    Command::new("settings")
+        .args(["get", "secure", key])
+        .output()
+        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+        .unwrap_or_default()
 }

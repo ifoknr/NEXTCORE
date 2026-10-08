@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Пра NextCore</string>
+    <string name="about_nextcore">Пра NextCore</string>
     <string name="about_source_code">Праглядзець зыходны код на %1$s&lt;br/&gt;Далучыцца да нашага %2$s канала</string>
     <string name="accent_color">Акцэнтны колер</string>
     <string name="all_checks_finished">Усе праверкі завершаны</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Настройкі прыкладання</string>
     <string name="appearance">Знешні выгляд</string>
     <string name="applist_title">Спіс прыкладанняў</string>
-    <string name="azenith_version">Версія NextCore</string>
+    <string name="nextcore_version">Версія NextCore</string>
     <string name="balanced_io_scheduler">Збалансаваны планавальнік I/O</string>
     <string name="balanced_io_scheduler_desc">Планавальнік, які выкарыстоўваецца ў збалансаваным профілі</string>
     <string name="balanced_mali_gov">Збалансаваны рэгулятар Mali GPU</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Аўтар</string>
     <string name="str_auto_mode">Аўтаматычны рэжым</string>
     <string name="str_available_nodes">Даступныя мэтавыя вузлы (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore гатовы да працы!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore гатовы да працы!</string>
     <string name="str_backup_configuration">Рэзервовая копія канфігурацыі</string>
     <string name="str_backup_content_detected_select">Выяўлена змесціва рэзервовай копіі. Абярыце элементы для аднаўлення:</string>
     <string name="str_backup_restore">Рэзервовае капіяванне і аднаўленне</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Непразрыстасць градыенту</string>
     <string name="str_installing_update">Усталяванне абнаўлення…</string>
     <string name="str_interface">Інтэрфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Запусціць прыкладанне</string>
     <string name="str_launch_compatibility_check">Запусціць праверку сумяшчальнасці</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Давайце наладзім некалькі асноўных параметраў</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Калі ласка, дайце NextCore правы Root</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Калі ласка, дайце NextCore правы Root</string>
     <string name="str_load_a_previously_saved_backup">Загрузіць раней захаваную рэзервовую копію</string>
     <string name="str_logs_diagnostics">Журналы і дыягностыка</string>
     <string name="str_maintainer">Суправаджальнік</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Не выяўлена падключэнне зараднай прылады. Калі ласка, падключыце зараднік перад запускам дыягностыкі</string>
     <string name="str_preview">Папярэдні прагляд</string>
     <string name="str_restore_configuration">Аднавіць канфігурацыю</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Доступ Root адхілены. NextCore патрабуе правы Root для працы</string>
     <string name="str_root_access_granted">Правы Root атрыманы, усё гатова!</string>
     <string name="str_run_diagnostics_above_or_check">Запусціце дыягностыку вышэй або праверце, ці змяшчае ядро вузел абыходнага зарада</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Версія %1$s</string>
     <string name="walt_tunes">Налады WALT</string>
     <string name="walt_tunes_desc">Аптымізаваць параметры рэгулятара WALT для павышэння хуткасці рэакцыі планавання CPU</string>
-    <string name="welcome_azenith">Сардэчна запрашаем у NextCore</string>
+    <string name="welcome_nextcore">Сардэчна запрашаем у NextCore</string>
     <string name="yes">Так</string>
     <string name="str_use_scroll_animation">Выкарыстоўваць анімацыю пракруткі</string>
     <string name="str_use_scroll_animation_summary">Уключыць анімацыю правядзення паміж старонкамі</string>

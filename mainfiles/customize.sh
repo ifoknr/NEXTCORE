@@ -17,15 +17,15 @@
 SKIPUNZIP=1
 
 # Paths
-MODULE_CONFIG="/data/adb/.config/AZenith"
+MODULE_CONFIG="/data/adb/.config/NextCore"
 device_codename=$(getprop ro.product.board)
 chip=$(getprop ro.hardware)
 HM_DIR="/data/adb/hybrid-mount"
 HM_CONFIG="$HM_DIR/config.toml"
 API_LEVEL=$(getprop ro.build.version.sdk)
-readonly APK_COMP="$MODPATH/AZenith.apk"
+readonly APK_COMP="$MODPATH/NextCore.apk"
 readonly TMP_DIR="/data/local/tmp"
-readonly TMP_APK="$TMP_DIR/AZenith_install.apk"
+readonly TMP_APK="$TMP_DIR/NextCore_install.apk"
 
 # Create File
 make_node() {
@@ -185,12 +185,12 @@ case $ARCH in
 esac
 
 echo "- Extracting binaries for $ARCH_TMP..."
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-service" "$TMPDIR"
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-profilesettings" "$TMPDIR"
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-rianixiathermalcore" "$TMPDIR"
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-utilityconf" "$TMPDIR"
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-preferencedtweaks" "$TMPDIR"
-extract "$ZIPFILE" "libs/$ARCH_TMP/sys.azenith-preloadbin" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-service" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-profilesettings" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-thermalcore" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-utilityconf" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-preferencedtweaks" "$TMPDIR"
+extract "$ZIPFILE" "libs/$ARCH_TMP/sys.nextcore-preloadbin" "$TMPDIR"
 cp "$TMPDIR/libs/$ARCH_TMP/"* "$MODPATH/system/bin/"
 rm -rf "$TMPDIR/libs"
 echo "- All binaries installed successfully"
@@ -209,11 +209,18 @@ extract "$ZIPFILE" module.prop "$MODPATH"
 cp "$MODPATH/module.prop" "$MODPATH/module.prop.orig"
 echo "- Extracting uninstall.sh..."
 extract "$ZIPFILE" uninstall.sh "$MODPATH"
+# Builds before the rename kept their config in .config/AZenith: carry the game list over
+OLD_CONFIG="/data/adb/.config/AZenith"
+if [ ! -f "$MODULE_CONFIG/gamelist/nextcoreApplist.json" ] && [ -f "$OLD_CONFIG/gamelist/azenithApplist.json" ]; then
+    echo "- Migrating game list from the previous version"
+    mkdir -p "$MODULE_CONFIG/gamelist"
+    cp "$OLD_CONFIG/gamelist/azenithApplist.json" "$MODULE_CONFIG/gamelist/nextcoreApplist.json"
+fi
 # Keep a pristine copy in the module so service.sh can restore a missing gamelist
-extract "$ZIPFILE" azenithApplist.json "$MODPATH"
-if [ ! -f "$MODULE_CONFIG/gamelist/azenithApplist.json" ]; then
+extract "$ZIPFILE" nextcoreApplist.json "$MODPATH"
+if [ ! -f "$MODULE_CONFIG/gamelist/nextcoreApplist.json" ]; then
     echo "- Extracting Applist.json..."
-    extract "$ZIPFILE" azenithApplist.json "$MODULE_CONFIG/gamelist"
+    extract "$ZIPFILE" nextcoreApplist.json "$MODULE_CONFIG/gamelist"
 fi
 echo "- Extracting module banner..."
 extract "$ZIPFILE" module.banner.jpg "$MODPATH"
@@ -237,7 +244,7 @@ if [ -f "$HM_CONFIG" ]; then
     if [ -n "$HM_BIN" ]; then
         echo "- Found Hybrid Mount CLI at: $HM_BIN"
         $HM_BIN api config-patch --patch '{"rules":{"nextcore":{"default_mode":"ignore"}}}' --apply-runtime >/dev/null 2>&1
-        echo "- Runtime policy for AZenith updated to 'ignore'."
+        echo "- Runtime policy for NextCore updated to 'ignore'."
     else
         echo "- Warning: CLI binary not found in standard paths. Skipping live patch."
     fi
@@ -263,13 +270,13 @@ if [ "$KSU" = "true" ] || [ "$APATCH" = "true" ]; then
 	for dir in $manager_paths; do
 		[ -d "$dir" ] && {
 			echo "- Creating symlink in $dir"
-			ln -sf "$BIN_PATH/sys.azenith-service" "$dir/sys.azenith-service"
-			ln -sf "$BIN_PATH/sys.azenith-service" "$dir/zx" # Binary calls for CLI
-			ln -sf "$BIN_PATH/sys.azenith-profilesettings" "$dir/sys.azenith-profilesettings"
-			ln -sf "$BIN_PATH/sys.azenith-utilityconf" "$dir/sys.azenith-utilityconf"
-			ln -sf "$BIN_PATH/sys.azenith-preferencedtweaks" "$dir/sys.azenith-preferencedtweaks"
-			ln -sf "$BIN_PATH/sys.azenith-preloadbin" "$dir/sys.azenith-preloadbin"
-            ln -sf "$BIN_PATH/sys.azenith-rianixiathermalcore" "$dir/sys.azenith-rianixiathermalcore"
+			ln -sf "$BIN_PATH/sys.nextcore-service" "$dir/sys.nextcore-service"
+			ln -sf "$BIN_PATH/sys.nextcore-service" "$dir/zx" # Binary calls for CLI
+			ln -sf "$BIN_PATH/sys.nextcore-profilesettings" "$dir/sys.nextcore-profilesettings"
+			ln -sf "$BIN_PATH/sys.nextcore-utilityconf" "$dir/sys.nextcore-utilityconf"
+			ln -sf "$BIN_PATH/sys.nextcore-preferencedtweaks" "$dir/sys.nextcore-preferencedtweaks"
+			ln -sf "$BIN_PATH/sys.nextcore-preloadbin" "$dir/sys.nextcore-preloadbin"
+            ln -sf "$BIN_PATH/sys.nextcore-thermalcore" "$dir/sys.nextcore-thermalcore"
 		}
 	done
 fi
@@ -281,7 +288,7 @@ extract "$ZIPFILE" devprobe.sh "$MODPATH"
 . "$MODPATH/devprobe.sh"
 devprobe_run
 soc="$DP_SOC_VENDOR"
-setprop persist.sys.azenith.soctype "$DP_SOC_TYPE"
+setprop persist.sys.nextcore.soctype "$DP_SOC_TYPE"
 ui_print ""
 
 # Soc Type
@@ -293,95 +300,94 @@ ui_print ""
 # 0) Unknown
 
 # Set default freqoffset
-if [ -z "$(getprop persist.sys.azenithconf.freqoffset)" ]; then
-	setprop persist.sys.azenithconf.freqoffset "Disabled"
+if [ -z "$(getprop persist.sys.nextcoreconf.freqoffset)" ]; then
+	setprop persist.sys.nextcoreconf.freqoffset "Disabled"
 	touch "$MODULE_CONFIG/freqoffset"
 	echo "Disabled" > "$MODULE_CONFIG/freqoffset"
 fi
 
 # Set default color scheme if not set
-if [ -z "$(getprop persist.sys.azenithconf.schemeconfig)" ]; then
-	setprop persist.sys.azenithconf.schemeconfig "1000 1000 1000 1000"
+if [ -z "$(getprop persist.sys.nextcoreconf.schemeconfig)" ]; then
+	setprop persist.sys.nextcoreconf.schemeconfig "1000 1000 1000 1000"
 fi
 
 # Initiate bypasspath default value
-if [ -z "$(getprop persist.sys.azenithconf.bypasspath)" ]; then
-	setprop persist.sys.azenithconf.bypasspath "NEED_SETUP"
+if [ -z "$(getprop persist.sys.nextcoreconf.bypasspath)" ]; then
+	setprop persist.sys.nextcoreconf.bypasspath "NEED_SETUP"
 	touch "$MODULE_CONFIG/bypasschgconfig/bypasspath"
 	echo "NEED_SETUP" > "$MODULE_CONFIG/bypasschgconfig/bypasspath"
 fi
 
 # Initiate bypasspath default value
-if [ -z "$(getprop persist.sys.azenithconf.bypasschgthreshold)" ]; then
-	setprop persist.sys.azenithconf.bypasschgthreshold "20"
+if [ -z "$(getprop persist.sys.nextcoreconf.bypasschgthreshold)" ]; then
+	setprop persist.sys.nextcoreconf.bypasschgthreshold "20"
 	touch "$MODULE_CONFIG/bypasschgconfig/bypasschgthreshold"
 	echo "20" > "$MODULE_CONFIG/bypasschgconfig/bypasschgthreshold"
 fi
 
 # Initiate bypasscharging state
-if [ -z "$(getprop persist.sys.azenithconf.bypasschg)" ]; then
-	setprop persist.sys.azenithconf.bypasschg "0"
+if [ -z "$(getprop persist.sys.nextcoreconf.bypasschg)" ]; then
+	setprop persist.sys.nextcoreconf.bypasschg "0"
 	touch "$MODULE_CONFIG/bypasschgconfig/bypasschg"
 	echo "0" > "$MODULE_CONFIG/bypasschgconfig/bypasschg"
 fi
 
 # Daemon Configurations
-if [ -z "$(getprop persist.sys.azenithconf.showtoast)" ]; then
-	setprop persist.sys.azenithconf.showtoast 0
+if [ -z "$(getprop persist.sys.nextcoreconf.showtoast)" ]; then
+	setprop persist.sys.nextcoreconf.showtoast 0
 fi
 
-if [ -z "$(getprop persist.sys.azenith.profilenotifications)" ]; then
-	setprop persist.sys.azenith.profilenotifications 1
+if [ -z "$(getprop persist.sys.nextcore.profilenotifications)" ]; then
+	setprop persist.sys.nextcore.profilenotifications 1
 fi
 
-if [ -z "$(getprop persist.sys.azenith.dropforeground)" ]; then
-	setprop persist.sys.azenith.dropforeground 0
+if [ -z "$(getprop persist.sys.nextcore.dropforeground)" ]; then
+	setprop persist.sys.nextcore.dropforeground 0
 fi
 
-if [ -z "$(getprop persist.sys.azenith.disabletweak)" ]; then
-	setprop persist.sys.azenith.disabletweak 0
+if [ -z "$(getprop persist.sys.nextcore.disabletweak)" ]; then
+	setprop persist.sys.nextcore.disabletweak 0
 fi
 
-if [ -z "$(getprop persist.sys.azenithconf.iosched)" ]; then
-	setprop persist.sys.azenithconf.iosched 1
+if [ -z "$(getprop persist.sys.nextcoreconf.iosched)" ]; then
+	setprop persist.sys.nextcoreconf.iosched 1
 fi
 
-if [ -z "$(getprop persist.sys.azenithconf.renderer)" ]; then
-	setprop persist.sys.azenithconf.renderer default
+if [ -z "$(getprop persist.sys.nextcoreconf.renderer)" ]; then
+	setprop persist.sys.nextcoreconf.renderer default
 fi
 
-if [ -z "$(getprop persist.sys.azenithconf.preloadbudget)" ]; then
-    setprop persist.sys.azenithconf.preloadbudget 500M
+if [ -z "$(getprop persist.sys.nextcoreconf.preloadbudget)" ]; then
+    setprop persist.sys.nextcoreconf.preloadbudget 500M
 fi
 
-if [ -z "$(getprop persist.sys.azenithconf.AIenabled)" ]; then
+if [ -z "$(getprop persist.sys.nextcoreconf.AIenabled)" ]; then
     echo "- Enabling Auto Mode"
-    setprop persist.sys.azenithconf.AIenabled 1
+    setprop persist.sys.nextcoreconf.AIenabled 1
     echo 1 > "$MODULE_CONFIG/API/current_modes"
 fi
 
 echo "- Disable Debugmode"
-setprop persist.sys.azenith.debugmode "false"
+setprop persist.sys.nextcore.debugmode "false"
 
 # Set config properties to use
 echo "- Setting config properties..."
 props="
-persist.sys.azenithconf.logd
-persist.sys.azenithconf.DThermal
-persist.sys.azenithconf.SFL
-persist.sys.azenithconf.malisched
-persist.sys.azenithconf.fpsged
-persist.sys.azenithconf.schedtunes
-persist.sys.azenithconf.clearbg
-persist.sys.azenithconf.APreload
-persist.sys.azenithconf.cpulimit
-persist.sys.azenithconf.dnd
-persist.sys.azenithconf.justintime
-persist.sys.azenithconf.disabletrace
-persist.sys.azenithconf.thermalcore
-persist.sys.azenithconf.walttunes
-persist.sys.azenithconf.fstrim
-persist.sys.azenithconf.usefpsgo
+persist.sys.nextcoreconf.logd
+persist.sys.nextcoreconf.SFL
+persist.sys.nextcoreconf.malisched
+persist.sys.nextcoreconf.fpsged
+persist.sys.nextcoreconf.schedtunes
+persist.sys.nextcoreconf.clearbg
+persist.sys.nextcoreconf.APreload
+persist.sys.nextcoreconf.cpulimit
+persist.sys.nextcoreconf.dnd
+persist.sys.nextcoreconf.justintime
+persist.sys.nextcoreconf.disabletrace
+persist.sys.nextcoreconf.thermalcore
+persist.sys.nextcoreconf.walttunes
+persist.sys.nextcoreconf.fstrim
+persist.sys.nextcoreconf.usefpsgo
 "
 for prop in $props; do
 	curval=$(getprop "$prop")
@@ -390,7 +396,7 @@ for prop in $props; do
 	fi
 done
 
-extract "$ZIPFILE" AZenith.apk "$MODPATH"
+extract "$ZIPFILE" NextCore.apk "$MODPATH"
 
 # Install Apps
 APP_INSTALLED=false
@@ -407,12 +413,12 @@ fi
 # Enable Launcher and grant permissions ONLY if app installed successfully
 if [ "$APP_INSTALLED" = "true" ]; then
     echo "- Enabling Launcher..."
-    pm enable --user 0 zx.azenith/.Launcher > /dev/null 2>&1
+    pm enable --user 0 zx.nextcore/.Launcher > /dev/null 2>&1
     
     echo "- Setting Permissions..."
-    pm grant zx.azenith android.permission.READ_EXTERNAL_STORAGE
-    pm grant zx.azenith android.permission.POST_NOTIFICATIONS
-    pm grant zx.azenith android.permission.READ_MEDIA_IMAGES
+    pm grant zx.nextcore android.permission.READ_EXTERNAL_STORAGE
+    pm grant zx.nextcore android.permission.POST_NOTIFICATIONS
+    pm grant zx.nextcore android.permission.READ_MEDIA_IMAGES
 fi
 
 # Remove old module files if available
@@ -421,6 +427,11 @@ echo "- Cleaning old files..."
 if pm list packages | grep -q "azenith.toast"; then
     echo "- Uninstalling old components"
     pm uninstall --user 0 azenith.toast > /dev/null 2>&1
+fi
+# NextCore 2.0 builds before the rename shipped the app as zx.azenith
+if pm list packages | grep -q "^package:zx.azenith$"; then
+    echo "- Removing the old NextCore app (zx.azenith)"
+    pm uninstall --user 0 zx.azenith > /dev/null 2>&1
 fi
 
 set_perm_recursive "$MODPATH/system/bin" 0 0 0755 0755

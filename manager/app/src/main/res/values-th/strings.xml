@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">เกี่ยวกับ NextCore</string>
+    <string name="about_nextcore">เกี่ยวกับ NextCore</string>
     <string name="about_source_code">ดูซอร์สโค้ดที่ %1$s&lt;br/&gt;เข้าร่วมช่อง %2$s ของเรา</string>
     <string name="accent_color">สีเน้น</string>
     <string name="all_checks_finished">ตรวจสอบทั้งหมดเสร็จสิ้น</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">การตั้งค่าแอป</string>
     <string name="appearance">ลักษณะที่ปรากฏ</string>
     <string name="applist_title">รายการแอป</string>
-    <string name="azenith_version">เวอร์ชัน NextCore</string>
+    <string name="nextcore_version">เวอร์ชัน NextCore</string>
     <string name="balanced_io_scheduler">ตัวจัดลำดับ I/O แบบสมดุล</string>
     <string name="balanced_io_scheduler_desc">ตัวจัดลำดับที่ใช้ในโปรไฟล์สมดุล</string>
     <string name="balanced_mali_gov">ตัวควบคุม GPU Mali แบบสมดุล</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ผู้เขียน</string>
     <string name="str_auto_mode">โหมดอัตโนมัติ</string>
     <string name="str_available_nodes">โหนดเป้าหมายที่ใช้ได้ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore พร้อมใช้งานแล้ว!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore พร้อมใช้งานแล้ว!</string>
     <string name="str_backup_configuration">สำรองการกำหนดค่า</string>
     <string name="str_backup_content_detected_select">ตรวจพบเนื้อหาสำรอง กรุณาเลือกรายการที่จะกู้คืน:</string>
     <string name="str_backup_restore">สำรองและกู้คืน</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ความทึบของการไล่ระดับ</string>
     <string name="str_installing_update">กำลังติดตั้งอัปเดต…</string>
     <string name="str_interface">อินเทอร์เฟซ</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">เปิดแอป</string>
     <string name="str_launch_compatibility_check">เริ่มการตรวจสอบความเข้ากันได้</string>
     <string name="str_let_s_adjust_a_few_basic_setti">เรามาปรับการตั้งค่าพื้นฐานสองสามอย่าง</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">โปรดให้สิทธิ์ Root แก่ NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">โปรดให้สิทธิ์ Root แก่ NextCore</string>
     <string name="str_load_a_previously_saved_backup">โหลดไฟล์สำรองที่บันทึกไว้ก่อนหน้า</string>
     <string name="str_logs_diagnostics">บันทึกและการวินิจฉัย</string>
     <string name="str_maintainer">ผู้ดูแล</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ไม่พบการเชื่อมต่อที่ชาร์จ กรุณาเสียบที่ชาร์จแล้วรันการวินิจฉัย</string>
     <string name="str_preview">ดูตัวอย่าง</string>
     <string name="str_restore_configuration">กู้คืนการกำหนดค่า</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">สิทธิ์ Root ถูกปฏิเสธ NextCore ต้องการสิทธิ์ Root เพื่อทำงาน</string>
     <string name="str_root_access_granted">ได้รับสิทธิ์ Root แล้ว พร้อมใช้งาน!</string>
     <string name="str_run_diagnostics_above_or_check">รันการวินิจฉัยด้านบน หรือตรวจสอบว่าเคอร์เนลมีโหนดบายพาสการจ่ายไฟหรือไม่</string>
@@ -368,7 +366,7 @@
     <string name="version_format">เวอร์ชัน %1$s</string>
     <string name="walt_tunes">ปรับแต่งตัวควบคุม WALT</string>
     <string name="walt_tunes_desc">ปรับพารามิเตอร์ตัวควบคุม WALT เพื่อเพิ่มความเร็วในการตอบสนองของการจัดลำดับ CPU</string>
-    <string name="welcome_azenith">ยินดีต้อนรับสู่ NextCore</string>
+    <string name="welcome_nextcore">ยินดีต้อนรับสู่ NextCore</string>
     <string name="yes">ใช่</string>
     <string name="str_use_scroll_animation">ใช้ภาพเคลื่อนไหวการเลื่อน</string>
     <string name="str_use_scroll_animation_summary">เปิดใช้ภาพเคลื่อนไหวการปัดระหว่างหน้า</string>

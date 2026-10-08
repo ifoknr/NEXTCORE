@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <dirent.h>
 #include <string.h>
 
@@ -78,9 +78,9 @@ int check_bypass_compatibility() {
     printf("\n\033[1;31m[-]\033[0m Final Result: No compatible bypass node found.\n");
     printf("\033[33m[INFO]\033[0m Summary: %d Scanned, %d Tested, %d Skipped.\033[0m\n", total_nodes, tested_count, skipped_count);
 
-    __system_property_set("persist.sys.azenithconf.bypasspath", "UNSUPPORTED");
-    __system_property_set("persist.sys.azenithconf.bypasschg", "0");
-    __system_property_set("persist.sys.azenithconf.bypasschgthreshold", "20");
+    __system_property_set("persist.sys.nextcoreconf.bypasspath", "UNSUPPORTED");
+    __system_property_set("persist.sys.nextcoreconf.bypasschg", "0");
+    __system_property_set("persist.sys.nextcoreconf.bypasschgthreshold", "20");
     systemv("echo UNSUPPORTED > %s/bypasspath", BYPASSCHG_CONFIG);
     systemv("echo 0 > %s/bypasschg", BYPASSCHG_CONFIG);
     systemv("echo 20 > %s/bypasschgthreshold", BYPASSCHG_CONFIG);
@@ -91,7 +91,7 @@ int check_bypass_compatibility() {
  * @brief Displays all hardcoded bypass nodes and checks if they exist on the current device.
  */
 void print_bypass_path_list() {
-    printf("\n\033[36m[AZenith Available Bypass Path List]\033[0m\n");
+    printf("\n\033[36m[NextCore Available Bypass Path List]\033[0m\n");
     printf("---------------------------------------------------------------------------------------"
            "---\n");
     printf(" %-30s | %-10s | %s\n", "NODE NAME", "STATUS", "SYSFS/PROC PATH");

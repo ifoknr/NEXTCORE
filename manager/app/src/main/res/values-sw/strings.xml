@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Kuhusu NextCore</string>
+    <string name="about_nextcore">Kuhusu NextCore</string>
     <string name="about_source_code">Tazama msimbo wa chanzo kwenye %1$s&lt;br/&gt;Jiunge na kituo chetu cha %2$s</string>
     <string name="accent_color">Rangi ya accent</string>
     <string name="all_checks_finished">Ukaguzi wote umekamilika</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Mipangilio ya Programu</string>
     <string name="appearance">Muonekano</string>
     <string name="applist_title">Orodha ya Programu</string>
-    <string name="azenith_version">Toleo la NextCore</string>
+    <string name="nextcore_version">Toleo la NextCore</string>
     <string name="balanced_io_scheduler">Ratiba ya I/O ya usawa</string>
     <string name="balanced_io_scheduler_desc">Ratiba inayotumiwa na mpango wa usawa</string>
     <string name="balanced_mali_gov">Kidhibiti cha Mali GPU cha usawa</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Mwandishi</string>
     <string name="str_auto_mode">Hali otomatiki</string>
     <string name="str_available_nodes">Nodi zinazowezekana (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore iko tayari kutumika!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore iko tayari kutumika!</string>
     <string name="str_backup_configuration">Hifadhi nakala rudufu ya usanidi</string>
     <string name="str_backup_content_detected_select">Nakala rudufu imegunduliwa, tafadhali chagua vipengee vya kurejesha:</string>
     <string name="str_backup_restore">Nakala rudufu na urejeshaji</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Uwazi wa gradient</string>
     <string name="str_installing_update">Inasakinisha sasisho...</string>
     <string name="str_interface">Kiolesura</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Zindua programu</string>
     <string name="str_launch_compatibility_check">Zindua ukaguzi wa utangamano</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Hebu turekebishe mipangilio michache ya msingi</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Tafadhali pa NextCore ruhusa ya Root</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Tafadhali pa NextCore ruhusa ya Root</string>
     <string name="str_load_a_previously_saved_backup">Pakia faili ya nakala rudufu iliyohifadhiwa hapo awali</string>
     <string name="str_logs_diagnostics">Logi na uchunguzi</string>
     <string name="str_maintainer">Msimamizi</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Hakuna muunganisho wa kuchaji uliogunduliwa, tafadhali ingiza chaja kisha endesha uchunguzi</string>
     <string name="str_preview">Onyesha kwa hakikisho</string>
     <string name="str_restore_configuration">Rejesha usanidi</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Ruhusa ya Root imekataliwa, NextCore inahitaji ruhusa ya Root ili kufanya kazi</string>
     <string name="str_root_access_granted">Ruhusa ya Root imetolewa, kila kitu kiko tayari!</string>
     <string name="str_run_diagnostics_above_or_check">Endesha uchunguzi ulio hapo juu, au angalia ikiwa kernel ina nodi za kuchaji kwa njia mbadala</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Toleo %1$s</string>
     <string name="walt_tunes">Marekebisho ya kidhibiti cha WALT</string>
     <string name="walt_tunes_desc">Boresha vigezo vya kidhibiti cha WALT, kuongeza kasi ya majibu ya ratiba ya CPU</string>
-    <string name="welcome_azenith">Karibu kwenye NextCore</string>
+    <string name="welcome_nextcore">Karibu kwenye NextCore</string>
     <string name="yes">Ndiyo</string>
     <string name="str_use_scroll_animation">Tumia Uhuishaji wa Kusogeza</string>
     <string name="str_use_scroll_animation_summary">Washa uhuishaji wa kutelezesha kati ya kurasa</string>

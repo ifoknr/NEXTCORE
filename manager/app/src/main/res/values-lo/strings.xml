@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">ກ່ຽວກັບ NextCore</string>
+    <string name="about_nextcore">ກ່ຽວກັບ NextCore</string>
     <string name="about_source_code">ເບິ່ງລະຫັດຕົ້ນສະບັບທີ່ %1$s&lt;br/&gt;ເຂົ້າຮ່ວມຊ່ອງ %2$s ຂອງພວກເຮົາ</string>
     <string name="accent_color">ສີເນື້ອຫາຫຼັກ</string>
     <string name="all_checks_finished">ກວດສອບທັງໝົດແລ້ວ</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ການຕັ້ງຄ່າແອັບ</string>
     <string name="appearance">ຮູບລັກ</string>
     <string name="applist_title">ລາຍຊື່ແອັບ</string>
-    <string name="azenith_version">ເວີຊັ່ນ NextCore</string>
+    <string name="nextcore_version">ເວີຊັ່ນ NextCore</string>
     <string name="balanced_io_scheduler">I/O Scheduler ດຸ່ນດ່ຽງ</string>
     <string name="balanced_io_scheduler_desc">Scheduler ທີ່ໃຊ້ໃນໂປຣໄຟລ໌ດຸ່ນດ່ຽງ</string>
     <string name="balanced_mali_gov">Mali GPU Governor ດຸ່ນດ່ຽງ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ຜູ້ສ້າງ</string>
     <string name="str_auto_mode">ໂໝດອັດຕະໂນມັດ</string>
     <string name="str_available_nodes">ໂນດເປົ້າໝາຍທີ່ໃຊ້ງານໄດ້ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ພ້ອມໃຊ້ງານແລ້ວ!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ພ້ອມໃຊ້ງານແລ້ວ!</string>
     <string name="str_backup_configuration">ສຳຮອງການຕັ້ງຄ່າ</string>
     <string name="str_backup_content_detected_select">ກວດພົບເນື້ອຫາທີ່ສຳຮອງໄວ້, ກະລຸນາເລືອກລາຍການທີ່ຕ້ອງການກູ້ຄືນ:</string>
     <string name="str_backup_restore">ສຳຮອງ ແລະ ກູ້ຄືນ</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ຄວາມໂປ່ງໃສຂອງການປ່ຽນສີ</string>
     <string name="str_installing_update">ກຳລັງຕິດຕັ້ງອັບເດດ...</string>
     <string name="str_interface">ອິນເຕີເຟສ</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">ເປີດແອັບ</string>
     <string name="str_launch_compatibility_check">ເປີດການກວດສອບຄວາມເຂົ້າກັນໄດ້</string>
     <string name="str_let_s_adjust_a_few_basic_setti">ພວກເຮົາມາປັບການຕັ້ງຄ່າພື້ນຖານສອງສາມຢ່າງ</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">ກະລຸນາອະນຸຍາດສິດ Root ໃຫ້ NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">ກະລຸນາອະນຸຍາດສິດ Root ໃຫ້ NextCore</string>
     <string name="str_load_a_previously_saved_backup">ໂຫຼດໄຟລ໌ສຳຮອງທີ່ບັນທຶກໄວ້</string>
     <string name="str_logs_diagnostics">Logs ແລະ ການວິນິດໄສ</string>
     <string name="str_maintainer">ຜູ້ດູແລ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ບໍ່ພົບການເຊື່ອມຕໍ່ສາກ, ກະລຸນາເສີບສາກໄຟລ່ວງໜ້າ ແລ້ວດຳເນີນການວິນິດໄສ</string>
     <string name="str_preview">ເບິ່ງຕົວຢ່າງ</string>
     <string name="str_restore_configuration">ກູ້ຄືນການຕັ້ງຄ່າ</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">ສິດ Root ຖືກປະຕິເສດ, NextCore ຕ້ອງການສິດ Root ເພື່ອທຳງານ</string>
     <string name="str_root_access_granted">ໄດ້ຮັບສິດ Root, ທຸກຢ່າງພ້ອມ!</string>
     <string name="str_run_diagnostics_above_or_check">ດຳເນີນການວິນິດໄສຂ້າງເທິງ ຫຼື ກວດສອບວ່າ kernel ມີໂນດ by-pass ຫຼືບໍ່</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ເວີຊັ່ນ %1$s</string>
     <string name="walt_tunes">ການປັບປຸງ WALT Governor</string>
     <string name="walt_tunes_desc">ປັບປຸງຕົວກຳນົດ WALT governor ເພື່ອເພີ່ມຄວາມໄວການຕອບສະໜອງຂອງ CPU scheduling</string>
-    <string name="welcome_azenith">ຍິນດີຕ້ອນຮັບສູ່ NextCore</string>
+    <string name="welcome_nextcore">ຍິນດີຕ້ອນຮັບສູ່ NextCore</string>
     <string name="yes">ແມ່ນ</string>
     <string name="str_use_scroll_animation">ໃຊ້ແອນິເມຊັນເລື່ອນ</string>
     <string name="str_use_scroll_animation_summary">ເປີດໃຊ້ງານແອນິເມຊັນປັດລະຫວ່າງໜ້າ</string>

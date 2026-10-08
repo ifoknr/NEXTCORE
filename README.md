@@ -122,12 +122,6 @@ Updates arrive through your root manager. If something goes wrong at boot, creat
 
 ---
 
-## 🤝 Credits
-
-NextCore is maintained by **Turki ([@IFOKNR](https://t.me/IFOKNR1))** and is based on [AZenith](https://github.com/Liliya2727/AZenith) 5.2 by **@Zexshia** and collaborators (@rianixia, @kanaochar), under the Apache License 2.0. See [NOTICE.md](NOTICE.md).
-
-Tweak sources credited by AZenith: @Rem01Gaming, @MiAzami, @KanagawaYamadaVTeacher, @ShiraXblood, @Laynsb, @Koneko_dev. Game preload: @HoyoSlave, @KutuMoba, @Feravolt, @iamlooper. Fonts: Roboto and Noto Kufi Arabic (SIL OFL 1.1).
-
 ## 📢 Support
 
 <p align="left">
@@ -138,4 +132,8 @@ Bug reports: open an [issue](https://github.com/ifoknr/NEXTCORE/issues) and atta
 
 ## ⚖️ License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
+
+---
+
+<sub>Based on [AZenith](https://github.com/Liliya2727/AZenith) by Zexshia, under the Apache License 2.0.</sub>

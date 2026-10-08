@@ -18,7 +18,7 @@ Monitors system info for performance tweaks as substitute of `dumpsys`.
 
 ```shell
 nohup app_process -Djava.class.path="$APK_COMP" / \
-    --nice-name=sys.azenith-appmonitoring zx.azenith.AppMonitor \
+    --nice-name=sys.nextcore-appmonitoring zx.nextcore.AppMonitor \
     "$MODULE_CONFIG/app_status" \
     "$MODULE_CONFIG/background_apps" \
     "$MODULE_CONFIG/java.lock" >"$MODULE_CONFIG/sysmon.log" 2>&1 &
@@ -27,15 +27,15 @@ nohup app_process -Djava.class.path="$APK_COMP" / \
 ### Output file, updated each changes
 
 ```app_status
-focused_app zx.azenith 4720 10292
+focused_app zx.nextcore 4720 10292
 screen_awake 1
 battery_saver 0
 zen_mode 0
-app_name AZenith
+app_name NextCore
 ```
 
 ```background_apps
-zx.azenith 4720 10292
+zx.nextcore 4720 10292
 [PKG PID UID]
 ```
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Rreth NextCore</string>
+    <string name="about_nextcore">Rreth NextCore</string>
     <string name="about_source_code">Shikoni kodin burim në %1$s&lt;br/&gt;Bashkohuni në kanalin tonë %2$s</string>
     <string name="accent_color">Ngjyra kryesore</string>
     <string name="all_checks_finished">Të gjitha kontrollet përfunduan</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Cilësimet e aplikacionit</string>
     <string name="appearance">Pamja</string>
     <string name="applist_title">Lista e aplikacioneve</string>
-    <string name="azenith_version">Versioni NextCore</string>
+    <string name="nextcore_version">Versioni NextCore</string>
     <string name="balanced_io_scheduler">Planifikues I/O i balancuar</string>
     <string name="balanced_io_scheduler_desc">Planifikuesi i përdorur në planin e balancuar</string>
     <string name="balanced_mali_gov">Rregullator GPU Mali i balancuar</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autori</string>
     <string name="str_auto_mode">Modaliteti automatik</string>
     <string name="str_available_nodes">Nyje të disponueshme (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore është gati për përdorim!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore është gati për përdorim!</string>
     <string name="str_backup_configuration">Kopjo konfigurimin</string>
     <string name="str_backup_content_detected_select">U zbulua përmbajtje rezervë. Ju lutem zgjidhni artikujt për t\'u rivendosur:</string>
     <string name="str_backup_restore">Kopjo dhe rivendos</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Transparenca e gradientit</string>
     <string name="str_installing_update">Duke instaluar përditësimin…</string>
     <string name="str_interface">Ndërfaqja</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Hap aplikacionin</string>
     <string name="str_launch_compatibility_check">Fillo kontrollin e përputhshmërisë</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Le të rregullojmë disa cilësime bazë</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Ju lutem jepni NextCore qasje Root</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Ju lutem jepni NextCore qasje Root</string>
     <string name="str_load_a_previously_saved_backup">Ngarko një skedar rezervë të ruajtur më parë</string>
     <string name="str_logs_diagnostics">Regjistrat dhe diagnostikimi</string>
     <string name="str_maintainer">Mirëmbajtës</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Nuk u zbulua lidhje karikimi. Ju lutem lidhni karikuesin përpara se të kryeni diagnostikimin</string>
     <string name="str_preview">Parapamje</string>
     <string name="str_restore_configuration">Rivendos konfigurimin</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Qasja Root u refuzua. NextCore ka nevojë për qasje Root për të funksionuar</string>
     <string name="str_root_access_granted">Qasja Root u mor, gjithçka gati!</string>
     <string name="str_run_diagnostics_above_or_check">Kryeni diagnostikimin e mësipërm ose kontrolloni nëse kerneli përmban nyje të furnizimit anashkalues</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versioni %1$s</string>
     <string name="walt_tunes">Rregullimi i rregullatorit WALT</string>
     <string name="walt_tunes_desc">Optimizo parametrat e rregullatorit WALT për të përmirësuar përgjigjen e planifikimit CPU</string>
-    <string name="welcome_azenith">Mirë se vini në NextCore</string>
+    <string name="welcome_nextcore">Mirë se vini në NextCore</string>
     <string name="yes">Po</string>
     <string name="str_use_scroll_animation">Përdor animacionin e lëvizjes</string>
     <string name="str_use_scroll_animation_summary">Aktivizo animacionin e rrëshqitjes midis faqeve</string>

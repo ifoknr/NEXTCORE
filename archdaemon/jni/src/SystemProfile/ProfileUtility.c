@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <time.h>
 
 // Function pointers initialized to default handlers
@@ -70,7 +70,7 @@ void run_profiler(const int profile) {
     write2file(PROFILE_MODE_APP, false, false, "%d\n", profile);
 
     // Suggestion for future: Replace systemv with native property setting for performance
-    (void)systemv("sys.azenith-profilesettings %d", profile);
+    (void)systemv("sys.nextcore-profilesettings %d", profile);
 }
 
 /**

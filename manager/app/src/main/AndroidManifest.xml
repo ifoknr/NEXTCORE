@@ -25,7 +25,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AZenith"> 
+        android:theme="@style/Theme.NextCore"> 
         
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -89,7 +89,7 @@
         
         <receiver android:name=".receiver.ZenithReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="zx.azenith.ACTION_MANAGE" />
+                <action android:name="zx.nextcore.ACTION_MANAGE" />
             </intent-filter>
         </receiver>
    
@@ -110,7 +110,7 @@
             android:name=".RefreshRateReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="zx.azenith.SET_FPS" />
+                <action android:name="zx.nextcore.SET_FPS" />
             </intent-filter>
         </receiver>
 

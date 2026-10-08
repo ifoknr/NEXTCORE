@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">About NextCore</string>
+    <string name="about_nextcore">About NextCore</string>
     <string name="about_source_code">View source code on %1$s&lt;br/&gt;Join our %2$s channel</string>
     <string name="accent_color">Accent Color</string>
     <string name="all_checks_finished">All checks finished</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">App Settings</string>
     <string name="appearance">Appearance</string>
     <string name="applist_title">App List</string>
-    <string name="azenith_version">NextCore Version</string>
+    <string name="nextcore_version">NextCore Version</string>
     <string name="balanced_io_scheduler">Balanced I/O Scheduler</string>
     <string name="balanced_io_scheduler_desc">Scheduler used in balanced profile</string>
     <string name="balanced_mali_gov">Balanced Mali GPU Governor</string>
@@ -259,7 +259,7 @@
     <string name="str_author">Author</string>
     <string name="str_auto_mode">Auto Mode</string>
     <string name="str_available_nodes">Available Target Nodes (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore is ready to go!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore is ready to go!</string>
     <string name="str_backup_configuration">Backup Configuration</string>
     <string name="str_backup_content_detected_select">Backup content detected. Select items to restore:</string>
     <string name="str_backup_restore">Backup &amp; Restore</string>
@@ -296,12 +296,10 @@
     <string name="str_gradient_opacity">Gradient Opacity</string>
     <string name="str_installing_update">Installing update…</string>
     <string name="str_interface">Interface</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Launch App</string>
     <string name="str_launch_compatibility_check">Launch Compatibility Check</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Let\'s adjust a few basic settings</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Please grant NextCore root access</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Please grant NextCore root access</string>
     <string name="str_load_a_previously_saved_backup">Load a previously saved backup file</string>
     <string name="str_logs_diagnostics">Logs &amp; Diagnostics</string>
     <string name="str_maintainer">Maintainer</string>
@@ -321,7 +319,7 @@
     <string name="str_plug_in_charger">Charging connection not detected. Please plug in a charger before running diagnostics.</string>
     <string name="str_preview">Preview</string>
     <string name="str_restore_configuration">Restore Configuration</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root access denied. NextCore requires root access to run.</string>
     <string name="str_root_access_granted">Root access granted. All set!</string>
     <string name="str_run_diagnostics_above_or_check">Run the diagnostics above, or check if the kernel includes bypass charging nodes</string>
@@ -375,7 +373,7 @@
     <string name="version_format">Version %1$s</string>
     <string name="walt_tunes">WALT Governor Tuning</string>
     <string name="walt_tunes_desc">Optimize WALT governor parameters to improve CPU scheduling responsiveness</string>
-    <string name="welcome_azenith">Welcome to NextCore</string>
+    <string name="welcome_nextcore">Welcome to NextCore</string>
     <string name="yes">Yes</string>
     <string name="str_use_scroll_animation">Use Scroll Animation</string>
     <string name="str_use_scroll_animation_summary">Enable swipe animation between Page</string>
@@ -391,9 +389,8 @@
     <string name="dialog_exit_confirm_title">Close NextCore?</string>
     <string name="dialog_exit_confirm_content">Are you sure you want to exit the application?</string>
     <string name="dialog_exit_confirm_button">Exit</string>
-    <string name="str_turki">Turki</string>
-    <string name="str_original_author">Original AZenith author</string>
-    <string name="str_credits">Credits (AZenith team)</string>
+    <string name="str_original_author">Original NextCore author</string>
+    <string name="str_credits">Credits (NextCore team)</string>
     <string name="about_github">GitHub</string>
     <string name="tile_bypass_charge">Bypass Charge</string>
     <string name="only_snapdragon">This option is only available for Snapdragon devices.</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore haqqında</string>
+    <string name="about_nextcore">NextCore haqqında</string>
     <string name="about_source_code">Mənbə koduna %1$s saytında baxın&lt;br/&gt;%2$s kanalımıza qoşulun</string>
     <string name="accent_color">Vurğu rəngi</string>
     <string name="all_checks_finished">Bütün yoxlamalar tamamlandı</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Tətbiq parametrləri</string>
     <string name="appearance">Görünüş</string>
     <string name="applist_title">Tətbiq siyahısı</string>
-    <string name="azenith_version">NextCore versiyası</string>
+    <string name="nextcore_version">NextCore versiyası</string>
     <string name="balanced_io_scheduler">Balanslı I/O planlayıcısı</string>
     <string name="balanced_io_scheduler_desc">Balanslı profil tərəfindən istifadə edilən planlayıcı</string>
     <string name="balanced_mali_gov">Balanslı Mali GPU tənzimləyicisi</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Müəllif</string>
     <string name="str_auto_mode">Avtomatik rejim</string>
     <string name="str_available_nodes">Mövcud hədəf qovşaqları (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore hazırdır!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore hazırdır!</string>
     <string name="str_backup_configuration">Konfiqurasiyanı ehtiyatla</string>
     <string name="str_backup_content_detected_select">Ehtiyat nüsxə məzmunu aşkarlandı, bərpa ediləcək maddələri seçin:</string>
     <string name="str_backup_restore">Ehtiyat nüsxə və bərpa</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradient qeyri-şəffaflığı</string>
     <string name="str_installing_update">Yenilənmə quraşdırılır…</string>
     <string name="str_interface">İnterfeys</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Tətbiqi işə sal</string>
     <string name="str_launch_compatibility_check">Uyğunluq yoxlamasını işə sal</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Bir neçə əsas parametri tənzimləyək</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Zəhmət olmasa NextCore-ə Root icazəsi verin</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Zəhmət olmasa NextCore-ə Root icazəsi verin</string>
     <string name="str_load_a_previously_saved_backup">Əvvəllər saxlanılmış ehtiyat nüsxə faylını yüklə</string>
     <string name="str_logs_diagnostics">Jurnallar və diaqnostika</string>
     <string name="str_maintainer">Mühafizəçi</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Doldurma əlaqəsi aşkar edilmədi, diaqnostikanı işə salmazdan əvvəl şarjı qoşun</string>
     <string name="str_preview">Ön baxış</string>
     <string name="str_restore_configuration">Konfiqurasiyanı bərpa et</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root icazəsi rədd edildi, NextCore işləmək üçün Root icazəsi tələb edir</string>
     <string name="str_root_access_granted">Root icazəsi alındı, hər şey hazırdır!</string>
     <string name="str_run_diagnostics_above_or_check">Yuxarıdakı diaqnostikanı işə salın və ya kernelin yan keçid enerji təchizatı qovşaqlarını ehtiva edib-etmədiyini yoxlayın</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versiya %1$s</string>
     <string name="walt_tunes">WALT tənzimləyici tənzimləməsi</string>
     <string name="walt_tunes_desc">WALT tənzimləyici parametrlərini optimallaşdıraraq CPU planlama cavab sürətini artırın</string>
-    <string name="welcome_azenith">NextCore-ə xoş gəlmisiniz</string>
+    <string name="welcome_nextcore">NextCore-ə xoş gəlmisiniz</string>
     <string name="yes">Bəli</string>
     <string name="str_use_scroll_animation">Sürüşdürmə animasiyasından istifadə edin</string>
     <string name="str_use_scroll_animation_summary">Səhifələr arasında sürüşdürmə animasiyasını aktivləşdirin</string>

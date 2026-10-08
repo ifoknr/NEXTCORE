@@ -274,7 +274,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rianixia-thermalcore"
+name = "nextcore-thermalcore"
 version = "2.0.0"
 dependencies = [
  "bincode",

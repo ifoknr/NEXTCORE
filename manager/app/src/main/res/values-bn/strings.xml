@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore সম্পর্কে</string>
+    <string name="about_nextcore">NextCore সম্পর্কে</string>
     <string name="about_source_code">%1$s-এ সোর্স কোড দেখুন&lt;br/&gt;আমাদের %2$s চ্যানেলে যোগ দিন</string>
     <string name="accent_color">মূল রঙ</string>
     <string name="all_checks_finished">সমস্ত পরীক্ষা শেষ</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">অ্যাপ সেটিংস</string>
     <string name="appearance">চেহারা</string>
     <string name="applist_title">অ্যাপ তালিকা</string>
-    <string name="azenith_version">NextCore সংস্করণ</string>
+    <string name="nextcore_version">NextCore সংস্করণ</string>
     <string name="balanced_io_scheduler">সুষম I/O শিডিউলার</string>
     <string name="balanced_io_scheduler_desc">সুষম কনফিগারেশন স্কিমের জন্য ব্যবহৃত শিডিউলার</string>
     <string name="balanced_mali_gov">সুষম Mali GPU গভর্নর</string>
@@ -253,7 +253,7 @@
     <string name="str_author">লেখক</string>
     <string name="str_auto_mode">অটো মোড</string>
     <string name="str_available_nodes">উপলব্ধ টার্গেট নোড (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore প্রস্তুত!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore প্রস্তুত!</string>
     <string name="str_backup_configuration">ব্যাকআপ কনফিগারেশন</string>
     <string name="str_backup_content_detected_select">ব্যাকআপ বিষয়বস্তু সনাক্ত করা হয়েছে, পুনরুদ্ধার করতে আইটেম নির্বাচন করুন:</string>
     <string name="str_backup_restore">ব্যাকআপ ও পুনরুদ্ধার</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">গ্রেডিয়েন্ট অস্বচ্ছতা</string>
     <string name="str_installing_update">আপডেট ইনস্টল হচ্ছে…</string>
     <string name="str_interface">ইন্টারফেস</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">অ্যাপ চালু করুন</string>
     <string name="str_launch_compatibility_check">সামঞ্জস্যতা পরীক্ষা শুরু করুন</string>
     <string name="str_let_s_adjust_a_few_basic_setti">আমরা কিছু মৌলিক সেটিংস সামঞ্জস্য করি</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">অনুগ্রহ করে NextCore কে রুট অ্যাক্সেস প্রদান করুন</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">অনুগ্রহ করে NextCore কে রুট অ্যাক্সেস প্রদান করুন</string>
     <string name="str_load_a_previously_saved_backup">সংরক্ষিত ব্যাকআপ ফাইল লোড করুন</string>
     <string name="str_logs_diagnostics">লগ ও ডায়াগনস্টিক</string>
     <string name="str_maintainer">রক্ষণাবেক্ষণকারী</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">চার্জিং সংযোগ সনাক্ত করা যায়নি, অনুগ্রহ করে চার্জার সংযোগ করে তারপর ডায়াগনস্টিক চালান</string>
     <string name="str_preview">প্রিভিউ</string>
     <string name="str_restore_configuration">কনফিগারেশন পুনরুদ্ধার করুন</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">রুট অ্যাক্সেস প্রত্যাখ্যান করা হয়েছে, NextCore চালানোর জন্য রুট অ্যাক্সেস প্রয়োজন</string>
     <string name="str_root_access_granted">রুট অ্যাক্সেস প্রাপ্ত, সবকিছু প্রস্তুত!</string>
     <string name="str_run_diagnostics_above_or_check">উপরের ডায়াগনস্টিক চালান, বা কার্নেলে বাইপাস চার্জিং নোড আছে কিনা পরীক্ষা করুন</string>
@@ -368,7 +366,7 @@
     <string name="version_format">সংস্করণ %1$s</string>
     <string name="walt_tunes">WALT গভর্নর টিউনিং</string>
     <string name="walt_tunes_desc">WALT গভর্নর প্যারামিটার অপ্টিমাইজ করে CPU শিডিউলিং রেসপন্স গতি বাড়ায়</string>
-    <string name="welcome_azenith">NextCore এ স্বাগতম</string>
+    <string name="welcome_nextcore">NextCore এ স্বাগতম</string>
     <string name="yes">হ্যাঁ</string>
     <string name="str_use_scroll_animation">স্ক্রোল অ্যানিমেশন ব্যবহার করুন</string>
     <string name="str_use_scroll_animation_summary">পৃষ্ঠাগুলির মধ্যে সোয়াইপ অ্যানিমেশন সক্ষম করুন</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore-i buruz</string>
+    <string name="about_nextcore">NextCore-i buruz</string>
     <string name="about_source_code">Ikusi iturburua %1$s helbidean&lt;br/&gt;Sartu gure %2$s kanalera</string>
     <string name="accent_color">Kolore nagusia</string>
     <string name="all_checks_finished">Egiaztapen guztiak amaituta</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Aplikazioaren ezarpenak</string>
     <string name="appearance">Itxura</string>
     <string name="applist_title">Aplikazioen zerrenda</string>
-    <string name="azenith_version">NextCore bertsioa</string>
+    <string name="nextcore_version">NextCore bertsioa</string>
     <string name="balanced_io_scheduler">I/O plangintza orekatua</string>
     <string name="balanced_io_scheduler_desc">Profil orekatuan erabilitako plangintza</string>
     <string name="balanced_mali_gov">Mali GPU erregulatzaile orekatua</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Egilea</string>
     <string name="str_auto_mode">Modu automatikoa</string>
     <string name="str_available_nodes">Nodo erabilgarriak (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore prest dago!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore prest dago!</string>
     <string name="str_backup_configuration">Konfigurazioaren segurtasun-kopia</string>
     <string name="str_backup_content_detected_select">Segurtasun-kopia edukia detektatu da. Aukeratu berreskuratu beharreko elementuak:</string>
     <string name="str_backup_restore">Segurtasun-kopia eta berreskuratzea</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradientearen opakutasuna</string>
     <string name="str_installing_update">Eguneraketa instalatzen…</string>
     <string name="str_interface">Interfazea</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Abiarazi aplikazioa</string>
     <string name="str_launch_compatibility_check">Abiarazi bateragarritasun egiaztapena</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Doitu ditzagun oinarrizko ezarpen batzuk</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Eman NextCore-i Root baimena</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Eman NextCore-i Root baimena</string>
     <string name="str_load_a_previously_saved_backup">Kargatu gordetako segurtasun-kopia fitxategia</string>
     <string name="str_logs_diagnostics">Erregistroak eta diagnostikoa</string>
     <string name="str_maintainer">Mantentzailea</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Ez da kargagailurik detektatu. Konektatu kargagailua diagnostikoa exekutatu aurretik</string>
     <string name="str_preview">Aurrebista</string>
     <string name="str_restore_configuration">Berreskuratu konfigurazioa</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root baimena ukatu da. NextCore-ek Root baimena behar du funtzionatzeko</string>
     <string name="str_root_access_granted">Root baimena lortu da, dena prest!</string>
     <string name="str_run_diagnostics_above_or_check">Exekutatu goiko diagnostikoa, edo egiaztatu kernelak alboko elikadura nodorik duen</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Bertsioa %1$s</string>
     <string name="walt_tunes">WALT erregulatzailearen doikuntza</string>
     <string name="walt_tunes_desc">Optimizatu WALT erregulatzailearen parametroak, CPU plangintzaren erantzuna hobetzeko</string>
-    <string name="welcome_azenith">Ongi etorri NextCore-era</string>
+    <string name="welcome_nextcore">Ongi etorri NextCore-era</string>
     <string name="yes">Bai</string>
     <string name="str_use_scroll_animation">Erabili korritze-animazioa</string>
     <string name="str_use_scroll_animation_summary">Gaitu orrien arteko irristatze-animazioa</string>

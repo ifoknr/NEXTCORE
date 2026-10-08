@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Относно NextCore</string>
+    <string name="about_nextcore">Относно NextCore</string>
     <string name="about_source_code">Вижте изходния код на %1$s&lt;br/&gt;Присъединете се към нашия %2$s канал</string>
     <string name="accent_color">Акцентен цвят</string>
     <string name="all_checks_finished">Всички проверки завършени</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Настройки на приложението</string>
     <string name="appearance">Външен вид</string>
     <string name="applist_title">Списък с приложения</string>
-    <string name="azenith_version">Версия на NextCore</string>
+    <string name="nextcore_version">Версия на NextCore</string>
     <string name="balanced_io_scheduler">Балансиран I/O планировчик</string>
     <string name="balanced_io_scheduler_desc">Планировчик, използван от балансирания профил</string>
     <string name="balanced_mali_gov">Балансиран Mali GPU губернатор</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматичен режим</string>
     <string name="str_available_nodes">Налични целеви възли (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore вече е готов!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore вече е готов!</string>
     <string name="str_backup_configuration">Резервно копие на конфигурация</string>
     <string name="str_backup_content_detected_select">Открито е резервно съдържание. Моля, изберете елементите за възстановяване:</string>
     <string name="str_backup_restore">Резервно копие и възстановяване</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Непрозрачност на градиента</string>
     <string name="str_installing_update">Инсталиране на актуализация…</string>
     <string name="str_interface">Интерфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Стартиране на приложението</string>
     <string name="str_launch_compatibility_check">Стартиране на проверка на съвместимостта</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Нека коригираме няколко основни настройки</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Моля, предоставете Root достъп на NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Моля, предоставете Root достъп на NextCore</string>
     <string name="str_load_a_previously_saved_backup">Зареждане на предварително запазено резервно копие</string>
     <string name="str_logs_diagnostics">Логове и диагностика</string>
     <string name="str_maintainer">Поддържащ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Не е открито зарядно устройство. Моля, включете зарядното, преди да стартирате диагностиката.</string>
     <string name="str_preview">Преглед</string>
     <string name="str_restore_configuration">Възстановяване на конфигурация</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root достъпът е отказан. NextCore се нуждае от Root достъп, за да работи.</string>
     <string name="str_root_access_granted">Root достъпът е предоставен. Всичко е готово!</string>
     <string name="str_run_diagnostics_above_or_check">Стартирайте диагностиката по-горе или проверете дали ядрото съдържа байпас възли.</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Версия %1$s</string>
     <string name="walt_tunes">WALT губернатор настройка</string>
     <string name="walt_tunes_desc">Оптимизиране на параметрите на WALT губернатора за подобряване на отзивчивостта на CPU планиране</string>
-    <string name="welcome_azenith">Добре дошли в NextCore</string>
+    <string name="welcome_nextcore">Добре дошли в NextCore</string>
     <string name="yes">Да</string>
     <string name="str_use_scroll_animation">Използване на анимация за превъртане</string>
     <string name="str_use_scroll_animation_summary">Активиране на анимация за плъзгане между страниците</string>

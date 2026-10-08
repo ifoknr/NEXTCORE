@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <dirent.h>
 #include <string.h>
 #include <sys/system_properties.h>
@@ -79,7 +79,7 @@ int read_current_ma() {
  */
 void disable_bypass() {
     char path_key[PROP_VALUE_MAX];
-    __system_property_get("persist.sys.azenithconf.bypasspath", path_key);
+    __system_property_get("persist.sys.nextcoreconf.bypasspath", path_key);
 
     if (strlen(path_key) == 0 || strcmp(path_key, "UNSUPPORTED") == 0)
         return;
@@ -102,7 +102,7 @@ void disable_bypass() {
  */
 int enable_bypass() {
     char path_key[PROP_VALUE_MAX];
-    __system_property_get("persist.sys.azenithconf.bypasspath", path_key);
+    __system_property_get("persist.sys.nextcoreconf.bypasspath", path_key);
 
     if (strlen(path_key) == 0 || strcmp(path_key, "UNSUPPORTED") == 0)
         return -1;

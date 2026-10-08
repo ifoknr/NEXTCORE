@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Про NextCore</string>
+    <string name="about_nextcore">Про NextCore</string>
     <string name="about_source_code">Перегляньте вихідний код на %1$s&lt;br/&gt;Приєднуйтесь до нашого каналу %2$s</string>
     <string name="accent_color">Акцентний колір</string>
     <string name="all_checks_finished">Усі перевірки завершено</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Налаштування застосунку</string>
     <string name="appearance">Зовнішній вигляд</string>
     <string name="applist_title">Список застосунків</string>
-    <string name="azenith_version">Версія NextCore</string>
+    <string name="nextcore_version">Версія NextCore</string>
     <string name="balanced_io_scheduler">Збалансований I/O планувальник</string>
     <string name="balanced_io_scheduler_desc">Планувальник для збалансованої схеми</string>
     <string name="balanced_mali_gov">Збалансований GPU-регулятор Mali</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматичний режим</string>
     <string name="str_available_nodes">Доступні цільові вузли (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore готовий до роботи!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore готовий до роботи!</string>
     <string name="str_backup_configuration">Створити резервну копію конфігурації</string>
     <string name="str_backup_content_detected_select">Виявлено резервну копію. Виберіть елементи для відновлення:</string>
     <string name="str_backup_restore">Резервне копіювання та відновлення</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Непрозорість градієнта</string>
     <string name="str_installing_update">Встановлення оновлення…</string>
     <string name="str_interface">Інтерфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Запустити застосунок</string>
     <string name="str_launch_compatibility_check">Запустити перевірку сумісності</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Давайте налаштуємо кілька базових параметрів</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Надайте NextCore root-доступ</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Надайте NextCore root-доступ</string>
     <string name="str_load_a_previously_saved_backup">Завантажити раніше збережену резервну копію</string>
     <string name="str_logs_diagnostics">Логи та діагностика</string>
     <string name="str_maintainer">Супровідник</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Не виявлено зарядний пристрій. Підключіть зарядний пристрій, а потім запустіть діагностику</string>
     <string name="str_preview">Попередній перегляд</string>
     <string name="str_restore_configuration">Відновити конфігурацію</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root-доступ відхилено. NextCore потребує root-доступу для роботи</string>
     <string name="str_root_access_granted">Root-доступ отримано! Усе готово!</string>
     <string name="str_run_diagnostics_above_or_check">Запустіть діагностику вище або перевірте, чи ядро містить вузли байпасного живлення</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Версія %1$s</string>
     <string name="walt_tunes">Налаштування регулятора WALT</string>
     <string name="walt_tunes_desc">Оптимізація параметрів регулятора WALT для підвищення швидкодії планування CPU</string>
-    <string name="welcome_azenith">Ласкаво просимо до NextCore</string>
+    <string name="welcome_nextcore">Ласкаво просимо до NextCore</string>
     <string name="yes">Так</string>
     <string name="str_use_scroll_animation">Використовувати анімацію прокручування</string>
     <string name="str_use_scroll_animation_summary">Увімкнути анімацію проведення між сторінками</string>

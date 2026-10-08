@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 void free_gamelist_cache(void) {
     pthread_mutex_lock(&cache_mutex);

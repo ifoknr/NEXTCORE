@@ -20,31 +20,31 @@ q() {
     pkill -9 -f "$1"
 }
 
-resetprop | awk -F'[][]' '/persist\.sys\.azenith/ {print $2}' | while read -r prop; do
+resetprop | awk -F'[][]' '/persist\.sys\.nextcore/ {print $2}' | while read -r prop; do
     resetprop -p --delete "$prop"
 done
 
-for prop in persist.sys.rianixia.learning_enabled persist.sys.rianixia.thermalcore-bigdata.path; do
+for prop in persist.sys.ncthermal.learning_enabled persist.sys.ncthermal.thermalcore-bigdata.path; do
     resetprop -p --delete "$prop"
 done
 
 rm -rf \
-    "/data/adb/.config/AZenith" \
-    "/data/AZenith" \
-    "/data/data/zx.azenith"
+    "/data/adb/.config/NextCore" \
+    "/data/NextCore" \
+    "/data/data/zx.nextcore"
 : > "/data/adb/modules/nextcore/remove"
 
-q sys.azenith-rianixiathermalcore
-q sys.azenith-service
-q sys.azenith-appmonitoring
+q sys.nextcore-thermalcore
+q sys.nextcore-service
+q sys.nextcore-appmonitoring
     
-pm uninstall zx.azenith >/dev/null 2>&1 &
+pm uninstall zx.nextcore >/dev/null 2>&1 &
 
 for dir in "/data/adb/ap/bin" "/data/adb/ksu/bin"; do
     [ -d "$dir/zx" ] && rm -rf "$dir/zx"
 done
 
 for dir in "/data/adb/ap/bin" "/data/adb/ksu/bin"; do
-    [ -d "$dir" ] && find "$dir" -name "sys.azenith-*" -exec rm -f {} +
+    [ -d "$dir" ] && find "$dir" -name "sys.nextcore-*" -exec rm -f {} +
 done
 

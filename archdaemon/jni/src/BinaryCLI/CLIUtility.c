@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <sys/system_properties.h>
 
 /**
@@ -31,7 +31,7 @@ int handle_profile(int argc, char** argv) {
     }
 
     char ai_state[PROP_VALUE_MAX] = {0};
-    __system_property_get("persist.sys.azenithconf.AIenabled", ai_state);
+    __system_property_get("persist.sys.nextcoreconf.AIenabled", ai_state);
 
     if (!strcmp(ai_state, "1")) {
         fprintf(stderr, "ERROR: Auto Mode is enabled.\n"
@@ -47,11 +47,11 @@ int handle_profile(int argc, char** argv) {
     } else if (!strcmp(profile, "1")) {
         log_zenith(LOG_INFO, "Applying Performance Profile via execute");
         char lite_prop[PROP_VALUE_MAX] = {0};
-        __system_property_get("persist.sys.azenithconf.cpulimit", lite_prop);
+        __system_property_get("persist.sys.nextcoreconf.cpulimit", lite_prop);
         if (strcmp(lite_prop, "1") == 0) {
-            __system_property_set("persist.sys.azenithconf.litemode", "1");
+            __system_property_set("persist.sys.nextcoreconf.litemode", "1");
         } else {
-            __system_property_set("persist.sys.azenithconf.litemode", "0");
+            __system_property_set("persist.sys.nextcoreconf.litemode", "0");
         }
         run_profiler(PERFORMANCE_PROFILE);
         notify("Performance Profile", "System is now at Powerful state", false, 0);
@@ -155,17 +155,17 @@ int handle_verboselog(int argc, char** argv) {
 }
 
 /**
- * @brief Prints the current AZenith module version string to stdout.
+ * @brief Prints the current NextCore module version string to stdout.
  */
 void printversion(void) {
     printf("%s\n", MODULE_VERSION);
 }
 
 /**
- * @brief Directly launches the primary Android MainActivity of the AZenith application interface.
+ * @brief Directly launches the primary Android MainActivity of the NextCore application interface.
  */
 void openAppMainActivity(void) {
-    systemv("/system/bin/am start -a android.intent.action.MAIN zx.azenith/.MainActivity");
+    systemv("/system/bin/am start -a android.intent.action.MAIN zx.nextcore/.MainActivity");
 }
 
 /**
@@ -174,8 +174,8 @@ void openAppMainActivity(void) {
  */
 int require_daemon_running(void) {
     if (!check_running_state()) {
-        fprintf(stderr, "\033[31mERROR:\033[0m AZenith daemon is not running.\n"
-                        "Run: sys.azenith-service --run\n");
+        fprintf(stderr, "\033[31mERROR:\033[0m NextCore daemon is not running.\n"
+                        "Run: sys.nextcore-service --run\n");
         return 0;
     }
     return 1;
@@ -186,16 +186,16 @@ int require_daemon_running(void) {
  * app broadcast reset.
  */
 void clearlogs(void) {
-    systemv("rm -f /data/adb/.config/AZenith/debug/AZenith.log");
-    systemv("rm -f /data/adb/.config/AZenith/debug/AZenithVerbose.log");
-    systemv("rm -f /data/adb/.config/AZenith/preload/AZenithPR.log");
-    systemv("su -c \"am broadcast -a zx.azenith.ACTION_MANAGE -n "
-            "zx.azenith/.receiver.ZenithReceiver --ez clearall true >/dev/null "
+    systemv("rm -f /data/adb/.config/NextCore/debug/NextCore.log");
+    systemv("rm -f /data/adb/.config/NextCore/debug/NextCoreVerbose.log");
+    systemv("rm -f /data/adb/.config/NextCore/preload/NextCorePR.log");
+    systemv("su -c \"am broadcast -a zx.nextcore.ACTION_MANAGE -n "
+            "zx.nextcore/.receiver.ZenithReceiver --ez clearall true >/dev/null "
             "2>&1\"");
 }
 
 /**
- * @brief Restarts the AZenith service daemon by spawning a detached child
+ * @brief Restarts the NextCore service daemon by spawning a detached child
  *        process. The caller returns immediately without blocking on the
  *        actual restart sequence.
  * @return 0 if the detach/fork succeeded, 1 if fork failed.
@@ -205,7 +205,7 @@ int restart_service(void) {
         log_zenith(LOG_FATAL, "Unable to daemonize service");
         return 1;
     }
-    system("/data/adb/modules/nextcore/system/bin/sys.azenith-utilityconf restartservice");
+    system("/data/adb/modules/nextcore/system/bin/sys.nextcore-utilityconf restartservice");
     return 0;
 }
 
@@ -215,7 +215,7 @@ int restart_service(void) {
  * app broadcast intent.
  */
 void shownotifications(void) {
-    FILE *fp = fopen("/data/adb/.config/AZenith/API/current_profile", "r");
+    FILE *fp = fopen("/data/adb/.config/NextCore/API/current_profile", "r");
     if (!fp) {
         return;
     }
@@ -248,8 +248,8 @@ void shownotifications(void) {
  */
 void hidenotifications(void) {
     
-    systemv("su -c \"am broadcast -a zx.azenith.ACTION_MANAGE -n "
-            "zx.azenith/.receiver.ZenithReceiver --ez clearall true >/dev/null "
+    systemv("su -c \"am broadcast -a zx.nextcore.ACTION_MANAGE -n "
+            "zx.nextcore/.receiver.ZenithReceiver --ez clearall true >/dev/null "
             "2>&1\"");
     
 }

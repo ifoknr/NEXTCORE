@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore గురించి</string>
+    <string name="about_nextcore">NextCore గురించి</string>
     <string name="about_source_code">సోర్స్ కోడ్‌ను %1$s వద్ద చూడండి&lt;br/&gt;మా %2$s ఛానెల్‌లో చేరండి</string>
     <string name="accent_color">థీమ్ రంగు</string>
     <string name="all_checks_finished">అన్ని తనిఖీలు పూర్తి</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">యాప్ సెట్టింగ్‌లు</string>
     <string name="appearance">స్వరూపం</string>
     <string name="applist_title">యాప్ జాబితా</string>
-    <string name="azenith_version">NextCore వెర్షన్</string>
+    <string name="nextcore_version">NextCore వెర్షన్</string>
     <string name="balanced_io_scheduler">బ్యాలెన్స్డ్ I/O షెడ్యూలర్</string>
     <string name="balanced_io_scheduler_desc">సమతుల్య కాన్ఫిగరేషన్ పథకం ఉపయోగించే షెడ్యూలర్</string>
     <string name="balanced_mali_gov">బ్యాలెన్స్డ్ Mali GPU గవర్నర్</string>
@@ -253,7 +253,7 @@
     <string name="str_author">రచయిత</string>
     <string name="str_auto_mode">ఆటో మోడ్</string>
     <string name="str_available_nodes">అందుబాటులో ఉన్న లక్ష్య నోడ్‌లు (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore సిద్ధంగా ఉంది!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore సిద్ధంగా ఉంది!</string>
     <string name="str_backup_configuration">కాన్ఫిగరేషన్ బ్యాకప్</string>
     <string name="str_backup_content_detected_select">బ్యాకప్ కంటెంట్ గుర్తించబడింది, పునరుద్ధరించాల్సిన అంశాన్ని ఎంచుకోండి:</string>
     <string name="str_backup_restore">బ్యాకప్ మరియు పునరుద్ధరణ</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">గ్రేడియంట్ అపారదర్శకత</string>
     <string name="str_installing_update">నవీకరణ ఇన్‌స్టాల్ చేస్తోంది…</string>
     <string name="str_interface">ఇంటర్ఫేస్</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">యాప్ ప్రారంభించండి</string>
     <string name="str_launch_compatibility_check">అనుకూలత తనిఖీని ప్రారంభించండి</string>
     <string name="str_let_s_adjust_a_few_basic_setti">మేము కొన్ని ప్రాథమిక సెట్టింగ్‌లను సర్దుబాటు చేద్దాం</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCore కు Root యాక్సెస్ మంజూరు చేయండి</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCore కు Root యాక్సెస్ మంజూరు చేయండి</string>
     <string name="str_load_a_previously_saved_backup">సేవ్ చేసిన బ్యాకప్ ఫైల్ లోడ్ చేయండి</string>
     <string name="str_logs_diagnostics">లాగ్‌లు మరియు నిర్ధారణ</string>
     <string name="str_maintainer">మెయింటెయినర్</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ఛార్జర్ కనుగొనబడలేదు, దయచేసి నిర్ధారణ అమలు చేయడానికి ముందు ఛార్జర్ ప్లగ్ చేయండి</string>
     <string name="str_preview">ప్రివ్యూ</string>
     <string name="str_restore_configuration">కాన్ఫిగరేషన్ పునరుద్ధరించండి</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root యాక్సెస్ తిరస్కరించబడింది, NextCore కు రూట్ యాక్సెస్ అవసరం</string>
     <string name="str_root_access_granted">Root యాక్సెస్ పొందబడింది, అన్నీ సిద్ధంగా ఉన్నాయి!</string>
     <string name="str_run_diagnostics_above_or_check">పైన నిర్ధారణ అమలు చేయండి లేదా కెర్నల్ బైపాస్ ఛార్జింగ్ నోడ్ కలిగి ఉందో లేదో తనిఖీ చేయండి</string>
@@ -368,7 +366,7 @@
     <string name="version_format">వెర్షన్ %1$s</string>
     <string name="walt_tunes">WALT గవర్నర్ ట్యూనింగ్</string>
     <string name="walt_tunes_desc">WALT గవర్నర్ పారామితులను ఆప్టిమైజ్ చేయండి, CPU షెడ్యూల్ రెస్పాన్స్ స్పీడ్ మెరుగుపరచండి</string>
-    <string name="welcome_azenith">NextCore కు స్వాగతం</string>
+    <string name="welcome_nextcore">NextCore కు స్వాగతం</string>
     <string name="yes">అవును</string>
     <string name="str_use_scroll_animation">స్క్రోల్ యానిమేషన్‌ను ఉపయోగించండి</string>
     <string name="str_use_scroll_animation_summary">పేజీల మధ్య స్వైప్ యానిమేషన్‌ను ప్రారంభించండి</string>
