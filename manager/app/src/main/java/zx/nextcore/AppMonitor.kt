@@ -40,6 +40,7 @@ import android.view.Display
 @SuppressLint("StaticFieldLeak", "DiscouragedPrivateApi", "PrivateApi")
 object AppMonitor {
     private const val POLL_INTERVAL_MS = 500L
+    private const val SCREEN_OFF_INTERVAL_MS = 3000L
     private const val PID_RETRY_INTERVAL_MS = 50L
     private const val UNKNOWN_APP = "unknown 0 0"
     private const val NONE_APP = "none 0 0"
@@ -160,7 +161,9 @@ object AppMonitor {
             try {
                 writeStatus()
                 writeBackgroundApps()
-                Thread.sleep(POLL_INTERVAL_MS)
+                // Nothing changes on screen while it is off; polling twice a
+                // second there only keeps the CPU awake.
+                Thread.sleep(if (powerManager?.isInteractive == false) SCREEN_OFF_INTERVAL_MS else POLL_INTERVAL_MS)
             } catch (_: InterruptedException) {
                 Thread.currentThread().interrupt()
                 break

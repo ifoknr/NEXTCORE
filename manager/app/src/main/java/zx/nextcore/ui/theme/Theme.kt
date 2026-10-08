@@ -16,6 +16,12 @@
 
 package zx.nextcore.ui.theme
 
+import androidx.compose.material3.dynamicDarkColorScheme
+
+import androidx.compose.material3.dynamicLightColorScheme
+
+import androidx.compose.runtime.SideEffect
+
 
 import android.app.Activity
 import android.content.Context
@@ -187,20 +193,27 @@ fun NextCoreTheme(
         }
     }
     
-    val amoledMode = themeState.colorMode == ColorMode.DARKAMOLED
+    val darkTheme = themeState.colorMode.getDarkThemeValue(isSystemInDarkTheme())
     val isDynamic = themeState.keyColor == 0
 
-    // The HUD look is dark-only: black surfaces with one accent. The accent is
-    // the user's key color (or the wallpaper's primary when set to dynamic).
+    // HUD palette for the chosen mode; every HUD page reads its colors from it.
+    val palette = when {
+        !darkTheme -> zx.nextcore.ui.hud.HudPalette.Light
+        themeState.colorMode == ColorMode.DARKAMOLED -> zx.nextcore.ui.hud.HudPalette.Amoled
+        else -> zx.nextcore.ui.hud.HudPalette.Dark
+    }
+    SideEffect { zx.nextcore.ui.hud.Hud.palette = palette }
+
+    // One accent on top: the user's key color, or the wallpaper's primary when
+    // set to dynamic (Android 12+).
     val accent = if (isDynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        dynamicDarkColorScheme(context).primary
+        if (darkTheme) dynamicDarkColorScheme(context).primary else dynamicLightColorScheme(context).primary
     } else if (isDynamic) {
         Color(NEXTCORE_SEED_COLOR)
     } else {
         Color(themeState.keyColor)
     }
-    val colorScheme = zx.nextcore.ui.hud.hudColorScheme(accent, amoledMode)
-    val darkTheme = true
+    val colorScheme = zx.nextcore.ui.hud.hudColorScheme(accent, palette)
 
     val view = androidx.compose.ui.platform.LocalView.current
     val animatedColorScheme = animateColorSchemeAsState(targetColorScheme = colorScheme)

@@ -398,7 +398,7 @@ fun MainScreen(fromTileType: String? = null) {
                             }
 
                             composable("color_palette") {
-                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { ColorPaletteScreen(navController) }
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudThemeScreen(navController) }
                             }
                             composable("colorscheme") {
                                 ScreenWrapper(navController = navController, animatedVisibilityScope = this) { ColorSchemeSettings(navController) }

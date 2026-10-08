@@ -310,7 +310,7 @@ fun HudStat(label: String, value: String, modifier: Modifier = Modifier, highlig
 @Composable
 fun HudSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit, enabled: Boolean = true) {
     val accent = hudAccent
-    val track by animateColorAsState(if (checked) accent else Color(0xFF2B2B34), label = "hudSwitchTrack")
+    val track by animateColorAsState(if (checked) accent else Hud.track, label = "hudSwitchTrack")
     val thumbX by animateDpAsState(if (checked) 21.dp else 3.dp, label = "hudSwitchThumb")
     Box(
         Modifier

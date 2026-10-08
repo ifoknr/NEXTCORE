@@ -248,13 +248,13 @@ pub fn setfreqppm() {
             let new_maxfreq = setfreqs(&avail_file, new_max_target);
 
             if curprofile == "3" {
-                let target_min_target = cpu_maxfreq * 40 / 100;
-                let new_minfreq = setfreqs(&avail_file, target_min_target);
+                let (eco_min, eco_max) = eco_range(&avail_file, cpu_minfreq, cpu_maxfreq, limiter);
 
-                write_lock(&format!("{} {}", cluster, new_maxfreq), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
-                write_lock(&format!("{} {}", cluster, new_minfreq), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
+                // Lower the floor before the ceiling so the kernel accepts both.
+                write_lock(&format!("{} {}", cluster, eco_min), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
+                write_lock(&format!("{} {}", cluster, eco_max), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
 
-                log_info(&format!("Set {} maxfreq={} minfreq={}", policy_name, new_maxfreq, new_minfreq));
+                log_info(&format!("Set {} maxfreq={} minfreq={}", policy_name, eco_max, eco_min));
             } else {
 
                 write_unlock(&format!("{} {}", cluster, new_maxfreq), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
@@ -290,13 +290,10 @@ pub fn setfreq() {
             let new_maxfreq = setfreqs(&avail_file, new_max_target);
 
             if curprofile == "3" {
-                let target_min_target = cpu_maxfreq * 40 / 100;
-                let new_minfreq = setfreqs(&avail_file, target_min_target);
+                let (eco_min, eco_max) = eco_range(&avail_file, cpu_minfreq, cpu_maxfreq, limiter);
+                write_range(&format!("{}/scaling_min_freq", p_str), &format!("{}/scaling_max_freq", p_str), eco_min, eco_max);
 
-                write_lock(&new_maxfreq.to_string(), &format!("{}/scaling_max_freq", p_str));
-                write_lock(&new_minfreq.to_string(), &format!("{}/scaling_min_freq", p_str));
-
-                log_info(&format!("Set {} maxfreq={} minfreq={}", policy_name, new_maxfreq, new_minfreq));
+                log_info(&format!("Set {} maxfreq={} minfreq={}", policy_name, eco_max, eco_min));
             } else {
 
                 write_unlock(&new_maxfreq.to_string(), &format!("{}/scaling_max_freq", p_str));
@@ -414,11 +411,9 @@ pub fn dsetfreqppm() {
             let new_maxfreq = setfreqs(&avail_file, new_max_target);
 
             if curprofile == "3" {
-                let target_min_target = cpu_maxfreq * 40 / 100;
-                let new_minfreq = setfreqs(&avail_file, target_min_target);
-
-                applyppmnfreqsets(&format!("{} {}", cluster, new_maxfreq), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
-                applyppmnfreqsets(&format!("{} {}", cluster, new_minfreq), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
+                let (eco_min, eco_max) = eco_range(&avail_file, cpu_minfreq, cpu_maxfreq, limiter);
+                applyppmnfreqsets(&format!("{} {}", cluster, eco_min), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
+                applyppmnfreqsets(&format!("{} {}", cluster, eco_max), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
             } else {
                 applyppmnfreqsets(&format!("{} {}", cluster, new_maxfreq), "/proc/ppm/policy/hard_userlimit_max_cpu_freq");
                 applyppmnfreqsets(&format!("{} {}", cluster, cpu_minfreq), "/proc/ppm/policy/hard_userlimit_min_cpu_freq");
@@ -445,11 +440,8 @@ pub fn dsetfreq() {
             let new_maxfreq = setfreqs(&avail_file, new_max_target);
 
             if curprofile == "3" {
-                let target_min_target = cpu_maxfreq * 40 / 100;
-                let new_minfreq = setfreqs(&avail_file, target_min_target);
-
-                applyppmnfreqsets(&new_maxfreq.to_string(), &format!("{}/scaling_max_freq", p_str));
-                applyppmnfreqsets(&new_minfreq.to_string(), &format!("{}/scaling_min_freq", p_str));
+                let (eco_min, eco_max) = eco_range(&avail_file, cpu_minfreq, cpu_maxfreq, limiter);
+                write_range(&format!("{}/scaling_min_freq", p_str), &format!("{}/scaling_max_freq", p_str), eco_min, eco_max);
             } else {
                 applyppmnfreqsets(&new_maxfreq.to_string(), &format!("{}/scaling_max_freq", p_str));
                 applyppmnfreqsets(&cpu_minfreq.to_string(), &format!("{}/scaling_min_freq", p_str));
@@ -683,6 +675,37 @@ pub fn read_freqs(path: &str) -> Vec<u64> {
     freqs
 }
 
+/// Eco caps every cluster's top clock at this share of its maximum.
+pub const ECO_MAX_PERCENT: u64 = 60;
+
+/// Governors that hold one fixed clock instead of scaling with load.
+pub fn is_fixed_gov(gov: &str) -> bool {
+    matches!(gov.trim(), "performance" | "powersave" | "userspace")
+}
+
+/// The best load-scaling governor this kernel offers, vendor ones first.
+pub fn scaling_gov_fallback() -> String {
+    let avail = fs::read_to_string("/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors")
+        .unwrap_or_default();
+    let avail: Vec<&str> = avail.split_whitespace().collect();
+    const PREFERRED: [&str; 12] = [
+        "scx", "schedhorizon", "walt", "sched_pixel", "sugov_ext", "uag",
+        "schedplus", "energy_step", "schedutil", "interactive", "ondemand", "conservative",
+    ];
+    PREFERRED
+        .iter()
+        .find(|g| avail.contains(g))
+        .map(|g| g.to_string())
+        .unwrap_or_else(|| "schedutil".to_string())
+}
+
+/// Eco clocks for one policy: top clock capped, bottom clock at the hardware
+/// minimum so idle cores can sleep. Returns (min, max).
+fn eco_range(avail_file: &str, cpu_min: u64, cpu_max: u64, limiter: u64) -> (u64, u64) {
+    let max = setfreqs(avail_file, cpu_max * limiter.min(ECO_MAX_PERCENT) / 100).max(cpu_min);
+    (cpu_min, max)
+}
+
 pub fn init_cpu_governor() {
     let cpu_path = "/sys/devices/system/cpu/cpu0/cpufreq";
     let gov_file = format!("{}/scaling_governor", cpu_path);
@@ -696,46 +719,35 @@ pub fn init_cpu_governor() {
     let performance_gov = "performance";
     let powersave_gov = "powersave";
 
+    log_info(&format!("CPU governor at startup: {}", default_gov));
+
+    // A fixed-clock governor here is left over from a profile (or a boot
+    // default), not the device's everyday governor.
+    if default_gov.is_empty() || is_fixed_gov(&default_gov) {
+        default_gov = scaling_gov_fallback();
+        log_info(&format!("Using scaling governor instead: {}", default_gov));
+    }
     setprop_cmd("persist.sys.nextcore.default_cpu_gov", &default_gov);
-    log_info(&format!("Default CPU governor detected: {}", default_gov));
 
-    // Handle fallback if default is 'performance'
-    if default_gov == "performance" && getprop("persist.sys.nextcore.custom_default_cpu_gov").is_empty() {
-        log_info("Default governor is 'performance'");
-        let avail_govs = fs::read_to_string(format!("{}/scaling_available_governors", cpu_path)).unwrap_or_default();
-        let fallbacks = [
-            "scx", "schedhorizon", "walt", "sched_pixel", "sugov_ext", "uag",
-            "schedplus", "energy_step", "ondemand", "schedutil", "interactive",
-            "conservative", "powersave"
-        ];
-
-        for gov in &fallbacks {
-            if avail_govs.contains(gov) {
-                setprop_cmd("persist.sys.nextcore.default_cpu_gov", gov);
-                default_gov = gov.to_string();
-                log_info(&format!("Fallback governor to: {}", gov));
-                break;
-            }
-        }
+    // Older versions seeded the Performance and Eco governors with
+    // "performance" and "powersave", which pinned the clocks in every
+    // profile. Clear those seeds; the profiles fall back to the default.
+    if getprop("persist.sys.nextcore.custom_performance_cpu_gov") == performance_gov {
+        setprop_cmd("persist.sys.nextcore.custom_performance_cpu_gov", "");
+    }
+    if getprop("persist.sys.nextcore.custom_powersave_cpu_gov") == powersave_gov {
+        setprop_cmd("persist.sys.nextcore.custom_powersave_cpu_gov", "");
     }
 
     // Apply custom governor if set
     let custom_gov = getprop("persist.sys.nextcore.custom_default_cpu_gov");
-    if !custom_gov.is_empty() {
+    if !custom_gov.is_empty() && !is_fixed_gov(&custom_gov) {
         default_gov = custom_gov;
     }
-    
+
     log_info(&format!("Using CPU governor: {}", default_gov));
     setgov(&default_gov);
 
-    // Set fallback props
-    if getprop("persist.sys.nextcore.custom_powersave_cpu_gov").is_empty() {
-        setprop_cmd("persist.sys.nextcore.custom_powersave_cpu_gov", &powersave_gov);
-    }
-    if getprop("persist.sys.nextcore.custom_performance_cpu_gov").is_empty() {
-        setprop_cmd("persist.sys.nextcore.custom_performance_cpu_gov", &performance_gov);
-    }
-    
     log_info("Parsing CPU Governor complete");
 }
 
