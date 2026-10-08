@@ -9,16 +9,17 @@ use crate::chipsets::unisoc::*;
 use crate::chipsets::tensor::*;
 
 /// The device's everyday CPU governor: the user's pick, else the one saved
-/// at boot, else schedutil.
+/// at boot, else the best scaling governor the kernel offers. Never
+/// performance, powersave or userspace: those pin a fixed clock, which is
+/// what made Balanced run hot.
 fn default_cpu_gov() -> String {
-    let mut gov = getprop("persist.sys.nextcore.custom_default_cpu_gov");
-    if gov.is_empty() {
-        gov = getprop("persist.sys.nextcore.default_cpu_gov");
+    for key in ["persist.sys.nextcore.custom_default_cpu_gov", "persist.sys.nextcore.default_cpu_gov"] {
+        let gov = getprop(key);
+        if !gov.is_empty() && !is_fixed_gov(&gov) {
+            return gov;
+        }
     }
-    if gov.is_empty() {
-        gov = "schedutil".to_string();
-    }
-    gov
+    scaling_gov_fallback()
 }
 
 /// Performance profile.
@@ -41,11 +42,12 @@ pub fn performance_profile() {
     let perfmax = get_perfmax();
     let lite_mode = get_litemode();
 
-    // Max mode pins min=max, so the governor has nothing to decide there.
-    // Sustained mode needs a real governor to scale above the floor.
+    // Sustained mode needs a real governor to scale above the floor, so a
+    // fixed-clock governor (performance pins every core at max) is only
+    // honoured in max mode, where min=max anyway.
     let mut performance_gov = getprop("persist.sys.nextcore.custom_performance_cpu_gov");
-    if performance_gov.is_empty() {
-        performance_gov = if perfmax { "powersave".to_string() } else { default_cpu_gov() };
+    if performance_gov.is_empty() || (!perfmax && is_fixed_gov(&performance_gov)) {
+        performance_gov = default_cpu_gov();
     }
 
     // I/O Scheduler Tweaks
@@ -272,9 +274,11 @@ pub fn eco_mode() {
         return;
     }
     
+    // Eco keeps a scaling governor and caps the top clock instead: the
+    // powersave governor pins the lowest clock and makes the UI stutter.
     let mut powersave_gov = getprop("persist.sys.nextcore.custom_powersave_cpu_gov");
-    if powersave_gov.is_empty() {
-        powersave_gov = "powersave".to_string();
+    if powersave_gov.is_empty() || is_fixed_gov(&powersave_gov) {
+        powersave_gov = default_cpu_gov();
     }
 
     // I/O Scheduler Tweaks
@@ -300,7 +304,7 @@ pub fn eco_mode() {
     } else {
         setfreq();
     }
-    log_info("Set CPU freq to low Frequencies");
+    log_info(&format!("Set CPU max freq to {}% for eco", ECO_MAX_PERCENT));
 
     write_lock("120", "/proc/sys/vm/vfs_cache_pressure");
     write_lock("Y", "/sys/module/workqueue/parameters/power_efficient");

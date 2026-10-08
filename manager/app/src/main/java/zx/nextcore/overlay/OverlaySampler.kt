@@ -80,7 +80,11 @@ class OverlaySampler(private val context: Context) : AutoCloseable {
         val battery = if (wanted.any { it in BATTERY_METRICS }) context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) else null
         val mem = if (OverlayMetric.RAM in wanted) readMeminfo() else emptyMap()
 
-        val clusters = prof.clusters.mapNotNull { c -> ints(root["c${c.firstCpu}"]).firstOrNull()?.let { toMhz(it) } }
+        // One value per cpufreq policy, smallest cores first.
+        val clusters = root.filterKeys { it.startsWith("pol") }
+            .mapNotNull { (k, v) -> k.removePrefix("pol").toIntOrNull()?.let { n -> n to v } }
+            .sortedBy { it.first }
+            .mapNotNull { (_, v) -> ints(v).firstOrNull()?.let { toMhz(it) }?.takeIf { it > 0 } }
 
         return OverlayState(
             fps = frames?.fps,
@@ -90,7 +94,7 @@ class OverlaySampler(private val context: Context) : AutoCloseable {
             cpuMaxMhz = clusters.maxOrNull(),
             clusterMhz = clusters,
             cpuLoad = cpuLoad(root["stat"]),
-            cpuTempC = ints(root["ctemp"]).firstOrNull()?.let { toCelsius(it) }?.takeIf { it in 1f..150f },
+            cpuTempC = cpuTemp(root),
             gpuLoad = ints(root["gload"]).firstOrNull()?.toInt()?.coerceIn(0, 100),
             gpuMhz = ints(root["gfreq"]).maxOrNull()?.let { toMhz(it) }?.takeIf { it > 0 },
             gpuTempC = ints(root["gtemp"]).firstOrNull()?.let { toCelsius(it) }?.takeIf { it in 1f..150f },
@@ -116,13 +120,23 @@ class OverlaySampler(private val context: Context) : AutoCloseable {
         )
     }
 
-    /** Pings a public DNS server once; null on timeout. Blocking. */
+    /**
+     * Round trip to a public server, in ms; null when offline. Times a TCP
+     * handshake (one round trip) to Cloudflare, then Google DNS: unlike the
+     * ping binary it needs no raw socket, so it works on every ROM. Blocking.
+     */
     fun ping(): Int? {
-        val out = runCatching {
-            val p = Runtime.getRuntime().exec(arrayOf("ping", "-c", "1", "-w", "2", "8.8.8.8"))
-            try { p.inputStream.bufferedReader().readText() } finally { p.destroy() }
-        }.getOrNull().orEmpty()
-        return Regex("""time[=<]([0-9.]+)""").find(out)?.groupValues?.get(1)?.toFloatOrNull()?.toInt()
+        for ((host, port) in listOf("1.1.1.1" to 443, "8.8.8.8" to 53)) {
+            val ms = runCatching {
+                java.net.Socket().use { socket ->
+                    val start = System.nanoTime()
+                    socket.connect(java.net.InetSocketAddress(host, port), 2000)
+                    ((System.nanoTime() - start) / 1_000_000).toInt()
+                }
+            }.getOrNull()
+            if (ms != null) return ms.coerceAtLeast(1)
+        }
+        return null
     }
 
     /* ---------- Root reads ---------- */
@@ -131,10 +145,10 @@ class OverlaySampler(private val context: Context) : AutoCloseable {
 
     private fun readRoot(wanted: Set<OverlayMetric>, prof: DeviceProfile): Map<String, String> {
         val files = linkedMapOf<String, String>()
-        if (OverlayMetric.CPU_FREQ in wanted || OverlayMetric.CPU_CLUSTERS in wanted) {
-            prof.clusters.forEach { files["c${it.firstCpu}"] = "/sys/devices/system/cpu/cpu${it.firstCpu}/cpufreq/scaling_cur_freq" }
+        if (OverlayMetric.CPU_TEMP in wanted) {
+            cpuTempZones().forEachIndexed { i, path -> files["cz$i"] = path }
+            if (prof.cpuTempPath.isNotEmpty()) files["ctemp"] = prof.cpuTempPath
         }
-        if (OverlayMetric.CPU_TEMP in wanted && prof.cpuTempPath.isNotEmpty()) files["ctemp"] = prof.cpuTempPath
         if (OverlayMetric.GPU_LOAD in wanted && prof.gpuLoadPath.isNotEmpty()) files["gload"] = prof.gpuLoadPath
         if (OverlayMetric.GPU_FREQ in wanted && prof.gpuFreqPath.isNotEmpty()) files["gfreq"] = prof.gpuFreqPath
         if (OverlayMetric.GPU_TEMP in wanted) findGpuTemp()?.let { files["gtemp"] = it }
@@ -143,8 +157,43 @@ class OverlaySampler(private val context: Context) : AutoCloseable {
             .map { (k, p) -> "echo \"$k=\$(head -c 64 '$p' 2>/dev/null | tr '\\n' ' ')\"" }
             .toMutableList()
         if (OverlayMetric.CPU_LOAD in wanted) lines += "echo \"stat=\$(head -n 1 /proc/stat)\""
+        // Read from the live policies, not the saved profile: a cluster's first
+        // core can be offline, and its own cpufreq node then disappears.
+        if (OverlayMetric.CPU_FREQ in wanted || OverlayMetric.CPU_CLUSTERS in wanted) {
+            lines += "for p in /sys/devices/system/cpu/cpufreq/policy*; do echo \"pol\${p##*policy}=\$(cat \$p/scaling_cur_freq 2>/dev/null)\"; done"
+        }
         if (lines.isEmpty()) return emptyMap()
         return DeviceMonitor.parseKeyValues(meter.exec(lines.joinToString("; ")).joinToString("\n"))
+    }
+
+    private var cpuZones: List<String>? = null
+
+    /**
+     * Thermal zones that measure the CPU cores, looked up once. Names differ
+     * by vendor: cpu-1-0-usr (Qualcomm), mtktscpu / cpu_little (MediaTek),
+     * BIG / LITTLE (Exynos), cpuss-*, soc_max.
+     */
+    private fun cpuTempZones(): List<String> {
+        cpuZones?.let { return it }
+        val cpuType = Regex("(?i)(^cpu|cpuss|mtktscpu|cpu_|^big|^little|^mid|soc_max|^apc)")
+        val skip = Regex("(?i)(cpufreq|cdev|usr_ext|step|limit|batt)")
+        val found = meter.exec("for z in /sys/class/thermal/thermal_zone*; do echo \"\$z \$(cat \$z/type 2>/dev/null)\"; done")
+            .map { it.trim().split(' ', limit = 2) }
+            .filter { it.size == 2 && cpuType.containsMatchIn(it[1]) && !skip.containsMatchIn(it[1]) }
+            .map { "${it[0]}/temp" }
+            .filter { safePath.matches(it) }
+            .take(16)
+        cpuZones = found
+        return found
+    }
+
+    /** Hottest CPU zone; the profile's sensor when no zone names the CPU. */
+    private fun cpuTemp(root: Map<String, String>): Float? {
+        val sane = 5f..125f
+        val zones = root.filterKeys { it.startsWith("cz") }.values
+            .mapNotNull { ints(it).firstOrNull()?.let { v -> toCelsius(v) } }
+            .filter { it in sane }
+        return zones.maxOrNull() ?: ints(root["ctemp"]).firstOrNull()?.let { toCelsius(it) }?.takeIf { it in sane }
     }
 
     /** The first thermal zone whose type names the GPU, looked up once. */

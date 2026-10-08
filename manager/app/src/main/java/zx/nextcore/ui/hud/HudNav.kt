@@ -47,7 +47,7 @@ fun HudBottomBar(items: List<HudNavItem>, selected: Int, onSelect: (Int) -> Unit
     Row(
         modifier
             .fillMaxWidth()
-            .background(Color(0xFF0E0E12))
+            .background(Hud.nav)
             .drawBehind { drawLine(Hud.line, Offset(0f, 0f), Offset(size.width, 0f), 1.dp.toPx()) }
             .windowInsetsPadding(WindowInsets.navigationBars)
             .padding(vertical = 8.dp),
@@ -95,7 +95,7 @@ fun HudRail(
         modifier
             .width(HudRailWidth)
             .fillMaxHeight()
-            .background(Color(0xFF0E0E12))
+            .background(Hud.nav)
             .drawBehind {
                 // Hairline on the side facing the content.
                 val x = if (rtl) 0f else size.width - 1.dp.toPx()

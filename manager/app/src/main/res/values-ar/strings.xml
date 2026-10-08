@@ -802,4 +802,13 @@
     <string name="ov_color_code_sub">أخضر للإطارات الزينة، وأصفر وأحمر لما ترتفع القيم.</string>
     <string name="ov_border">إطار اللوحة</string>
     <string name="ov_fps_note">الإطارات تنقرى من أوقات إطارات التطبيق اللي على الشاشة بالروت. لو الروم يخفيها، يستخدم NextCore إحصائيات SurfaceFlinger، وبعدها عدّاد الإطارات.</string>
+    <string name="th_mode">الوضع</string>
+    <string name="th_system">النظام</string>
+    <string name="th_light">نهاري</string>
+    <string name="th_dark">ليلي</string>
+    <string name="th_amoled">أسود</string>
+    <string name="th_mode_note">«النظام» يتبع الوضع الليلي في جوالك. «أسود» يستخدم أسود حقيقي ويوفر البطارية في شاشات OLED.</string>
+    <string name="th_accent">لون التمييز</string>
+    <string name="th_wallpaper">أول دائرة تاخذ اللون من خلفية جوالك.</string>
+    <string name="th_preview">معاينة حية للثيم الحالي</string>
 </resources>

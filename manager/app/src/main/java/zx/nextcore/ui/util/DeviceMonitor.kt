@@ -242,7 +242,9 @@ object DeviceMonitor {
     fun sample(context: Context, profile: DeviceProfile): LiveStats {
         val files = linkedMapOf<String, String>()
         profile.clusters.forEach { c ->
-            val dir = "/sys/devices/system/cpu/cpu${c.firstCpu}/cpufreq"
+            // The policy node stays while any core of the cluster is online; the
+            // first core's own cpufreq node vanishes when that core is offline.
+            val dir = "/sys/devices/system/cpu/cpufreq/policy${c.firstCpu}"
             files["c${c.firstCpu}"] = "$dir/scaling_cur_freq"
             files["cmin${c.firstCpu}"] = "$dir/scaling_min_freq"
             files["cmax${c.firstCpu}"] = "$dir/scaling_max_freq"

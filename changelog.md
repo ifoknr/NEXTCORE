@@ -15,3 +15,8 @@
 - Records temperature, CPU clock and FPS while games run, with per-game history
 - Safe on any device: no read-only locks, vendor thermal untouched, GPU/DDR only pinned in max mode, conservative background cleaner
 - Renamed all internal identifiers to nextcore (old game list is migrated)
+- Fixed Balanced and Performance running hot: no profile uses the performance governor any more unless Max performance is on
+- Fixed Eco raising the CPU floor to 40%; it now caps the top clock at 60% and lets cores idle
+- The background monitor polls every 3 s while the screen is off instead of twice a second
+- Themes work again: light, dark, system and AMOLED modes plus accent colors, on a new theme page
+- Floating monitor: ping works (it needed the internet permission), CPU clocks come from the live cpufreq policies, CPU temperature from the hottest CPU sensor

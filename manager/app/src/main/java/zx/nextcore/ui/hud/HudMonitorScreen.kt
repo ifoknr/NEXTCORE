@@ -231,7 +231,7 @@ fun HudMonitorScreen(navController: NavController) {
                                 .size(30.dp)
                                 .clip(CircleShape)
                                 .background(Color(c))
-                                .then(if (i == accentIdx) Modifier.border(2.dp, Color.White, CircleShape) else Modifier)
+                                .then(if (i == accentIdx) Modifier.border(2.dp, Hud.text, CircleShape) else Modifier)
                                 .clickable { accentIdx = i; prefs.edit().putInt(OverlayPrefs.ACCENT, i).apply() },
                         )
                     }

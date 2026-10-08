@@ -802,4 +802,13 @@
     <string name="ov_color_code_sub">Green for good FPS, yellow and red when values get high.</string>
     <string name="ov_border">Panel border</string>
     <string name="ov_fps_note">FPS comes from the frame times of the app on screen, read with root. If your ROM hides them, NextCore falls back to SurfaceFlinger time stats, then to its frame counter.</string>
+    <string name="th_mode">Mode</string>
+    <string name="th_system">System</string>
+    <string name="th_light">Light</string>
+    <string name="th_dark">Dark</string>
+    <string name="th_amoled">AMOLED</string>
+    <string name="th_mode_note">System follows your phone's dark mode. AMOLED uses true black, which saves battery on OLED screens.</string>
+    <string name="th_accent">Accent color</string>
+    <string name="th_wallpaper">The first circle takes the color from your wallpaper.</string>
+    <string name="th_preview">Live preview of the current theme</string>
 </resources>
