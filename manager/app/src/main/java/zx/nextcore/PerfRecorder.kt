@@ -120,7 +120,8 @@ object PerfRecorder {
     private fun currentGame(): String? {
         val first = runCatching { File(GAME_INFO).readLines().firstOrNull() }.getOrNull() ?: return null
         val pkg = first.substringBefore(' ').trim()
-        return pkg.takeIf { it.isNotEmpty() && it != "NULL" && it != "none" }
+        // The daemon writes "(null)" while no game is in the foreground.
+        return pkg.takeIf { it.isNotEmpty() && it.lowercase() !in setOf("null", "(null)", "none") }
     }
 
     private fun readTemp(path: String): Double? {

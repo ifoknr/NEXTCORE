@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -34,6 +35,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -372,23 +374,43 @@ fun HudSegmented(
     }
 }
 
-/** Value chip on the far side of a row ("افتراضي", "تشغيل", "SkiaVK"). */
+/**
+ * Value chip on the far side of a row ("افتراضي", "تشغيل", "SkiaVK").
+ * [icon] marks what a tap does: a menu arrow or a page arrow. With [fill]
+ * the chip takes the width it is given and the icon sits at the far end.
+ */
 @Composable
-fun HudValueChip(text: String, active: Boolean = false, onClick: (() -> Unit)? = null) {
-    Box(
-        Modifier
+fun HudValueChip(
+    text: String,
+    active: Boolean = false,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    fill: Boolean = false,
+    onClick: (() -> Unit)? = null,
+) {
+    Row(
+        modifier
+            .heightIn(min = 38.dp)
             .clip(Hud.smallCut)
             .background(Hud.cardHi)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(start = 14.dp, end = if (icon != null) 8.dp else 14.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Text(
             text,
             color = if (active) hudAccent else Hud.text,
-            fontSize = 13.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = BrandFontFamily,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = if (fill) Modifier.weight(1f) else Modifier,
         )
+        if (icon != null) {
+            Icon(icon, contentDescription = null, tint = Hud.muted, modifier = Modifier.size(20.dp))
+        }
     }
 }
 
@@ -501,10 +523,23 @@ fun HudSpacer(width: Dp) = Spacer(Modifier.width(width))
 
 /** Value chip that opens a menu of [options]; [selected] indexes into it. */
 @Composable
-fun HudDropdownChip(options: List<String>, selected: Int, onSelect: (Int) -> Unit, active: Boolean = false) {
+fun HudDropdownChip(
+    options: List<String>,
+    selected: Int,
+    onSelect: (Int) -> Unit,
+    active: Boolean = false,
+    fill: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
     var open by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
-    Box {
-        HudValueChip(options.getOrElse(selected) { options.firstOrNull().orEmpty() }, active = active) { open = true }
+    Box(modifier) {
+        HudValueChip(
+            options.getOrElse(selected) { options.firstOrNull().orEmpty() },
+            active = active,
+            modifier = if (fill) Modifier.fillMaxWidth() else Modifier,
+            icon = Icons.Rounded.ArrowDropDown,
+            fill = fill,
+        ) { open = true }
         androidx.compose.material3.DropdownMenu(
             expanded = open,
             onDismissRequest = { open = false },

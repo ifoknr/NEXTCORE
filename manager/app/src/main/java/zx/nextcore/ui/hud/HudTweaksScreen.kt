@@ -3,7 +3,9 @@ package zx.nextcore.ui.hud
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.AcUnit
 import androidx.compose.material.icons.rounded.BatteryChargingFull
 import androidx.compose.material.icons.rounded.Bolt
@@ -82,7 +84,13 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
                     HudRow(
                         stringResource(R.string.hud_gov), icon = Icons.Rounded.Settings, subtitle = stringResource(R.string.hud_gov_sub),
                         onClick = { navController.navigate("governorsettings") },
-                        trailing = { HudValueChip(vm.availableGovernors?.getOrNull(vm.defaultGovIndex ?: -1) ?: "—", active = true) { navController.navigate("governorsettings") } },
+                        trailing = {
+                            HudValueChip(
+                                vm.availableGovernors?.getOrNull(vm.defaultGovIndex ?: -1) ?: "—",
+                                active = true,
+                                icon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                            ) { navController.navigate("governorsettings") }
+                        },
                     )
                 },
             ))
@@ -95,7 +103,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
                     Text(stringResource(R.string.hud_refresh), color = Hud.muted, fontSize = 12.sp)
                     val cur = vm.currentRefreshRate?.toString()
                     val idx = refreshRates.indexOf(cur).coerceAtLeast(0)
-                    HudDropdownChip(refreshRates.map { "$it Hz" }, idx, { vm.executeSetRefreshRates(refreshRates[it], context) }, active = true)
+                    HudDropdownChip(refreshRates.map { "$it Hz" }, idx, { vm.executeSetRefreshRates(refreshRates[it], context) }, active = true, fill = true, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
                 }
                 HudCard(Modifier.weight(1f)) {
                     Text(stringResource(R.string.hud_renderer), color = Hud.muted, fontSize = 12.sp)
@@ -104,6 +112,8 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
                         RENDERER_NAMES, idx.coerceAtLeast(0),
                         { vm.executeSetRenderer(RENDERERS[it], context) },
                         active = idx >= 0,
+                        fill = true,
+                        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                     )
                 }
             }

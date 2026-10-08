@@ -140,7 +140,8 @@ object RootUtils {
                 val lines = raw.lines()
                 val firstLine = lines[0].split(" ")
 
-                val pkg = firstLine.getOrNull(0)?.takeIf { it != "NULL" && it.isNotBlank() }
+                // "(null)" is what the daemon wrote while no game was in the foreground.
+                val pkg = firstLine.getOrNull(0)?.takeIf { it.isNotBlank() && it.lowercase() !in setOf("null", "(null)", "none") }
                 val time = lines.find { it.startsWith("Time:") }?.substringAfter("Time:")?.trim()
 
                 currentInfo = GameInfo(pkg, time)
