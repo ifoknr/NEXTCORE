@@ -432,7 +432,7 @@
     <string name="nc_banner_reset">Default banner</string>
     <string name="nc_banner_more">Video, crop and more</string>
     <string name="nc_perf_max">Max performance</string>
-    <string name="nc_perf_max_desc">Pins CPU and GPU at full clocks and relaxes thermal limits. Hotter, and frame rates may drop once the device heats up. Applies next time Performance is selected.</string>
+    <string name="nc_perf_max_desc">Pins CPU, GPU and memory at full clocks. Vendor thermal protection stays on, so the device gets hotter and clocks drop once it heats up. Applies next time Performance is selected.</string>
     <string name="nc_restart_service">Restart service</string>
     <string name="nc_restarting">Restarting service…</string>
     <string name="nc_full_desc">All general and %1$s tweaks are active</string>

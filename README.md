@@ -3,70 +3,68 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/ifoknr/NEXTCORE/releases/latest"><img src="https://img.shields.io/github/v/release/ifoknr/NEXTCORE?style=for-the-badge&color=5D74A8&label=Release" alt="Release"></a>
-  <img src="https://img.shields.io/badge/KernelSU%20·%20APatch%20·%20Magisk-supported-B2C4E9?style=for-the-badge" alt="Root managers">
-  <img src="https://img.shields.io/badge/Android-11+-333C4D?style=for-the-badge&logo=android" alt="Android 11+">
-  <img src="https://img.shields.io/badge/License-Apache%202.0-EBDEFF?style=for-the-badge" alt="License">
+  <a href="https://github.com/ifoknr/NEXTCORE/releases/latest"><img src="https://img.shields.io/github/v/release/ifoknr/NEXTCORE?style=flat-square&color=FF6B2C&labelColor=16161C&label=release" alt="Release"></a>
+  <img src="https://img.shields.io/badge/KernelSU%20·%20APatch%20·%20Magisk-16161C?style=flat-square" alt="Root managers">
+  <img src="https://img.shields.io/badge/Android-10%2B-16161C?style=flat-square&logo=android&logoColor=FF6B2C" alt="Android 10+">
+  <a href="https://t.me/IFOKNR1"><img src="https://img.shields.io/badge/Telegram-IFOKNR1-FF6B2C?style=flat-square&logo=telegram&logoColor=white&labelColor=16161C" alt="Telegram"></a>
+  <img src="https://img.shields.io/badge/license-Apache%202.0-16161C?style=flat-square" alt="License">
 </p>
-
-<p align="center"><a href="#english">English</a> · <a href="#العربية">العربية</a></p>
-
----
 
 <div dir="rtl">
 
-## العربية
+**NextCore** موديول أداء لـ KernelSU وAPatch وMagisk، ومعه تطبيق لإدارته ومراقبة الألعاب. يتعرّف على معالجك عند كل إقلاع، ويطبّق اللي يناسبه بأمان، ويبدّل ملف الأداء لحاله لما تفتح لعبة.
 
-**NextCore** موديول أداء لـ KernelSU وAPatch وMagisk، ومعه تطبيق لإدارته ومراقبة الجهاز. يتعرّف على معالجك عند كل إقلاع ويطبّق التحسينات المناسبة له، ويبدّل ملف الأداء لحاله لما تفتح لعبة.
+#### ⚡ الأداء
 
-### ⚡ ملف الأداء: أداء مستدام
-
-بدل ما يقفل كل الأنوية على أعلى تردد من أول ثانية، ملف الأداء يرفع أقل تردد ويخلي حاكم المعالج يرفع الباقي حسب الحمل. الجهاز يسخن أبطأ، فتطول الفترة اللي تلعب فيها على أعلى أداء.
-
-| البند | كيف يشتغل |
+| | |
 | :--- | :--- |
-| **المعالج** | أقل تردد يصير 70% من الأقصى للأنوية الكبيرة و50% للمجموعة الصغيرة، وأعلى تردد بدون حد. حاكم الجهاز الأصلي يكمل شغله فوق هذا الحد. |
-| **أولوية اللعبة** | uclamp على نواة GKI: التطبيق اللي على الشاشة يُعامل كأنه محمّل 30% على الأقل فيروح للأنوية السريعة، ومهام الخلفية محدودة بنص قدرة النواة. على الأنوية القديمة يستخدم schedtune. |
-| **كرت الرسوميات** | ما ينقفل على أعلى تردد. على MediaTek يرفعه FPSGO وGED حسب وقت كل إطار. |
-| **الحرارة والبطارية** | الحماية كلها شغالة. EARA على MediaTek ينزل التردد شوي شوي لما يسخن الجهاز عشان الإطارات تبقى ثابتة. |
-| **الذاكرة والتخزين** | ما يمسح ذاكرة التخزين المؤقت مع كل تبديل، والقراءة المسبقة 256 كيلوبايت لتحميل أسرع. |
-| **الرجوع للتوازن** | ملف التوازن يرجّع قيم uclamp الأصلية حقت جهازك، والموديول يحفظها عند الإقلاع. |
+| **أداء مستدام** | يرفع أقل تردد للمعالج (70% للأنوية الكبيرة و50% للصغيرة) ويخلي الحاكم يرفع الباقي حسب الحمل. الجهاز يسخن أبطأ والأداء يثبت أطول. |
+| **أولوية اللعبة** | uclamp يودّي اللعبة للأنوية السريعة ويحد مهام الخلفية، وترجع القيم الأصلية في وضع التوازن. |
+| **الرسوميات والذاكرة** | وضع الأداء يرفع الحد الأدنى للنص ويخلي الأعلى مفتوح. التثبيت على أعلى تردد بس في **الأداء الأقصى**. |
+| **التوفير** | يحد الرسوميات والذاكرة عند النص بدل ما يقفلها على أقل تردد. |
+| **لكل لعبة** | دقة أقل، هدف إطارات، رندر، معدل تحديث، عدم الإزعاج، عزل الشحن. |
 
-**الأداء الأقصى (اختياري):** من التعديلات ← الإعدادات الإضافية ← الأداء الأقصى. يقفل المعالج وكرت الرسوميات على أعلى تردد ويخفف حماية الحرارة. أسرع في أول دقايق، والجهاز يسخن أكثر.
+#### 🛡️ آمن لأي جهاز
 
-### 🧩 يشتغل على أي معالج
+- ما يقفل أي ملف في النواة للقراءة فقط، فحماية الحرارة من الشركة تقدر تخفّض التردد دائماً.
+- ما يغيّر حاكم الحرارة، وما يوقف خدمات الحرارة، وما يعطّل إعادة التشغيل عند انهيار النواة.
+- منظّف الخلفية يقفل تطبيقاتك بس، وما يقرب من الكيبورد والرسائل والاتصال والموسيقى والمنبه.
+- أي تعديل مساره مو موجود في نواتك يتجاوزه بدون أخطاء.
 
-عند كل إقلاع يقرأ الموديول معالجك ويكتب النتيجة في `device_profile`:
+#### 📱 التطبيق
 
-1. من `ro.soc.manufacturer` و`ro.soc.model`، وهي أدق شي على الأجهزة الحديثة.
-2. لو ما نفعت، من `/proc/cpuinfo` ثم `ro.board.platform`.
-3. لو الاسم ما يدل على شي، من تعريفات النواة الموجودة: `gpufreq` و`fpsgo` و`ppm` تعني MediaTek، و`kgsl` تعني Snapdragon، و`/sys/kernel/gpu` مع Mali تعني Exynos.
-
-| المعالج | مستوى الدعم |
+| | |
 | :--- | :--- |
-| MediaTek · Snapdragon · Exynos · Tensor · Unisoc | **كامل:** التحسينات العامة وتحسينات المعالج نفسه |
-| أي معالج ثاني | **جزئي:** التحسينات العامة بس. كل تعديل يتطبق إذا مساره موجود في نواتك، وإذا مو موجود يتجاوزه بدون أخطاء |
+| **الرئيسية** | حالة الخدمة، عدادات حية، الأوضاع، اللعبة الشغالة، رسم آخر 30 دقيقة، إحصائيات اليوم. |
+| **المحركات** | صفحة للمعالج، وللذاكرة، وللإطارات (لحظي، المتوسط، أقل 1%، الثبات). |
+| **الجلسات** | كل جلسة لعب بمدتها ومتوسط إطاراتها وأعلى حرارة، ومجموع كل لعبة. |
+| **المراقب العائم** | 20 قراءة تختار منها وترتبها، ثلاث أشكال، رسم للإطارات، وتحديث لين 250 ملي ثانية. |
 
-مستوى الدعم يطلع وقت التثبيت، وفي بطاقة الجهاز داخل التطبيق، وفي أمر `doctor`.
+#### 🎮 المراقب العائم
 
-### 📱 التطبيق
+الإطارات تنقرى لحظياً من أوقات إطارات اللعبة نفسها في SurfaceFlinger، ومعها زمن الإطار وأقل 1% والتقطيع.
+باقي القراءات: تردد المعالج ومجموعاته وحمله وحرارته، الرسوميات (حمل وتردد وحرارة)، الرام، حرارة البطارية ونسبتها واستهلاكها بالواط، حالة الحرارة، الشبكة، البنق، الساعة، ومدة الجلسة.
+اضغط مطوّل على اللوحة داخل اللعبة لتغيير شكلها، واسحبها لتحريكها.
 
-- واجهة HUD سوداء وبرتقالية، صفحاتها تتحرك بالسحب، بشريط سفلي في الجوال وشريط جانبي في التابلت.
-- **الرئيسية:** حالة الخدمة، عدادات حية، اختيار الوضع، اللعبة الشغالة، رسم آخر 30 دقيقة، وإحصائيات اليوم.
-- **الألعاب:** بحث وفلاتر، وإعدادات خاصة لكل لعبة (الدقة، الإطارات، الرندر، معدل التحديث) مع سجل جلساتها.
-- **المحركات:** صفحة للمعالج، وصفحة للذاكرة، وصفحة للإطارات (المتوسط، أقل 1%، الثبات).
-- **الجلسات:** مدة كل جلسة لعب ومتوسط إطاراتها وحرارتها.
-- **التعديلات والإعدادات:** الحاكم وFPSGO وعزل الشحن والأداء الأقصى والنسخ الاحتياطي والسجلات.
+#### 🧩 المعالجات
 
-### 📦 التثبيت
+| المعالج | الدعم |
+| :--- | :--- |
+| MediaTek · Snapdragon · Exynos · Tensor · Unisoc | **كامل:** التحسينات العامة وتحسينات المعالج |
+| غيرها | **جزئي:** التحسينات العامة اللي مساراتها موجودة في نواتك |
 
-1. لو عندك AZenith، احذفه وأعد التشغيل. الموديولين يستخدمون نفس الملفات.
-2. نزّل آخر إصدار من [صفحة الإصدارات](https://github.com/ifoknr/NEXTCORE/releases/latest) وفلّشه من مدير الروت.
-3. أعد التشغيل وافتح تطبيق NextCore وامنحه الروت.
+يتعرّف على المعالج من `ro.soc.*` ثم `/proc/cpuinfo` ثم تعريفات النواة (`gpufreq` و`fpsgo` لـ MediaTek، و`kgsl` لـ Snapdragon).
 
-التحديثات توصلك من مدير الروت. ولو صار شي وقت الإقلاع، أنشئ الملف `/data/local/tmp/nextcore_abort` والخدمة ما تشتغل.
+#### 📦 التثبيت
 
-### 🛠️ أوامر الطرفية
+1. احذف AZenith لو كان مثبّت وأعد التشغيل.
+2. نزّل آخر إصدار من [الإصدارات](https://github.com/ifoknr/NEXTCORE/releases/latest) وفلّشه من مدير الروت.
+3. أعد التشغيل، افتح تطبيق NextCore وامنحه الروت.
+
+لو صار شي وقت الإقلاع، أنشئ الملف `/data/local/tmp/nextcore_abort` والخدمة ما تشتغل.
+
+<details>
+<summary><b>أوامر الطرفية</b></summary>
 
 ```sh
 sh /data/adb/modules/nextcore/action.sh get_status     # الحالة
@@ -75,66 +73,68 @@ sh /data/adb/modules/nextcore/action.sh set_auto 1     # الوضع التلقا
 sh /data/adb/modules/nextcore/action.sh doctor         # التشخيص
 ```
 
+</details>
+
 </div>
 
----
+<details>
+<summary><b>English</b></summary>
 
-## English
+<br>
 
-**NextCore** is a performance module for KernelSU, APatch and Magisk with a companion app for control and live monitoring. It identifies your SoC on every boot, applies the tweaks that fit it, and switches profiles automatically when a game opens.
+**NextCore** is a performance module for KernelSU, APatch and Magisk with a companion app for control and game monitoring. It reads your SoC on every boot, applies what fits it safely, and switches profiles when a game opens.
 
-### ⚡ Performance profile: sustained mode
+#### ⚡ Performance
 
-Instead of pinning every core at its top clock, the profile raises the clock floor and lets the CPU governor scale above it. The chip heats up more slowly, so it stays fast for longer in a gaming session.
-
-| Area | What it does |
+| | |
 | :--- | :--- |
-| **CPU** | Minimum frequency at 70% of max on the big clusters and 50% on the smallest; maximum left open. The device governor keeps scaling above the floor. |
-| **App priority** | uclamp on GKI kernels: the app on screen gets a 30% utilization floor so it lands on the fast cores; background work is capped at half a core. schedtune on older kernels. |
-| **GPU** | Not locked. On MediaTek, FPSGO and GED raise it from per-frame timing. |
-| **Thermal & battery** | All protection stays on. MediaTek EARA steps clocks down gradually as the chip warms, so frame rate stays steady. |
-| **Memory & storage** | No page-cache drop on profile switch; 256 KB read-ahead for faster loading. |
-| **Back to balanced** | Balanced restores the vendor uclamp values saved at boot. |
+| **Sustained mode** | Raises the CPU floor (70% of max on big clusters, 50% on the smallest) and lets the governor scale above it. The chip heats slower and stays fast longer. |
+| **Game priority** | uclamp moves the game to the fast cores and caps background work; vendor values come back in Balanced. |
+| **GPU & memory** | Performance raises the floor to the middle step and leaves the ceiling open. Full clocks only in **Max performance**. |
+| **Eco** | Caps GPU and memory at the middle step instead of pinning the lowest. |
+| **Per game** | Downscale, FPS target, renderer, refresh rate, do not disturb, bypass charging. |
 
-**Max performance (opt-in):** Tweaks → Additional settings → Max performance. Pins CPU and GPU at full clocks and relaxes thermal limits: fastest for the first minutes, and hotter.
+#### 🛡️ Safe on any device
 
-### 🧩 Works on any SoC
+- No read-only locks on kernel nodes, so vendor thermal can always lower clocks.
+- Thermal governors and services are left alone, and a kernel panic still reboots.
+- The background cleaner only stops your own apps; keyboard, messaging, calls, music and alarms keep running.
+- Any tweak whose node is missing in your kernel is skipped.
 
-On every boot the module reads your SoC and writes the result to `device_profile`:
+#### 📱 App
 
-1. `ro.soc.manufacturer` / `ro.soc.model`, the most reliable source on modern devices.
-2. Otherwise `/proc/cpuinfo`, then `ro.board.platform`.
-3. If the name says nothing, the kernel drivers present: `gpufreq`, `fpsgo` or `ppm` mean MediaTek, `kgsl` means Snapdragon, `/sys/kernel/gpu` with Mali means Exynos.
+| | |
+| :--- | :--- |
+| **Home** | Service status, live gauges, modes, the running game, a 30-minute chart, today's stats. |
+| **Engines** | CPU, memory and frames pages (live FPS, average, 1% low, stability). |
+| **Sessions** | Every play session with duration, average FPS and peak temperature, plus per-game totals. |
+| **Floating monitor** | 20 readings to pick and reorder, three layouts, an FPS graph, updates down to 250 ms. |
+
+#### 🎮 Floating monitor
+
+FPS is read in real time from the game's own frame times in SurfaceFlinger, with frame time, 1% low and stutters.
+Also: CPU clock, clusters, load and temperature; GPU load, clock and temperature; RAM; battery temperature, level and power draw; thermal status; network; ping; clock; session time.
+Long-press the panel in game to switch layout; drag it to move it.
+
+#### 🧩 SoCs
 
 | SoC | Support |
 | :--- | :--- |
-| MediaTek · Snapdragon · Exynos · Tensor · Unisoc | **Full:** general and chipset-specific tweaks |
-| Anything else | **Partial:** general tweaks only. Each tweak applies when its node exists in your kernel and is skipped otherwise |
+| MediaTek · Snapdragon · Exynos · Tensor · Unisoc | **Full:** general and chipset tweaks |
+| Others | **Partial:** general tweaks whose nodes exist in your kernel |
 
-The support level is shown at install, on the in-app Device Card, and by the `doctor` command.
+#### 📦 Install
 
-### 📦 Install
-
-1. If AZenith is installed, remove it and reboot; both modules use the same binaries.
-2. Download the latest release from the [Releases page](https://github.com/ifoknr/NEXTCORE/releases/latest) and flash it in your root manager.
+1. Remove AZenith if installed and reboot.
+2. Download the latest [release](https://github.com/ifoknr/NEXTCORE/releases/latest) and flash it in your root manager.
 3. Reboot, open the NextCore app and grant root.
 
-Updates arrive through your root manager. If something goes wrong at boot, create `/data/local/tmp/nextcore_abort` and the service will not start.
+If something goes wrong at boot, create `/data/local/tmp/nextcore_abort` and the service will not start.
 
----
+</details>
 
-## 📢 Support
+<br>
 
-<p align="left">
-  <a href="https://t.me/IFOKNR1"><img src="https://img.shields.io/badge/Telegram-IFOKNR1-5D74A8?style=for-the-badge&logo=telegram" alt="Telegram"></a>
-</p>
+<sub>Bug reports: open an <a href="https://github.com/ifoknr/NEXTCORE/issues">issue</a> with the output of <code>action.sh doctor</code> · Apache License 2.0, see <a href="LICENSE">LICENSE</a> and <a href="NOTICE.md">NOTICE.md</a></sub>
 
-Bug reports: open an [issue](https://github.com/ifoknr/NEXTCORE/issues) and attach the output of **Show diagnostics** from the WebUI (or `action.sh doctor`).
-
-## ⚖️ License
-
-Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
-
----
-
-<sub>Based on [AZenith](https://github.com/Liliya2727/AZenith) by Zexshia, under the Apache License 2.0.</sub>
+<sub>Based on <a href="https://github.com/Liliya2727/AZenith">AZenith</a> by Zexshia, under the Apache License 2.0.</sub>
