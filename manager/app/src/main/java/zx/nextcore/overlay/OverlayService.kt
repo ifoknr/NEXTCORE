@@ -16,38 +16,27 @@
 
 package zx.nextcore.overlay
 
-
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
-import android.graphics.Color
+import android.content.res.Configuration
 import android.graphics.PixelFormat
-import android.graphics.Typeface
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
-import android.os.SystemClock
+import android.os.PowerManager
 import android.provider.Settings
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.util.TypedValue
+import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
@@ -55,46 +44,16 @@ import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.*
 import zx.nextcore.MainActivity
 import zx.nextcore.R
-import zx.nextcore.ui.util.DeviceMonitor
-import zx.nextcore.ui.util.DeviceProfile
 import zx.nextcore.ui.util.RootUtils
-import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-
-/** Floating monitor preferences, kept in the app's "settings" SharedPreferences. */
-object OverlayPrefs {
-    const val ENABLED = "overlay_enabled"
-    const val GAMES_ONLY = "overlay_games_only"
-    const val SHOW_FPS = "overlay_show_fps"
-    const val SHOW_CPU_TEMP = "overlay_show_cpu_temp"
-    const val SHOW_GPU = "overlay_show_gpu"
-    const val SHOW_RAM = "overlay_show_ram"
-    const val SHOW_BATT_TEMP = "overlay_show_batt_temp"
-    const val VERTICAL = "overlay_vertical"
-    const val TEXT_SIZE = "overlay_text_size"
-    const val OPACITY = "overlay_opacity"
-    const val INTERVAL_MS = "overlay_interval_ms"
-    const val POS_X = "overlay_x"
-    const val POS_Y = "overlay_y"
-
-    /** How often the Home and Monitor tabs refresh, in ms. Not an overlay setting, but set on the same page. */
-    const val MONITOR_INTERVAL_MS = "monitor_interval_ms"
-    const val DEFAULT_MONITOR_INTERVAL_MS = 1500L
-
-    val textSizesSp = listOf(11f, 13f, 15f)
-    val intervalsMs = listOf(500L, 1000L, 2000L)
-
-    fun prefs(context: Context): SharedPreferences =
-        context.getSharedPreferences("settings", Context.MODE_PRIVATE)
-}
-
 /**
- * Draws a small always-on-top panel with FPS, temperatures and RAM over other
- * apps, like RvSystem Monitor's floating overlay. FPS needs root (it asks
- * SurfaceFlinger for its frame counter); the rest is read the same way the
- * Monitor tab reads it. Drag the panel to move it; the position is saved.
+ * Draws the floating monitor over other apps: FPS, frame times, clocks,
+ * temperatures, battery and network, in the order and layout picked in the
+ * monitor settings. Drag the panel to move it (portrait and landscape keep
+ * their own spot); long-press it to switch between compact, minimal and
+ * expanded without leaving the game.
  */
 class OverlayService : Service() {
 
@@ -107,28 +66,28 @@ class OverlayService : Service() {
         var isRunning = false
             private set
 
-        fun canDraw(context: Context): Boolean = Settings.canDrawOverlays(context)
+        fun canDraw(context: android.content.Context): Boolean = Settings.canDrawOverlays(context)
 
         /**
          * Grants "display over other apps" through root when possible, which
          * saves a trip to system settings. Blocking; call from Dispatchers.IO.
          */
-        fun grantWithRoot(context: Context): Boolean {
+        fun grantWithRoot(context: android.content.Context): Boolean {
             if (canDraw(context)) return true
             Shell.cmd("appops set ${context.packageName} SYSTEM_ALERT_WINDOW allow").exec()
             return canDraw(context)
         }
 
-        fun permissionIntent(context: Context): Intent =
+        fun permissionIntent(context: android.content.Context): Intent =
             Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:${context.packageName}"))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        fun start(context: Context) {
+        fun start(context: android.content.Context) {
             if (!canDraw(context)) return
             ContextCompat.startForegroundService(context, Intent(context, OverlayService::class.java))
         }
 
-        fun stop(context: Context) {
+        fun stop(context: android.content.Context) {
             context.stopService(Intent(context, OverlayService::class.java))
         }
     }
@@ -136,21 +95,14 @@ class OverlayService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private lateinit var prefs: SharedPreferences
     private lateinit var windowManager: WindowManager
-    private var panel: LinearLayout? = null
+    private var panel: OverlayPanelView? = null
     private var params: WindowManager.LayoutParams? = null
-    private var profile = DeviceProfile()
-    private var gameRunning = false
-    private var lastFrames: Long? = null
-    private var lastFramesAt = 0L
-
-    private val fpsView by lazy { metricView() }
-    private val cpuView by lazy { metricView() }
-    private val gpuView by lazy { metricView() }
-    private val ramView by lazy { metricView() }
-    private val battView by lazy { metricView() }
+    private var sampler: OverlaySampler? = null
+    private var gamePkg: String? = null
+    private var visible: List<OverlayMetric> = emptyList()
 
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key != null && key.startsWith("overlay_") && key != OverlayPrefs.POS_X && key != OverlayPrefs.POS_Y) {
+        if (key != null && key.startsWith("overlay_") && !key.startsWith("overlay_x") && !key.startsWith("overlay_y")) {
             applyStyle()
             updateVisibility()
         }
@@ -169,16 +121,17 @@ class OverlayService : Service() {
             return
         }
         isRunning = true
+        sampler = OverlaySampler(applicationContext)
         addPanel()
         prefs.registerOnSharedPreferenceChangeListener(prefListener)
-        scope.launch(Dispatchers.IO) { profile = DeviceMonitor.loadProfile() }
         scope.launch {
             RootUtils.observeGameInfo().collect { info ->
-                gameRunning = !info.pkg.isNullOrEmpty()
+                gamePkg = info.pkg?.takeIf { it.isNotEmpty() }
                 updateVisibility()
             }
         }
         scope.launch { pollLoop() }
+        scope.launch { pingLoop() }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -196,7 +149,20 @@ class OverlayService : Service() {
         if (::prefs.isInitialized) prefs.unregisterOnSharedPreferenceChangeListener(prefListener)
         panel?.let { runCatching { windowManager.removeView(it) } }
         panel = null
+        // Closing disables SurfaceFlinger time stats if the fallback turned them on.
+        sampler?.let { s -> CoroutineScope(Dispatchers.IO).launch { s.close() } }
+        sampler = null
         super.onDestroy()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Portrait and landscape each remember where the panel was.
+        val lp = params ?: return
+        val (x, y) = savedPosition()
+        lp.x = x
+        lp.y = y
+        panel?.post { clampAndUpdate() }
     }
 
     private fun startAsForeground() {
@@ -228,152 +194,151 @@ class OverlayService : Service() {
     private fun dp(v: Float): Int =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, resources.displayMetrics).roundToInt()
 
-    private fun metricView() = TextView(this).apply {
-        setTextColor(Color.WHITE)
-        typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
-        // Numbers and units read left to right in every language.
-        textDirection = View.TEXT_DIRECTION_LTR
-        setShadowLayer(dp(1.5f).toFloat(), 0f, 0f, Color.BLACK)
+    private fun isLandscape() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    private fun savedPosition(): Pair<Int, Int> =
+        if (isLandscape()) prefs.getInt(OverlayPrefs.POS_X_LAND, dp(24f)) to prefs.getInt(OverlayPrefs.POS_Y_LAND, dp(16f))
+        else prefs.getInt(OverlayPrefs.POS_X, dp(16f)) to prefs.getInt(OverlayPrefs.POS_Y, dp(64f))
+
+    private fun savePosition(x: Int, y: Int) {
+        val (kx, ky) = if (isLandscape()) OverlayPrefs.POS_X_LAND to OverlayPrefs.POS_Y_LAND else OverlayPrefs.POS_X to OverlayPrefs.POS_Y
+        prefs.edit().putInt(kx, x).putInt(ky, y).apply()
+    }
+
+    /** Keeps the panel fully on screen after a drag, a rotation or a size change. */
+    private fun clampAndUpdate() {
+        val view = panel ?: return
+        val lp = params ?: return
+        val (sw, sh) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            windowManager.currentWindowMetrics.bounds.let { it.width() to it.height() }
+        } else {
+            resources.displayMetrics.let { it.widthPixels to it.heightPixels }
+        }
+        lp.x = lp.x.coerceIn(0, (sw - view.width).coerceAtLeast(0))
+        lp.y = lp.y.coerceIn(0, (sh - view.height).coerceAtLeast(0))
+        runCatching { windowManager.updateViewLayout(view, lp) }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun addPanel() {
-        val layout = LinearLayout(this).apply {
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            listOf(fpsView, cpuView, gpuView, ramView, battView).forEach { addView(it) }
-        }
+        val view = OverlayPanelView(this)
+        val (x0, y0) = savedPosition()
         val lp = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
             PixelFormat.TRANSLUCENT
         ).apply {
             // Absolute LEFT so the saved position means the same thing in RTL languages.
             gravity = Gravity.TOP or Gravity.LEFT
-            x = prefs.getInt(OverlayPrefs.POS_X, dp(16f))
-            y = prefs.getInt(OverlayPrefs.POS_Y, dp(64f))
+            x = x0
+            y = y0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            }
         }
 
         var downX = 0f
         var downY = 0f
         var startX = 0
         var startY = 0
-        layout.setOnTouchListener { v, e ->
+        var dragging = false
+        val touchSlop = dp(6f)
+        val gestures = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onLongPress(e: MotionEvent) {
+                if (dragging) return
+                view.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+                prefs.edit().putString(OverlayPrefs.MODE, OverlayPrefs.mode(prefs).next().key).apply()
+            }
+        })
+        view.setOnTouchListener { v, e ->
+            gestures.onTouchEvent(e)
             when (e.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
                     downX = e.rawX; downY = e.rawY; startX = lp.x; startY = lp.y
-                    true
+                    dragging = false
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    lp.x = (startX + (e.rawX - downX)).roundToInt().coerceAtLeast(0)
-                    lp.y = (startY + (e.rawY - downY)).roundToInt().coerceAtLeast(0)
-                    runCatching { windowManager.updateViewLayout(v, lp) }
-                    true
+                    val dx = e.rawX - downX
+                    val dy = e.rawY - downY
+                    if (!dragging && (abs(dx) > touchSlop || abs(dy) > touchSlop)) dragging = true
+                    if (dragging) {
+                        lp.x = (startX + dx).roundToInt().coerceAtLeast(0)
+                        lp.y = (startY + dy).roundToInt().coerceAtLeast(0)
+                        runCatching { windowManager.updateViewLayout(v, lp) }
+                    }
                 }
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    prefs.edit().putInt(OverlayPrefs.POS_X, lp.x).putInt(OverlayPrefs.POS_Y, lp.y).apply()
-                    true
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> if (dragging) {
+                    clampAndUpdate()
+                    savePosition(lp.x, lp.y)
                 }
-                else -> false
             }
+            true
+        }
+        view.addOnLayoutChangeListener { _, l, t, r, b, oldL, oldT, oldR, oldB ->
+            if (r - l != oldR - oldL || b - t != oldB - oldT) clampAndUpdate()
         }
 
-        panel = layout
+        panel = view
         params = lp
         applyStyle()
-        windowManager.addView(layout, lp)
+        windowManager.addView(view, lp)
         updateVisibility()
     }
 
-    /** Re-reads the look settings: orientation, text size, background opacity and which metrics show. */
+    /** Re-reads the look settings and which metrics show. */
     private fun applyStyle() {
-        val layout = panel ?: return
-        val vertical = prefs.getBoolean(OverlayPrefs.VERTICAL, false)
-        layout.orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
-        val alpha = (prefs.getInt(OverlayPrefs.OPACITY, 55).coerceIn(0, 100) * 255 / 100)
-        layout.background = GradientDrawable().apply {
-            cornerRadius = dp(12f).toFloat()
-            setColor(Color.argb(alpha, 0, 0, 0))
-        }
-        layout.setPadding(dp(10f), dp(6f), dp(10f), dp(6f))
-
-        val size = OverlayPrefs.textSizesSp[prefs.getInt(OverlayPrefs.TEXT_SIZE, 1).coerceIn(0, 2)]
-        val shown = mapOf(
-            fpsView to prefs.getBoolean(OverlayPrefs.SHOW_FPS, true),
-            cpuView to prefs.getBoolean(OverlayPrefs.SHOW_CPU_TEMP, true),
-            gpuView to prefs.getBoolean(OverlayPrefs.SHOW_GPU, false),
-            ramView to prefs.getBoolean(OverlayPrefs.SHOW_RAM, true),
-            battView to prefs.getBoolean(OverlayPrefs.SHOW_BATT_TEMP, true),
+        val view = panel ?: return
+        visible = OverlayPrefs.visible(prefs)
+        view.configure(
+            metrics = visible,
+            mode = OverlayPrefs.mode(prefs),
+            scale = OverlayPrefs.scale(prefs),
+            opacity = prefs.getInt(OverlayPrefs.OPACITY, 60),
+            accent = OverlayPrefs.accent(prefs),
+            colorCode = prefs.getBoolean(OverlayPrefs.COLOR_CODE, true),
+            border = prefs.getBoolean(OverlayPrefs.BORDER, false),
+            graph = prefs.getBoolean(OverlayPrefs.GRAPH, false),
         )
-        var first = true
-        shown.forEach { (view, on) ->
-            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-            view.visibility = if (on) View.VISIBLE else View.GONE
-            val gap = if (first || !on) 0 else dp(10f)
-            view.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { if (vertical) topMargin = gap / 3 else leftMargin = gap }
-            if (on) first = false
-        }
     }
 
     private fun updateVisibility() {
-        val layout = panel ?: return
+        val view = panel ?: return
         val gamesOnly = prefs.getBoolean(OverlayPrefs.GAMES_ONLY, false)
-        layout.visibility = if (!gamesOnly || gameRunning) View.VISIBLE else View.GONE
+        view.visibility = if (!gamesOnly || gamePkg != null) View.VISIBLE else View.GONE
+    }
+
+    private fun wanted(): Set<OverlayMetric> = buildSet {
+        addAll(visible)
+        // The graph plots FPS even when the FPS number itself is hidden.
+        if (prefs.getBoolean(OverlayPrefs.GRAPH, false)) add(OverlayMetric.FPS)
     }
 
     private suspend fun pollLoop() {
+        val power = getSystemService(PowerManager::class.java)
         while (currentCoroutineContext().isActive) {
-            val layout = panel
-            if (layout != null && layout.visibility == View.VISIBLE) {
-                val wantFps = prefs.getBoolean(OverlayPrefs.SHOW_FPS, true)
-                val sample = withContext(Dispatchers.IO) { DeviceMonitor.sampleOverlay(profile, wantFps) }
-                render(sample)
-            } else {
-                // Restart FPS averaging when the panel comes back.
-                lastFrames = null
+            val view = panel
+            val s = sampler
+            if (view != null && s != null && view.visibility == View.VISIBLE && power?.isInteractive != false) {
+                val want = wanted()
+                val pkg = gamePkg
+                val state = withContext(Dispatchers.IO) { runCatching { s.sample(want, pkg) }.getOrNull() }
+                if (state != null) view.state = state
             }
-            delay(prefs.getLong(OverlayPrefs.INTERVAL_MS, 1000L).coerceIn(250L, 5000L))
+            delay(OverlayPrefs.interval(prefs))
         }
     }
 
-    private fun render(s: DeviceMonitor.OverlaySample) {
-        val now = SystemClock.elapsedRealtime()
-        val fps = s.frameCount?.let { frames ->
-            val prev = lastFrames
-            val dt = (now - lastFramesAt) / 1000f
-            lastFrames = frames
-            lastFramesAt = now
-            if (prev == null || dt <= 0f || frames < prev) null else ((frames - prev) / dt).roundToInt()
+    private suspend fun pingLoop() {
+        while (currentCoroutineContext().isActive) {
+            val s = sampler
+            if (s != null && OverlayMetric.PING in visible && panel?.visibility == View.VISIBLE) {
+                s.pingMs = withContext(Dispatchers.IO) { s.ping() }
+            }
+            delay(2000)
         }
-        fpsView.text = metric("FPS", fps?.toString() ?: "--")
-        cpuView.text = metric("CPU", s.cpuTempC?.let { String.format(Locale.US, "%.0f°C", it) } ?: "--")
-        gpuView.text = metric("GPU", s.gpuLoad?.let { "$it%" } ?: "--")
-        val total = s.memTotalKb
-        val avail = s.memAvailKb
-        ramView.text = metric(
-            "RAM",
-            if (total != null && avail != null && total > 0) "${((total - avail) * 100 / total)}%" else "--"
-        )
-        battView.text = metric("BAT", batteryTemp()?.let { String.format(Locale.US, "%.0f°C", it) } ?: "--")
     }
-
-    private fun batteryTemp(): Float? {
-        val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)) ?: return null
-        val raw = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, Int.MIN_VALUE)
-        return if (raw == Int.MIN_VALUE || abs(raw) > 2000) null else raw / 10f
-    }
-
-    /** "FPS 60" with the label in the accent color and the value in bold white. */
-    private fun metric(label: String, value: String): CharSequence =
-        SpannableStringBuilder().apply {
-            append(label, ForegroundColorSpan(ACCENT), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            append(" ")
-            append(value, StyleSpan(Typeface.BOLD), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
 }
-
-/** Coral, matching the app's default accent. */
-private const val ACCENT = 0xFFFF8A65.toInt()
