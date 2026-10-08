@@ -115,6 +115,9 @@ object AppMonitor {
 
         val lockChannel = acquireLock()
 
+        // Performance history and game sessions for the app's dashboard.
+        PerfRecorder.start()
+
         val monitorThread = Thread.currentThread()
         Runtime.getRuntime().addShutdownHook(Thread {
             lockChannel?.close()

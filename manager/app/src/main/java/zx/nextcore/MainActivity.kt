@@ -89,6 +89,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import zx.nextcore.R
 import zx.nextcore.ui.component.*
+import zx.nextcore.ui.hud.*
 import zx.nextcore.ui.mainscreens.*
 import zx.nextcore.ui.subscreens.*
 import zx.nextcore.ui.theme.NextCoreTheme
@@ -143,161 +144,99 @@ val ExpressiveShapes = Shapes(
     extraLarge = RoundedCornerShape(32.dp)
 )
 
-/**
- * MD3 emphasized motion curves.
- *
- * Compose only ships FastOutSlowIn, LinearOutSlowIn and FastOutLinearIn, so
- * the emphasized pair the MD3 motion spec defines for screen transitions is
- * written out here from its cubic-beziers. Screen transitions still use
- * easing and duration; spring physics is for component state changes.
- */
-private val EmphasizedDecelerate = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
-private val EmphasizedAccelerate = CubicBezierEasing(0.3f, 0f, 0.8f, 0.15f)
+/** MD3 emphasized easing, used for tab switches. */
 private val Emphasized = CubicBezierEasing(0.2f, 0f, 0f, 1f)
 
-data class NavItem(
-    val route: String,
-    val labelRes: Int,
-    val icon: ImageVector,
-    val gradientColors: List<Color> = listOf(Color.Transparent, Color.Transparent)
-)
-
-// Shared so the pill and its call site agree on one spec. Hoisted to file level
-// because a composable default argument cannot see a local of the other scope.
-private val NAV_PILL_SPEC: FiniteAnimationSpec<Color> = tween(300, easing = FastOutSlowInEasing)
-
-
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(fromTileType: String? = null) {
     val navController = rememberNavController()
     val context = LocalContext.current
-    val settingsPrefs = remember { context.getSharedPreferences("settings", Context.MODE_PRIVATE) }
-    var useScrollAnimation by remember { mutableStateOf(settingsPrefs.getBoolean("use_scroll_animation", true)) }
-    
-    val pagerRoutes = remember { listOf("home", "monitor", "applist", "tweaks", "settings") }
+
+    val pagerRoutes = remember { listOf("home", "applist", "tweaks", "settings") }
     val pagerState = rememberPagerState(initialPage = 0) { pagerRoutes.size }
-    
-    val bottomBarRoutes = remember { setOf("main") }
-    var showExitConfirm by remember { androidx.compose.runtime.mutableStateOf(false) }
+    var showExitConfirm by remember { mutableStateOf(false) }
 
     LaunchedEffect(fromTileType) {
         val rootNav = "main"
         when (fromTileType) {
-            "bypass" -> {
-                navController.navigate("bypasschg") {
-                    popUpTo(rootNav) { saveState = true }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+            "bypass" -> navController.navigate("bypasschg") {
+                popUpTo(rootNav) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
             }
-            "profile" -> {
-                navController.navigate(rootNav) {
-                    popUpTo(rootNav) { saveState = true }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+            "profile" -> navController.navigate(rootNav) {
+                popUpTo(rootNav) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
             }
         }
     }
-     
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val rawRoute = navBackStackEntry?.destination?.route
     val isOnMainPager = rawRoute == "main"
-    
-    // Which route the navbar highlights. This is tracked from the tap rather
-    // than derived from the pager, because both pager states are wrong for
-    // this purpose: settledPage only changes once the 500 ms scroll finishes
-    // (so the highlight visibly lags a third of a second behind the page),
-    // and currentPage only flips at the scroll midpoint. Tapping a tab has to
-    // move the pill immediately, so the intent is recorded here and the
-    // animation is just the UI catching up to it.
-    val highlightRoute = rememberSaveable { mutableStateOf("home") }
-
-    val currentRoute = if (isOnMainPager) {
-        // On swipes there is no tap to record, so take the destination from the
-        // pager itself. targetPage is the page the in-flight gesture is heading
-        // for, which is already committed from the first pixel of the drag --
-        // settledPage would not move until the scroll finished, which is the
-        // lag this replaces. The offset fraction is deliberately not read here:
-        // it is @FrequentlyChangingValue and would recompose the whole screen
-        // on every frame. The pill animates from it in a graphicsLayer below.
-        if (!pagerState.isScrollInProgress) {
-            highlightRoute.value = pagerRoutes[pagerState.settledPage]
-        } else {
-            highlightRoute.value = pagerRoutes[pagerState.targetPage]
-        }
-        highlightRoute.value
-    } else {
-        highlightRoute.value
-    }
 
     val coroutineScope = rememberCoroutineScope()
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isWide = LocalConfiguration.current.screenWidthDp >= 600
     val appPrefs = remember { context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE) }
+    val hasCompletedGetStarted = remember { appPrefs.getBoolean("has_completed_get_started", false) }
 
-    val hasCompletedGetStarted = remember {
-        appPrefs.getBoolean("has_completed_get_started", false)
-    }
-    
-    LaunchedEffect(Unit) {
-        WallpaperCache.init(context)
-    }
-    
-    var isBlurEnabled by remember { mutableStateOf(settingsPrefs.getBoolean("expressive_blur_ui", false)) }
+    LaunchedEffect(Unit) { WallpaperCache.init(context) }
+
     val hazeState = remember { HazeState() }
     var rootStatus by remember { mutableStateOf(false) }
     var moduleInstalled by remember { mutableStateOf(false) }
 
-    val navItems = remember {
-        listOf(
-            NavItem("home", R.string.nav_home, Icons.Rounded.Home),
-            NavItem("monitor", R.string.nav_monitor, Icons.Rounded.Insights),
-            NavItem("applist", R.string.nav_applist, Icons.Rounded.SportsEsports),
-            NavItem("tweaks", R.string.nav_tweaks, Icons.Rounded.Tune),
-            NavItem("settings", R.string.nav_settings, Icons.Rounded.Settings)
-        )
+    val navItems = listOf(
+        HudNavItem(stringResource(R.string.hud_nav_home), Icons.Rounded.Home),
+        HudNavItem(stringResource(R.string.hud_nav_games), Icons.Rounded.SportsEsports),
+        HudNavItem(stringResource(R.string.hud_nav_tweaks), Icons.Rounded.Tune),
+        HudNavItem(stringResource(R.string.hud_nav_settings), Icons.Rounded.Settings),
+    )
+    // targetPage moves as soon as a swipe or tap commits, so the bar follows
+    // the finger instead of waiting for the scroll to settle.
+    val selectedPage = if (pagerState.isScrollInProgress) pagerState.targetPage else pagerState.currentPage
+
+    val goToPage: (Int) -> Unit = { index ->
+        if (isOnMainPager) {
+            if (pagerState.currentPage != index) coroutineScope.launch {
+                Trace.beginSection("NextCore:tabScrollTo")
+                try {
+                    pagerState.animateScrollToPage(index, animationSpec = tween(320, easing = Emphasized))
+                } finally {
+                    Trace.endSection()
+                }
+            }
+        } else {
+            navController.navigate("main") {
+                popUpTo(navController.graph.startDestinationId) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+            coroutineScope.launch { pagerState.scrollToPage(index) }
+        }
     }
-    
+
     val pendingReboot by RebootManager.pendingReboot.collectAsState()
 
-    // Requesting root spawns a shell, and isModuleInstalled() stats a path
-    // through su, so probing either one blocks for as long as a su prompt
-    // takes. Running that on every route change put the cost in front of each
-    // tab switch, so the root and module probes are polled on an IO dispatcher
-    // instead of fired per click, and only the preference reads — which are
-    // plain SharedPreferences — stay synchronous.
-    val refreshPrefs = {
-        val newBlur = settingsPrefs.getBoolean("expressive_blur_ui", false)
-        if (isBlurEnabled != newBlur) isBlurEnabled = newBlur
-        val newScroll = settingsPrefs.getBoolean("use_scroll_animation", true)
-        if (useScrollAnimation != newScroll) useScrollAnimation = newScroll
-    }
-
-    // Probing root is a fork+exec through su, so the very first call blocks for
-    // as long as the su prompt takes. It is launched rather than awaited so it
-    // cannot sit in front of the first composition, and the loop is seeded with
-    // a cheap read of the already-known state instead of re-probing twice.
+    // Root and module probes go through su, so they are polled off the main
+    // thread instead of running in front of the first composition.
     LaunchedEffect(Unit) {
-        refreshPrefs()
         while (true) {
             withContext(Dispatchers.IO) {
                 rootStatus = RootUtils.requestRootAccess()
                 moduleInstalled = RootUtils.isModuleInstalled()
             }
-            refreshPrefs()
             delay(2000)
         }
     }
-    
+
     val installingDialog = rememberInstallingDialog()
     val updateDialog = rememberConfirmDialog(
         onConfirm = {
             coroutineScope.launch {
                 installingDialog.withInstalling {
-                    val result = kotlinx.coroutines.withContext(Dispatchers.IO) {
+                    val result = withContext(Dispatchers.IO) {
                         Shell.cmd(
                             "cp /data/adb/modules/nextcore/NextCore.apk /data/local/tmp/NextCore_tmp.apk",
                             "sleep 5 && pm install -r /data/local/tmp/NextCore_tmp.apk",
@@ -316,12 +255,9 @@ fun MainScreen(fromTileType: String? = null) {
     )
 
     val rebootDialog = rememberConfirmDialog(
-        onConfirm = {
-            Shell.cmd("svc power reboot || reboot").submit()
-        }
+        onConfirm = { Shell.cmd("svc power reboot || reboot").submit() }
     )
 
-    
     LaunchedEffect(rootStatus) {
         if (rootStatus) {
             val (moduleVC, updateApkAvailable, modulePendingReboot) = withContext(Dispatchers.IO) {
@@ -357,30 +293,17 @@ fun MainScreen(fromTileType: String? = null) {
             }
         }
     }
-    
-    val isFabVisible = remember { mutableStateOf(true) }
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                if (source == NestedScrollSource.UserInput) {
-                    if (available.y < -10f) isFabVisible.value = false
-                    else if (available.y > 10f) isFabVisible.value = true
-                }
-                return Offset.Zero
-            }
-        }
-    }
 
-   
-    val activeDialogCount = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(0) }
+    val activeDialogCount = remember { mutableStateOf(0) }
     CompositionLocalProvider(
         LocalAppHazeState provides hazeState,
         zx.nextcore.ui.component.LocalActiveDialogCount provides activeDialogCount
     ) {
         RootDialogsProvider {
-            val isAnyDialogOpen = zx.nextcore.ui.component.LocalActiveDialogCount.current.value > 0 || installingDialog.isShown || updateDialog.isShown || rebootDialog.isShown
-            
-            androidx.activity.compose.BackHandler(enabled = isOnMainPager && !isAnyDialogOpen) {
+            val isAnyDialogOpen = zx.nextcore.ui.component.LocalActiveDialogCount.current.value > 0 ||
+                installingDialog.isShown || updateDialog.isShown || rebootDialog.isShown
+
+            BackHandler(enabled = isOnMainPager && !isAnyDialogOpen) {
                 if (showExitConfirm) {
                     showExitConfirm = false
                 } else if (pagerState.currentPage != 0) {
@@ -389,483 +312,170 @@ fun MainScreen(fromTileType: String? = null) {
                     showExitConfirm = true
                 }
             }
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                NavHost(
-                    navController = navController,
-                    // Penentuan start destination dinamis
-                    startDestination = if (hasCompletedGetStarted) "main" else "get_started",
-                    
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface)
-                        .nestedScroll(nestedScrollConnection),
-                    enterTransition = { zx.nextcore.ui.navigation.enterTransition() },
-                    exitTransition = { zx.nextcore.ui.navigation.exitTransition() },
-                    popEnterTransition = { zx.nextcore.ui.navigation.popEnterTransition() },
-                    popExitTransition = { zx.nextcore.ui.navigation.popExitTransition() }
-                ) {
-                    composable("get_started") {
-                        // get_started writes has_completed_get_started itself and
-                        // then calls back. It used to relaunch the activity through
-                        // "am start -S", which force-stops the process first, so
-                        // finishing setup restarted the app from cold instead of
-                        // moving on to "main".
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            GetStartedScreen(navController) {
-                            navController.navigate("main") {
-                                popUpTo("get_started") { inclusive = true }
-                                launchSingleTop = true
-                            }
-                        }
-                        }
+
+            Box(Modifier.fillMaxSize().background(Hud.bg)) {
+                Row(Modifier.fillMaxSize()) {
+                    // Tablets get a side rail, phones a bottom bar; both only on the main pages.
+                    AnimatedVisibility(
+                        visible = isWide && isOnMainPager,
+                        enter = expandHorizontally() + fadeIn(),
+                        exit = shrinkHorizontally() + fadeOut(),
+                    ) {
+                        HudRail(
+                            items = navItems,
+                            selected = selectedPage,
+                            onSelect = goToPage,
+                            bottomAction = HudNavItem(stringResource(R.string.hud_about), Icons.Rounded.Info),
+                            onBottomAction = { navController.navigate("aboutscreen") },
+                        )
                     }
-                    
-                    // Route Pager (Kode 2)
-                    composable("main") {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .then(
-                                    if (isBlurEnabled) Modifier.hazeSource(state = hazeState) else Modifier
-                                )
+                    Column(Modifier.weight(1f).fillMaxHeight()) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = if (hasCompletedGetStarted) "main" else "get_started",
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
+                            enterTransition = { zx.nextcore.ui.navigation.enterTransition() },
+                            exitTransition = { zx.nextcore.ui.navigation.exitTransition() },
+                            popEnterTransition = { zx.nextcore.ui.navigation.popEnterTransition() },
+                            popExitTransition = { zx.nextcore.ui.navigation.popExitTransition() }
                         ) {
-                            zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this@composable) {
-
-                                Box(
-                                    modifier = Modifier.fillMaxSize()
-                                ) {
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier.fillMaxSize(),
-                                // Prefetch all adjacent pages for long jumps.
-                                beyondViewportPageCount = 3
-                            ) { page ->
-                            val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                            val absOffset = kotlin.math.abs(pageOffset)
-                            
-                            val pageModifier = if (!useScrollAnimation) {
-                                Modifier.graphicsLayer {
-                                    if (absOffset < 1f) {
-                                        translationX = pageOffset * size.width
-                                        alpha = 1f - absOffset
-                                        val scale = 1f - (absOffset * 0.05f)
-                                        scaleX = scale
-                                        scaleY = scale
-                                    } else {
-                                        alpha = 0f
-                                    }
-                                }.zIndex(if (absOffset < 0.5f) 1f else 0f)
-                            } else {
-                                Modifier
-                            }
-
-                            Box(
-                                modifier = pageModifier.fillMaxSize()
-                            ) {
-                                when (pagerRoutes[page]) {
-                                    "home" -> HomeScreen(navController, isVisible = pagerState.currentPage == page)
-                                    "monitor" -> MonitorScreen(navController, isVisible = pagerState.currentPage == page)
-                                    "applist" -> ApplistScreen(navController)
-                                    "tweaks" -> TweakScreen(navController)
-                                    "settings" -> SettingsScreen(navController)
-                                }
-                            }
-                            
-                        } // ends HorizontalPager
-                        
-
-                                } // ends Box
-                            } // ends ScreenWrapper
-                        } // ends outer Box
-                    } // ends composable
-
-                    // Subscreens
-                    composable("color_palette") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            ColorPaletteScreen(navController)
-                        }
-                    }
-                    composable("colorscheme") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            ColorSchemeSettings(navController)
-                        }
-                    }
-                    composable("FasScreen") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            FasScreen(navController)
-                        }
-                    }
-                    composable("bypasschg") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            BypassChargeScreen(navController)
-                        }
-                    }
-                    composable("bypasschg_check") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            BypassChargeCheckScreen(navController)
-                        }
-                    }
-                    composable("preferenced") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            PreferenceTweakScreen(navController)
-                        }
-                    }
-                    composable("aboutscreen") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            AboutScreen(navController)
-                        }
-                    }
-                    composable("fpsgoscreen") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            FpsGoSettings(navController)
-                        }
-                    }
-                    composable("devicecard") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            zx.nextcore.ui.subscreens.DeviceCardScreen(navController)
-                        }
-                    }
-                    composable("monitoring") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            zx.nextcore.ui.subscreens.MonitoringSettingsScreen(navController)
-                        }
-                    }
-                    composable("governorsettings") {
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            GovSettings(navController)
-                        }
-                    }
-                    composable(
-                        route = "app_settings/{pkg}",
-                        arguments = listOf(navArgument("pkg") { type = NavType.StringType })
-                    ) { backStackEntry ->
-                        val pkg = backStackEntry.arguments?.getString("pkg")
-                        zx.nextcore.ui.component.ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
-                            AppSettingsScreen(navController, pkg)
-                        }
-                    }
-                }
-                
-                val shouldShowNavBar = rawRoute in bottomBarRoutes
-                val navBarVisibilityProgressState = androidx.compose.animation.core.animateFloatAsState(
-                    targetValue = if (shouldShowNavBar) 1f else 0f,
-                    animationSpec = androidx.compose.animation.core.tween(durationMillis = 220, easing = androidx.compose.animation.core.LinearOutSlowInEasing),
-                    label = "NavBarVisibilityProgress"
-                )
-                
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .graphicsLayer {
-                            val hideFraction = (1f - navBarVisibilityProgressState.value).coerceIn(0f, 1f)
-                            translationY = size.height * hideFraction
-                            alpha = navBarVisibilityProgressState.value.coerceIn(0f, 1f)
-                        }
-                ) {
-                    BottomNavBar(
-                        items = navItems,
-                        selectedRoute = currentRoute ?: "home",
-                        pagerState = pagerState,
-                        isBlurEnabled = isBlurEnabled,
-                        hazeState = hazeState,
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                        onItemSelected = { route ->
-                            val targetIndex = pagerRoutes.indexOf(route)
-                            if (isOnMainPager) {
-                                if (pagerState.currentPage != targetIndex) {
-                                    coroutineScope.launch {
-                                        // Instrumentation only -- these traces are
-                                        // read with `adb shell atrace` / Perfetto on a
-                                        // device, so no timing is asserted here.
-                                        // The section brackets the whole scroll so its
-                                        // duration is the tab-switch cost.
-                                        Trace.beginSection("NextCore:tabScrollTo")
-                                        try {
-                                            // One call for every distance. A jump of two
-                                            // or three scrolls straight through the
-                                            // pages in between at the same rate, which
-                                            // reads as one continuous slide instead of
-                                            // the hard cut scrollToPage produced.
-                                            pagerState.animateScrollToPage(
-                                                targetIndex,
-                                                animationSpec = androidx.compose.animation.core.tween(
-                                                    durationMillis = if (Math.abs(targetIndex - pagerState.currentPage) > 1) 320 else 500,
-                                                    easing = androidx.compose.animation.core.CubicBezierEasing(0.2f, 0f, 0f, 1f)
-                                                )
-                                            )
-                                        } finally {
-                                            Trace.endSection()
+                            composable("get_started") {
+                                // get_started writes has_completed_get_started itself and then calls back.
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                                    GetStartedScreen(navController) {
+                                        navController.navigate("main") {
+                                            popUpTo("get_started") { inclusive = true }
+                                            launchSingleTop = true
                                         }
                                     }
                                 }
-                            } else {
-                                navController.navigate("main") {
-                                    popUpTo(navController.graph.startDestinationId) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                                coroutineScope.launch {
-                                    pagerState.scrollToPage(targetIndex)
+                            }
+
+                            composable("main") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                                    // A plain pager: pages slide with the finger in both directions
+                                    // and follow the layout direction, so Arabic swipes the other way.
+                                    HorizontalPager(
+                                        state = pagerState,
+                                        modifier = Modifier.fillMaxSize(),
+                                        beyondViewportPageCount = 1,
+                                        key = { pagerRoutes[it] },
+                                    ) { page ->
+                                        val visible = pagerState.currentPage == page
+                                        when (pagerRoutes[page]) {
+                                            "home" -> HudHomeScreen(navController, isVisible = visible, onOpenGames = { goToPage(1) })
+                                            "applist" -> HudGamesScreen(navController, isVisible = visible)
+                                            "tweaks" -> HudTweaksScreen(navController, isVisible = visible)
+                                            "settings" -> HudSettingsScreen(navController)
+                                        }
+                                    }
                                 }
                             }
-                            highlightRoute.value = route
-                        }
-                    )
-                }
-                
-                val navBarHeight = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-                if (navBarHeight > 32.dp) {
-                    val colorScheme = MaterialTheme.colorScheme
-                    val bottomScrimGradient = remember(colorScheme) {
-                        Brush.verticalGradient(
-                            0.0f to Color.Transparent,
-                            0.1f to colorScheme.surface.copy(alpha = 0.3f),
-                            0.2f to colorScheme.surface.copy(alpha = 0.4f),
-                            0.3f to colorScheme.surface.copy(alpha = 0.5f),
-                            0.4f to colorScheme.surface.copy(alpha = 0.7f),
-                            0.5f to colorScheme.surface.copy(alpha = 0.8f),
-                            0.6f to colorScheme.surface.copy(alpha = 0.9f),
-                            1.0f to colorScheme.surface
-                        )
-                    }
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(navBarHeight + 12.dp)
-                            .align(Alignment.BottomCenter)
-                            .background(bottomScrimGradient)
-                    )
+                            composable("engine_cpu") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudCpuEngineScreen(navController) }
+                            }
+                            composable("engine_mem") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudMemoryEngineScreen(navController) }
+                            }
+                            composable("engine_fps") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudFramesEngineScreen(navController) }
+                            }
+                            composable("sessions") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudSessionsScreen(navController) }
+                            }
+                            composable("aboutscreen") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { HudAboutScreen(navController) }
+                            }
+                            composable(
+                                route = "app_settings/{pkg}",
+                                arguments = listOf(navArgument("pkg") { type = NavType.StringType })
+                            ) { backStackEntry ->
+                                val pkg = backStackEntry.arguments?.getString("pkg").orEmpty()
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) {
+                                    HudGameSettingsScreen(navController, pkg)
+                                }
+                            }
+
+                            composable("color_palette") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { ColorPaletteScreen(navController) }
+                            }
+                            composable("colorscheme") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { ColorSchemeSettings(navController) }
+                            }
+                            composable("FasScreen") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { FasScreen(navController) }
+                            }
+                            composable("bypasschg") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { BypassChargeScreen(navController) }
+                            }
+                            composable("bypasschg_check") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { BypassChargeCheckScreen(navController) }
+                            }
+                            composable("preferenced") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { PreferenceTweakScreen(navController) }
+                            }
+                            composable("fpsgoscreen") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { FpsGoSettings(navController) }
+                            }
+                            composable("devicecard") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { DeviceCardScreen(navController) }
+                            }
+                            composable("monitoring") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { MonitoringSettingsScreen(navController) }
+                            }
+                            composable("governorsettings") {
+                                ScreenWrapper(navController = navController, animatedVisibilityScope = this) { GovSettings(navController) }
+                            }
+                        }
+
+                        AnimatedVisibility(
+                            visible = !isWide && isOnMainPager,
+                            enter = expandVertically(expandFrom = Alignment.Top) + fadeIn(),
+                            exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut(),
+                        ) {
+                            HudBottomBar(items = navItems, selected = selectedPage, onSelect = goToPage)
+                        }
+                    }
                 }
 
                 AnimatedVisibility(
-                    visible = rootStatus && moduleInstalled && pendingReboot && rawRoute in bottomBarRoutes && isFabVisible.value,
+                    visible = rootStatus && moduleInstalled && pendingReboot && isOnMainPager,
                     enter = scaleIn(animationSpec = tween(300, easing = FastOutSlowInEasing)) + fadeIn(),
                     exit = scaleOut(animationSpec = tween(200, easing = FastOutLinearInEasing)) + fadeOut(),
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(end = 24.dp, bottom = 116.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+                        .padding(end = 16.dp, bottom = (if (isWide) 16.dp else 86.dp) + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
                 ) {
-                    ExtendedFloatingActionButton(
-                        onClick = {
-                            rebootDialog.showConfirm(
-                                title = context.getString(R.string.dialog_reboot_required_title),
-                                content = context.getString(R.string.dialog_reboot_required_content),
-                                confirm = context.getString(R.string.reboot),
-                                dismiss = context.getString(R.string.dialog_update_available_dismiss)
-                            )
-                        },
-                        icon = { Icon(Icons.Rounded.RestartAlt, contentDescription = stringResource(R.string.reboot)) },
-                        text = { Text(stringResource(R.string.reboot), fontWeight = FontWeight.Bold) },
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                        elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 6.dp)
-                    )
+                    Row(
+                        Modifier
+                            .clip(Hud.cardShape)
+                            .background(hudAccent)
+                            .clickable {
+                                rebootDialog.showConfirm(
+                                    title = context.getString(R.string.dialog_reboot_required_title),
+                                    content = context.getString(R.string.dialog_reboot_required_content),
+                                    confirm = context.getString(R.string.reboot),
+                                    dismiss = context.getString(R.string.dialog_update_available_dismiss)
+                                )
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        Icon(Icons.Rounded.RestartAlt, contentDescription = null, tint = Color.Black, modifier = Modifier.size(20.dp))
+                        Text(stringResource(R.string.reboot), color = Color.Black, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
             ConfirmDialogHost(handle = updateDialog)
             ConfirmDialogHost(handle = rebootDialog)
             InstallingDialogHost(handle = installingDialog)
-            
-            zx.nextcore.ui.component.ExitPopup(
+
+            ExitPopup(
                 visible = showExitConfirm,
                 onDismiss = { showExitConfirm = false },
                 onConfirm = { (context as? android.app.Activity)?.finishAffinity() }
-            )
-        }
-    }
-}
-
-@Composable
-fun BottomNavBar(
-    items: List<NavItem>,
-    selectedRoute: String,
-    onItemSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    isBlurEnabled: Boolean = false,
-    hazeState: HazeState? = null,
-    pagerState: PagerState? = null
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.navigationBars)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier
-                .widthIn(max = 460.dp)
-                .fillMaxWidth()
-                .border(1.5.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f), RoundedCornerShape(40.dp))
-                .clip(RoundedCornerShape(40.dp)) 
-                .then(if (isBlurEnabled && hazeState != null) Modifier.hazeBlur(
-                                input = HazeInput.Sources(hazeState),
-                                style = HazeBlurStyle.Material3(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.4f)
-                                ) { blurRadius(24.dp) }
-                            ) else Modifier),
-            shape = RoundedCornerShape(40.dp),
-            color = if (isBlurEnabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.96f),
-            shadowElevation = if (isBlurEnabled) 0.dp else 8.dp
-        ) {
-            // Measured label widths, so the selected pill can interpolate its
-            // width open and closed with the swipe instead of switching between
-            // "icon only" and "icon + label" layouts. Measuring once per
-            // composition keeps the per-frame path free of text layout.
-            val labelMeasurer = rememberTextMeasurer()
-            val density = LocalDensity.current
-            val labelStyle = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold)
-            val labelWidths = items.map { item ->
-                with(density) {
-                    labelMeasurer.measure(
-                        text = AnnotatedString(stringResource(item.labelRes)),
-                        style = labelStyle
-                    ).size.width.toDp()
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 10.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                items.forEachIndexed { index, item ->
-                    // A continuous 0..1 "how selected is this tab" value rather
-                    // than a boolean, so a drag interpolates instead of
-                    // snapping when the selection flips. The pager offset is a
-                    // frequently-changing value, so it is confined to this
-                    // derivedStateOf: only the four pills below re-read it.
-                    val progress by remember(index) {
-                        pagerState?.let { state ->
-                            derivedStateOf {
-                                val distance = (state.currentPage - index) + state.currentPageOffsetFraction
-                                1f - kotlin.math.abs(distance).coerceIn(0f, 1f)
-                            }
-                        } ?: derivedStateOf { if (selectedRoute == item.route) 1f else 0f }
-                    }
-                    NavPill(
-                        item = item,
-                        selectionProgress = progress,
-                        labelWidth = labelWidths[index] + 5.dp,
-                        isBlurEnabled = isBlurEnabled,
-                        // While the pager is being dragged the target changes
-                        // every frame, so the tween would restart on each one
-                        // and never reach its end value. Snap to the drag instead
-                        // and let the pager's own curve provide the motion; taps
-                        // and other discrete changes still get the tween.
-                        animationSpec = if (pagerState?.isScrollInProgress == true) snap() else NAV_PILL_SPEC,
-                        onClick = { onItemSelected(item.route) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun NavPill(
-    item: NavItem,
-    selectionProgress: Float,
-    labelWidth: Dp,
-    isBlurEnabled: Boolean = false,
-    animationSpec: FiniteAnimationSpec<Color> = NAV_PILL_SPEC,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
-    val progress = selectionProgress.coerceIn(0f, 1f)
-    // Boolean only for the colour targets; the width below is continuous.
-    val isSelected = progress > 0.5f
-
-    val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = tween(150), label = "scale"
-    )
-
-    // Colours and the label are driven by the continuous progress value rather
-    // than by the selected boolean, so during a drag they interpolate. The
-    // boolean form only had two states, which is what made the bar appear to
-    // freeze mid-swipe and then jump when the selection finally flipped.
-    val primary = MaterialTheme.colorScheme.secondaryContainer
-    val onPrimary = MaterialTheme.colorScheme.onSecondaryContainer
-    val onSurfaceVariant = MaterialTheme.colorScheme.onSurface
-    val unselectedBg = Color.Transparent
-
-    val bgColor by animateColorAsState(
-        targetValue = if (isBlurEnabled) {
-            if (isSelected) primary.copy(alpha = 0.25f) else unselectedBg
-        } else {
-            if (isSelected) primary else unselectedBg
-        },
-        animationSpec = animationSpec,
-        label = "bgColor"
-    )
-
-    val contentColor by animateColorAsState(
-        targetValue = if (isSelected) {
-            if (isBlurEnabled) primary else onPrimary
-        } else {
-            onSurfaceVariant
-        },
-        animationSpec = animationSpec,
-        label = "contentColor"
-    )
-
-    // A 48 dp tall pill with a 24 dp radius is already a circle, so the old
-    // CircleShape/RoundedCornerShape(24.dp) switch had no visual effect to
-    // interpolate. Kept as a plain rounded shape.
-    val shape = RoundedCornerShape(28.dp)
-    
-    Row(
-        modifier = modifier
-            .scale(scale)
-            .height(54.dp)
-            .defaultMinSize(minWidth = 48.dp)
-            .clip(shape)
-            .background(bgColor)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick
-            )
-            .padding(horizontal = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = item.icon,
-            contentDescription = stringResource(item.labelRes),
-            tint = contentColor,
-            modifier = Modifier.size(26.dp)
-        )
-
-        // The label is always composed and its width is interpolated with the
-        // swipe, instead of AnimatedVisibility switching it on only once the
-        // selection flipped. Clipping to the scaled width (and zero width when
-        // unselected) prevents layout changes from stretching icons.
-        Box(
-            modifier = Modifier
-                .width(labelWidth * progress)
-                .clipToBounds()
-        ) {
-            Text(
-                text = stringResource(item.labelRes),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = contentColor,
-                maxLines = 1,
-                softWrap = false,
-                overflow = TextOverflow.Clip,
-                modifier = Modifier
-                    .padding(start = 5.dp)
-                    .alpha(progress)
             )
         }
     }

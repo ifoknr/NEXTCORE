@@ -142,8 +142,8 @@ enum class ColorMode(val value: Int) {
     }
 }
 
-/** NextCore slate blue; the default key color until the user picks another (0 = wallpaper colors). */
-const val NEXTCORE_SEED_COLOR: Int = 0xFF5D74A8.toInt()
+/** NextCore HUD orange; the default accent until the user picks another (0 = wallpaper colors). */
+const val NEXTCORE_SEED_COLOR: Int = 0xFFFF6B2C.toInt()
 
 data class AppSettings(val colorMode: ColorMode, val keyColor: Int, val colorSpec: ColorSpec.SpecVersion)
 
@@ -187,39 +187,20 @@ fun NextCoreTheme(
         }
     }
     
-    val systemDarkTheme = isSystemInDarkTheme()
-    val darkTheme = themeState.colorMode.getDarkThemeValue(systemDarkTheme)
     val amoledMode = themeState.colorMode == ColorMode.DARKAMOLED
     val isDynamic = themeState.keyColor == 0
-    val colorSpec = themeState.colorSpec
 
-    val colorScheme = if (isDynamic) {
-        val baseScheme = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-            else ->
-                if (darkTheme) darkColorScheme() else expressiveLightColorScheme()
-        }
-        rememberDynamicColorScheme(
-            seedColor = baseScheme.primary,
-            isDark = darkTheme,
-            isAmoled = amoledMode,
-            specVersion = colorSpec,
-            primary = baseScheme.primary,
-            secondary = baseScheme.secondary,
-            tertiary = baseScheme.tertiary,
-            neutral = baseScheme.surface,
-            neutralVariant = baseScheme.surfaceVariant,
-            error = baseScheme.error
-        )
+    // The HUD look is dark-only: black surfaces with one accent. The accent is
+    // the user's key color (or the wallpaper's primary when set to dynamic).
+    val accent = if (isDynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        dynamicDarkColorScheme(context).primary
+    } else if (isDynamic) {
+        Color(NEXTCORE_SEED_COLOR)
     } else {
-        rememberDynamicColorScheme(
-            seedColor = Color(themeState.keyColor),
-            isDark = darkTheme,
-            isAmoled = amoledMode,
-            specVersion = colorSpec,
-        )
+        Color(themeState.keyColor)
     }
+    val colorScheme = zx.nextcore.ui.hud.hudColorScheme(accent, amoledMode)
+    val darkTheme = true
 
     val view = androidx.compose.ui.platform.LocalView.current
     val animatedColorScheme = animateColorSchemeAsState(targetColorScheme = colorScheme)
