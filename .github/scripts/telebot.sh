@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
-# Posts a NextCore release to the Telegram channel: the banner with a short
-# Arabic summary and download link, then the flashable zip.
+# Posts a NextCore build to the Telegram channel as one message: the flashable
+# zip with a caption (what changed, requirements, how to update) and link
+# buttons under it.
 #
-# Needs BOT_TOKEN and CHAT_ID (repository secrets), and TAG, REPO and
-# RUN_URL in the environment. Usage: telebot.sh <zip>
+#   KIND=release  a pushed v* tag; changes since the previous tag
+#   KIND=beta     a push to main; changes in that push
+#
+# Needs BOT_TOKEN and CHAT_ID (repository secrets) and, from the workflow,
+# KIND, TAG, REPO, RUN_URL and BEFORE (the commit before a push).
+# Usage: telebot.sh <zip>
 set -euo pipefail
 
 file="$1"
@@ -12,73 +17,133 @@ if [ ! -f "$file" ]; then
 	exit 1
 fi
 
-api="https://api.telegram.org/bot$BOT_TOKEN"
-# A tag push links its release; a manual test run links the build instead.
-if [[ "$TAG" == v* ]]; then
-	release_url="https://github.com/$REPO/releases/tag/$TAG"
-	label="$TAG"
-else
-	release_url="${RUN_URL:-https://github.com/$REPO/actions}"
-	label="$(grep -m1 '^version=' "$GITHUB_WORKSPACE/mainfiles/module.prop" | cut -d= -f2-) (test)"
-fi
-banner="$GITHUB_WORKSPACE/.github/assets/banner.png"
-notes="$GITHUB_WORKSPACE/.github/release-notes.md"
+export ZIP_NAME VERSION_LABEL SINCE COMPARE_URL CHANGES COMMIT_COUNT DIFFSTAT
+ZIP_NAME="$(basename "$file")"
+VERSION_LABEL="$(grep -m1 '^version=' "$GITHUB_WORKSPACE/mainfiles/module.prop" | cut -d= -f2-)"
+SINCE=""
 
-# Caption: the top-level bullets of the release notes, HTML-escaped and
-# trimmed by characters (not bytes, so Arabic letters stay whole). A photo
-# caption holds 1024 characters.
-caption=$(TAG="$label" URL="$release_url" NOTES="$notes" python3 - <<'PY'
-import html, os, re
-tag, url, path = os.environ["TAG"], os.environ["URL"], os.environ["NOTES"]
-bullets = []
-if os.path.exists(path):
-    for line in open(path, encoding="utf-8"):
-        if line.startswith("- "):
-            text = re.sub(r"\*\*|`", "", line[2:].strip())
-            short = text if len(text) <= 140 else text[:139].rstrip() + "…"
-            bullets.append("• " + html.escape(short, quote=False))
-head = f"<b>🚀 NextCore {html.escape(tag, quote=False)}</b>\n\n"
-tail = f'\n\n📥 <a href="{url}">صفحة الإصدار والتفاصيل كاملة</a>\n⚠️ احذف AZenith وأعد التشغيل قبل التثبيت.'
-body = ""
-for b in bullets:
-    if len(head) + len(body) + len(b) + 1 + len(tail) > 1000:
+# Which commits this post covers.
+from=""
+to="HEAD"
+if [ "$KIND" = release ]; then
+	to="$TAG"
+	from="$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || true)"
+	SINCE="$from"
+	COMPARE_URL="https://github.com/$REPO/compare/${from:-main}...$TAG"
+elif [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+	from="$BEFORE"
+	COMPARE_URL="https://github.com/$REPO/compare/${BEFORE:0:12}...$(git rev-parse --short=12 HEAD)"
+else
+	COMPARE_URL="https://github.com/$REPO/commits/main"
+fi
+
+if [ -n "$from" ]; then
+	log_range=("$from..$to")
+	COMMIT_COUNT="$(git rev-list --count --no-merges "$from..$to")"
+	DIFFSTAT="$(git diff --shortstat "$from" "$to" || true)"
+else
+	log_range=(-5 "$to")
+	COMMIT_COUNT=""
+	DIFFSTAT=""
+fi
+# One record per first-parent commit: subject, then body (merge commits carry
+# the pull request title in the body).
+CHANGES="$(git log --first-parent --format='%s%x1f%b%x1e' "${log_range[@]}" | head -c 20000)"
+
+# Caption (HTML) and button rows. A document caption holds 1024 characters,
+# so the change list is trimmed by whole lines.
+payload="$(python3 - <<'PY'
+import html, json, os, re
+
+e = lambda s: html.escape(s, quote=False)
+kind, tag, repo = os.environ["KIND"], os.environ["TAG"], os.environ["REPO"]
+version = os.environ.get("VERSION_LABEL") or tag
+since = os.environ.get("SINCE", "")
+
+lines = []
+for rec in os.environ.get("CHANGES", "").split("\x1e"):
+    if "\x1f" not in rec:
+        continue
+    subject, body = rec.strip().split("\x1f", 1)
+    m = re.match(r"Merge pull request #(\d+)", subject)
+    if m:
+        title = next((l.strip() for l in body.splitlines() if l.strip()), "")
+        if title:
+            lines.append(f"{title} (#{m.group(1)})")
+    elif not subject.startswith("Merge "):
+        lines.append(subject)
+
+need = "⚙️ <b>يحتاج:</b> KernelSU / APatch / Magisk · Android 10+"
+if kind == "release":
+    head = f"🚀 <b>NextCore {e(tag)}</b>"
+    sub = "<i>Safe performance engine · محرك أداء آمن</i>"
+    title_new = "📝 <b>الجديد</b>" + (f" <i>since {e(since)}</i>" if since else "")
+    footer = (f"{need}\n🔄 يوصلك التحديث من مدير الروت تلقائياً\n\n"
+              "⚠️ <i>احذف AZenith وأعد التشغيل قبل التثبيت.</i>\n#NextCore #تحديث")
+else:
+    head = f"🧪 <b>NextCore Beta</b> <code>{e(version)}</code>"
+    sub = "<i>Test build from main · نسخة تجريبية</i>"
+    title_new = "📝 <b>الجديد</b>"
+    footer = (f"{need}\n🧪 للتجربة: ممكن يكون فيها أخطاء، ارجع للإصدار الرسمي لو صار شي.\n\n"
+              "⚠️ <i>Test build, use at your own risk.</i>\n#NextCore #تجريبي")
+
+stats = []
+if os.environ.get("COMMIT_COUNT"):
+    stats.append(f"{os.environ['COMMIT_COUNT']} commits")
+diff = os.environ.get("DIFFSTAT", "").strip()
+if diff:
+    # " 12 files changed, 340 insertions(+), 80 deletions(-)" -> "12 files, +340, -80"
+    d = re.sub(r" changed", "", diff)
+    d = re.sub(r"(\d+) insertions?\(\+\)", r"+\1", d)
+    d = re.sub(r"(\d+) deletions?\(-\)", r"-\1", d)
+    stats.append(d)
+stats_line = f"\n<i>{e(' · '.join(stats))}</i>" if stats else ""
+
+slot = "<blockquote expandable></blockquote>"
+fixed = f"{head}\n{sub}\n\n{title_new}\n{slot}{stats_line}\n\n{footer}"
+# Telegram counts the caption after removing tags.
+room = 1000 - len(re.sub(r"<[^>]+>", "", fixed))
+items = []
+for i, l in enumerate(lines or ["Maintenance build"]):
+    item = "• " + e(l if len(l) <= 160 else l[:159].rstrip() + "…")
+    if sum(len(x) + 1 for x in items) + len(item) + 14 > room:
+        items.append(f"• … +{len(lines) - i} more")
         break
-    body += b + "\n"
-print(head + body.rstrip("\n") + tail)
+    items.append(item)
+caption = fixed.replace(slot, "<blockquote expandable>" + "\n".join(items) + "</blockquote>")
+
+if kind == "release":
+    download = f"https://github.com/{repo}/releases/download/{tag}/{os.environ['ZIP_NAME']}"
+    details = f"https://github.com/{repo}/releases/tag/{tag}"
+else:
+    download = os.environ["RUN_URL"]
+    details = os.environ["COMPARE_URL"]
+keyboard = {"inline_keyboard": [
+    [{"text": "⬇️ Download", "url": download}, {"text": "📋 Details", "url": details}],
+    [{"text": "⭐ Repository", "url": f"https://github.com/{repo}"},
+     {"text": "👤 GitHub", "url": "https://github.com/" + repo.split("/")[0]}],
+]}
+print(json.dumps({"caption": caption, "markup": json.dumps(keyboard)}))
 PY
-)
+)"
 
-# Telegram HTML only needs &, < and > escaped.
-esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
+caption="$(printf '%s' "$payload" | python3 -c 'import json,sys; sys.stdout.write(json.load(sys.stdin)["caption"])')"
+markup="$(printf '%s' "$payload" | python3 -c 'import json,sys; sys.stdout.write(json.load(sys.stdin)["markup"])')"
 
-send() {
-	local out
-	out=$(curl -sS "$@")
-	if ! printf '%s' "$out" | grep -q '"ok":true'; then
-		echo "Telegram error: $out" >&2
-		return 1
-	fi
-}
-
-if [ -f "$banner" ]; then
-	send "$api/sendPhoto" \
-		--form-string chat_id="$CHAT_ID" \
-		-F photo=@"$banner" \
-		--form-string parse_mode=HTML \
-		--form-string caption="$caption"
-else
-	send "$api/sendMessage" \
-		--form-string chat_id="$CHAT_ID" \
-		--form-string parse_mode=HTML \
-		--form-string disable_web_page_preview=true \
-		--form-string text="$caption"
+thumb=()
+if [ -f "$GITHUB_WORKSPACE/logo.jpg" ]; then
+	thumb=(-F thumbnail=@"$GITHUB_WORKSPACE/logo.jpg")
 fi
 
-send "$api/sendDocument" \
+out="$(curl -sS "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" \
 	--form-string chat_id="$CHAT_ID" \
 	-F document=@"$file" \
+	"${thumb[@]}" \
 	--form-string parse_mode=HTML \
-	--form-string caption="📦 <b>$(basename "$file" | esc)</b>
-فلّشه من KernelSU أو APatch أو Magisk ثم أعد التشغيل."
-
-echo "Posted $label to Telegram."
+	--form-string caption="$caption" \
+	--form-string reply_markup="$markup")"
+if ! printf '%s' "$out" | grep -q '"ok":true'; then
+	echo "Telegram error: $out" >&2
+	exit 1
+fi
+echo "Posted $KIND $ZIP_NAME to Telegram."
