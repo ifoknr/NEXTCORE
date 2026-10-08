@@ -6,8 +6,9 @@
 #   KIND=release  a pushed v* tag; changes since the previous tag
 #   KIND=beta     a push to main; changes in that push
 #
-# Needs BOT_TOKEN and CHAT_ID (repository secrets) and, from the workflow,
-# KIND, TAG, REPO, RUN_URL and BEFORE (the commit before a push).
+# Needs BOT_TOKEN and CHAT_ID (from the TELEGRAM_TOKEN / TELEGRAM_TO secrets),
+# optionally TOPIC_ID (a forum topic), and from the workflow KIND, TAG, REPO,
+# RUN_URL and BEFORE (the commit before a push).
 # Usage: telebot.sh <zip>
 set -euo pipefail
 
@@ -130,6 +131,11 @@ PY
 caption="$(printf '%s' "$payload" | python3 -c 'import json,sys; sys.stdout.write(json.load(sys.stdin)["caption"])')"
 markup="$(printf '%s' "$payload" | python3 -c 'import json,sys; sys.stdout.write(json.load(sys.stdin)["markup"])')"
 
+topic=()
+if [ -n "${TOPIC_ID:-}" ]; then
+	topic=(--form-string message_thread_id="$TOPIC_ID")
+fi
+
 thumb=()
 if [ -f "$GITHUB_WORKSPACE/logo.jpg" ]; then
 	thumb=(-F thumbnail=@"$GITHUB_WORKSPACE/logo.jpg")
@@ -137,6 +143,7 @@ fi
 
 out="$(curl -sS "https://api.telegram.org/bot$BOT_TOKEN/sendDocument" \
 	--form-string chat_id="$CHAT_ID" \
+	"${topic[@]}" \
 	-F document=@"$file" \
 	"${thumb[@]}" \
 	--form-string parse_mode=HTML \
