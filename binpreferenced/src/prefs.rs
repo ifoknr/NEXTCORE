@@ -530,117 +530,6 @@ fn apply_surfaceflinger() {
     resetprop("debug.hwui.level", "0");
 }
 
-fn find_thermal_init_services() -> Vec<String> {
-    let mut services = Vec::new();
-    for dir in ["/system/etc/init", "/vendor/etc/init", "/odm/etc/init"] {
-        if let Ok(read_dir) = std::fs::read_dir(dir) {
-            for entry in read_dir.flatten() {
-                if let Ok(content) = std::fs::read_to_string(entry.path()) {
-                    for line in content.lines() {
-                        let trimmed = line.trim_start();
-                        if trimmed.starts_with("service") && line.contains("thermal") {
-                            if let Some(name) = trimmed.split_whitespace().nth(1) {
-                                services.push(name.to_string());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    services
-}
-
-fn thermal_prop_matches(key: &str) -> bool {
-    key.contains("init.svc.thermal")
-        || key.contains("thermal-cutoff")
-        || (key.contains("ro.vendor.") && key.contains("thermal"))
-        || key.contains("debug.thermal")
-        || (key.contains("debug_pid") && key.contains("thermal"))
-        || (key.contains("boottime") && key.contains("thermal"))
-        || (key.contains("thermal") && key.contains("running"))
-}
-
-fn apply_disable_thermal() {
-    log_info("Disabling Thermal Engine");
-
-    let _ = Command::new("pkill")
-        .args(["-9", "-f", "thermald|thermal-engine|mtk_thermal"])
-        .status();
-
-    for svc in find_thermal_init_services() {
-        let _ = Command::new("stop").arg(&svc).status();
-    }
-
-    if let Ok(output) = Command::new("getprop").output() {
-        let stdout = String::from_utf8_lossy(&output.stdout);
-        for line in stdout.lines() {
-            if let Some(key) = bracket_key(line) {
-                if thermal_prop_matches(&key) {
-                    resetprop(&key, "suspended");
-                }
-            }
-        }
-    }
-
-    if let Ok(paths) = glob::glob("/sys/class/thermal/thermal_zone*/mode") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_val("disabled", p_str, false);
-            }
-        }
-    }
-
-    if let Ok(paths) = glob::glob("/sys/class/thermal/thermal_zone*/policy") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_val("userspace", p_str, false);
-            }
-        }
-    }
-
-    chmod_glob("/sys/devices/virtual/thermal/thermal_zone*/temp", 0o000);
-    chmod_glob("/sys/devices/virtual/thermal/thermal_zone*/trip_point_*", 0o000);
-
-    if let Ok(content) = std::fs::read_to_string("/proc/ppm/policy_status") {
-        for line in content.lines() {
-            if line.contains("FORCE_LIMIT") || line.contains("PWR_THRO") || line.contains("THERMAL") {
-                if let Some(idx) = bracket_key(line) {
-                    write_val(&format!("{} 0", idx), "/proc/ppm/policy_status", true);
-                }
-            }
-        }
-    }
-
-    let gpu_limit = "/proc/gpufreq/gpufreq_power_limited";
-    if std::path::Path::new(gpu_limit).exists() {
-        for key in [
-            "ignore_batt_oc",
-            "ignore_batt_percent",
-            "ignore_low_batt",
-            "ignore_thermal_protect",
-            "ignore_pbm_limited",
-        ] {
-            write_val(&format!("{} 1", key), gpu_limit, true);
-        }
-    }
-
-    let _ = Command::new("cmd")
-        .args(["thermalservice", "override-status", "0"])
-        .status();
-
-    write_val("stop 1", "/proc/mtk_batoc_throttling/battery_oc_protect_stop", true);
-
-    log_verbose("Thermal is disabled");
-}
-
-fn bracket_key(line: &str) -> Option<String> {
-    let start = line.find('[')?;
-    let rest = &line[start + 1..];
-    let end = rest.find(']')?;
-    Some(rest[..end].to_string())
-}
-
 fn truncate_tracing_files(dir: &std::path::Path) {
     let Ok(read_dir) = std::fs::read_dir(dir) else {
         return;
@@ -680,7 +569,7 @@ fn apply_disable_trace() {
 }
 
 fn apply_logd() {
-    if state_enabled(&get_state("persist.sys.azenithconf.logd")) {
+    if state_enabled(&get_state("persist.sys.nextcoreconf.logd")) {
         log_info("Applying Kill Logd");
         for logger in &LIST_LOGGER {
             let _ = Command::new("stop").arg(logger).status();
@@ -693,14 +582,15 @@ fn apply_logd() {
 }
 
 pub fn prefsettings() -> bool {
-    let walt_state = get_state("persist.sys.azenithconf.walttunes");
-    let dthermal_state = get_state("persist.sys.azenithconf.DThermal");
-    let sfl_state = get_state("persist.sys.azenithconf.SFL");
-    let malisched_state = get_state("persist.sys.azenithconf.malisched");
-    let fpsged_state = get_state("persist.sys.azenithconf.fpsged");
-    let schedtunes_state = get_state("persist.sys.azenithconf.schedtunes");
-    let justintime_state = get_state("persist.sys.azenithconf.justintime");
-    let disabletrace_state = get_state("persist.sys.azenithconf.disabletrace");
+    let walt_state = get_state("persist.sys.nextcoreconf.walttunes");
+    // Stopping vendor thermal services is not offered: on a public build it can
+    // let devices overheat with nothing left to throttle them.
+    let sfl_state = get_state("persist.sys.nextcoreconf.SFL");
+    let malisched_state = get_state("persist.sys.nextcoreconf.malisched");
+    let fpsged_state = get_state("persist.sys.nextcoreconf.fpsged");
+    let schedtunes_state = get_state("persist.sys.nextcoreconf.schedtunes");
+    let justintime_state = get_state("persist.sys.nextcoreconf.justintime");
+    let disabletrace_state = get_state("persist.sys.nextcoreconf.disabletrace");
 
     if state_enabled(&justintime_state) {
         apply_jit();
@@ -724,10 +614,6 @@ pub fn prefsettings() -> bool {
 
     if state_enabled(&sfl_state) {
         apply_surfaceflinger();
-    }
-
-    if state_enabled(&dthermal_state) {
-        apply_disable_thermal();
     }
 
     if state_enabled(&disabletrace_state) {

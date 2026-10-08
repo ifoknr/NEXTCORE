@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 
 /**
  * @brief Writes formatted content to the specified file with optional appending and flock

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">વિશે NextCore</string>
+    <string name="about_nextcore">વિશે NextCore</string>
     <string name="about_source_code">%1$s પર સ્રોત કોડ જુઓ&lt;br/&gt;અમારી %2$s ચેનલમાં જોડાઓ</string>
     <string name="accent_color">એક્સેન્ટ રંગ</string>
     <string name="all_checks_finished">બધા તપાસ પૂર્ણ</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">એપ્લિકેશન સેટિંગ્સ</string>
     <string name="appearance">દેખાવ</string>
     <string name="applist_title">એપ્લિકેશન સૂચિ</string>
-    <string name="azenith_version">NextCore સંસ્કરણ</string>
+    <string name="nextcore_version">NextCore સંસ્કરણ</string>
     <string name="balanced_io_scheduler">સંતુલિત I/O શેડ્યુલર</string>
     <string name="balanced_io_scheduler_desc">સંતુલિત રૂપરેખાંકન યોજના દ્વારા ઉપયોગમાં લેવાતું શેડ્યુલર</string>
     <string name="balanced_mali_gov">સંતુલિત Mali GPU ગવર્નર</string>
@@ -253,7 +253,7 @@
     <string name="str_author">લેખક</string>
     <string name="str_auto_mode">ઓટો મોડ</string>
     <string name="str_available_nodes">ઉપલબ્ધ લક્ષ્ય નોડ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore તૈયાર છે!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore તૈયાર છે!</string>
     <string name="str_backup_configuration">રૂપરેખાંકન બેકઅપ</string>
     <string name="str_backup_content_detected_select">બેકઅપ સામગ્રી મળી, કૃપા કરીને પુનઃસ્થાપિત કરવા માટેની આઇટમ પસંદ કરો:</string>
     <string name="str_backup_restore">બેકઅપ અને પુનઃસ્થાપના</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ગ્રેડિયન્ટ અપારદર્શકતા</string>
     <string name="str_installing_update">અપડેટ ઇન્સ્ટોલ કરી રહ્યા છીએ…</string>
     <string name="str_interface">ઇન્ટરફેસ</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">એપ શરૂ કરો</string>
     <string name="str_launch_compatibility_check">સુસંગતતા તપાસ શરૂ કરો</string>
     <string name="str_let_s_adjust_a_few_basic_setti">ચાલો થોડી મૂળભૂત સેટિંગ્સ ગોઠવીએ</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">કૃપા કરીને NextCore ને રૂટ એક્સેસ આપો</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">કૃપા કરીને NextCore ને રૂટ એક્સેસ આપો</string>
     <string name="str_load_a_previously_saved_backup">અગાઉ સાચવેલ બેકઅપ ફાઇલ લોડ કરો</string>
     <string name="str_logs_diagnostics">લોગ અને નિદાન</string>
     <string name="str_maintainer">જાળવણીકાર</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ચાર્જર કનેક્ટ થયેલ નથી, કૃપા કરીને ડાયગ્નોસ્ટિક ચલાવતા પહેલા ચાર્જર પ્લગ ઇન કરો</string>
     <string name="str_preview">પૂર્વાવલોકન</string>
     <string name="str_restore_configuration">રૂપરેખાંકન પુનઃસ્થાપિત કરો</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">રૂટ એક્સેસ નકારવામાં આવ્યું, NextCore ને ચલાવવા માટે રૂટ એક્સેસની જરૂર છે</string>
     <string name="str_root_access_granted">રૂટ એક્સેસ મળી ગયું, બધું તૈયાર છે!</string>
     <string name="str_run_diagnostics_above_or_check">ઉપરનું નિદાન ચલાવો, અથવા કર્નલમાં બાયપાસ પાવર નોડ છે કે કેમ તે તપાસો</string>
@@ -368,7 +366,7 @@
     <string name="version_format">સંસ્કરણ %1$s</string>
     <string name="walt_tunes">WALT ગવર્નર ટ્યુનિંગ</string>
     <string name="walt_tunes_desc">WALT ગવર્નર પરિમાણો ઑપ્ટિમાઇઝ કરો, CPU શેડ્યુલિંગ પ્રતિભાવ ઝડપ સુધારો</string>
-    <string name="welcome_azenith">NextCore માં આપનું સ્વાગત છે</string>
+    <string name="welcome_nextcore">NextCore માં આપનું સ્વાગત છે</string>
     <string name="yes">હા</string>
     <string name="str_use_scroll_animation">સ્ક્રોલ એનિમેશન વાપરો</string>
     <string name="str_use_scroll_animation_summary">પૃષ્ઠો વચ્ચે સ્વાઇપ એનિમેશન સક્ષમ કરો</string>

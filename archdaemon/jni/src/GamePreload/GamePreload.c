@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <dirent.h>
 #include <string.h>
 #include <sys/system_properties.h>
@@ -72,7 +72,7 @@ void GamePreload(const char* package) {
     }
 
     char budget[32] = {0};
-    if (__system_property_get("persist.sys.azenithconf.preloadbudget", budget) <= 0 || !is_shell_safe(budget)) {
+    if (__system_property_get("persist.sys.nextcoreconf.preloadbudget", budget) <= 0 || !is_shell_safe(budget)) {
         strcpy(budget, "500M");
     }
 
@@ -80,7 +80,7 @@ void GamePreload(const char* package) {
     const char* target_type = lib_exists ? "libs" : "split apks";
 
     char preload_cmd[512];
-    snprintf(preload_cmd, sizeof(preload_cmd), "sys.azenith-preloadbin -v -t -m %s \"%s\"", budget, target_path);
+    snprintf(preload_cmd, sizeof(preload_cmd), "sys.nextcore-preloadbin -v -t -m %s \"%s\"", budget, target_path);
 
     FILE* fp = popen(preload_cmd, "r");
     if (!fp) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore பற்றி</string>
+    <string name="about_nextcore">NextCore பற்றி</string>
     <string name="about_source_code">%1$s இல் மூல குறியீட்டைப் பார்க்கவும்&lt;br/&gt;எங்கள் %2$s சேனலில் சேருங்கள்</string>
     <string name="accent_color">தீம் வண்ணம்</string>
     <string name="all_checks_finished">அனைத்து சோதனைகளும் முடிந்தன</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">பயன்பாட்டு அமைப்புகள்</string>
     <string name="appearance">தோற்றம்</string>
     <string name="applist_title">பயன்பாட்டு பட்டியல்</string>
-    <string name="azenith_version">NextCore பதிப்பு</string>
+    <string name="nextcore_version">NextCore பதிப்பு</string>
     <string name="balanced_io_scheduler">சமச்சீர் I/O திட்டமிடல்</string>
     <string name="balanced_io_scheduler_desc">சமச்சீர் சுயவிவரத்தால் பயன்படுத்தப்படும் திட்டமிடல்</string>
     <string name="balanced_mali_gov">சமச்சீர் Mali GPU கவர்னர்</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ஆசிரியர்</string>
     <string name="str_auto_mode">தானியங்கி முறை</string>
     <string name="str_available_nodes">கிடைக்கக்கூடிய இலக்கு முனைகள் (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore தயாராக உள்ளது!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore தயாராக உள்ளது!</string>
     <string name="str_backup_configuration">காப்பு கட்டமைப்பு</string>
     <string name="str_backup_content_detected_select">காப்பு உள்ளடக்கம் கண்டறியப்பட்டது, மீட்டமைக்க உருப்படிகளைத் தேர்ந்தெடுக்கவும்:</string>
     <string name="str_backup_restore">காப்பு மற்றும் மீட்டமைப்பு</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">சாய்வு ஒளிபுகா தன்மை</string>
     <string name="str_installing_update">புதுப்பிப்பு நிறுவப்படுகிறது…</string>
     <string name="str_interface">இடைமுகம்</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">பயன்பாட்டைத் தொடங்கு</string>
     <string name="str_launch_compatibility_check">இணக்கத்தன்மை சரிபார்ப்பைத் தொடங்கு</string>
     <string name="str_let_s_adjust_a_few_basic_setti">சில அடிப்படை அமைப்புகளை சரிசெய்கிறோம்</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCore க்கு Root அணுகலை வழங்கவும்</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCore க்கு Root அணுகலை வழங்கவும்</string>
     <string name="str_load_a_previously_saved_backup">சேமித்த காப்பு கோப்பை ஏற்றவும்</string>
     <string name="str_logs_diagnostics">பதிவுகள் மற்றும் நோயறிதல்</string>
     <string name="str_maintainer">பராமரிப்பாளர்</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">சார்ஜிங் இணைப்பு கண்டறியப்படவில்லை, நோயறிதலை இயக்கும் முன் சார்ஜரைச் செருகவும்</string>
     <string name="str_preview">முன்னோட்டம்</string>
     <string name="str_restore_configuration">கட்டமைப்பை மீட்டமை</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root அணுகல் மறுக்கப்பட்டது, NextCore இயங்க Root அணுகல் தேவை</string>
     <string name="str_root_access_granted">Root அணுகல் வழங்கப்பட்டது, எல்லாம் தயார்!</string>
     <string name="str_run_diagnostics_above_or_check">மேலே உள்ள நோயறிதலை இயக்கவும், அல்லது கெர்னலில் பைபாஸ் சார்ஜிங் முனை உள்ளதா எனச் சரிபார்க்கவும்</string>
@@ -368,7 +366,7 @@
     <string name="version_format">பதிப்பு %1$s</string>
     <string name="walt_tunes">WALT கவர்னர் சரிசெய்தல்</string>
     <string name="walt_tunes_desc">WALT கவர்னர் அளவுருக்களை மேம்படுத்தி, CPU திட்டமிடல் பதில் வேகத்தை அதிகரிக்கவும்</string>
-    <string name="welcome_azenith">NextCore க்கு வரவேற்கிறோம்</string>
+    <string name="welcome_nextcore">NextCore க்கு வரவேற்கிறோம்</string>
     <string name="yes">ஆம்</string>
     <string name="str_use_scroll_animation">ஸ்க்ரோல் அனிமேஷனைப் பயன்படுத்துக</string>
     <string name="str_use_scroll_animation_summary">பக்கங்களுக்கு இடையே ஸ்வைப் அனிமேஷனை இயக்கு</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">O NextCore</string>
+    <string name="about_nextcore">O NextCore</string>
     <string name="about_source_code">Oglejte si izvorno kodo na %1$s&lt;br/&gt;Pridružite se našemu kanalu %2$s</string>
     <string name="accent_color">Poudarjena barva</string>
     <string name="all_checks_finished">Vsi pregledi končani</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Nastavitve aplikacije</string>
     <string name="appearance">Videz</string>
     <string name="applist_title">Seznam aplikacij</string>
-    <string name="azenith_version">Različica NextCore</string>
+    <string name="nextcore_version">Različica NextCore</string>
     <string name="balanced_io_scheduler">Uravnoteženi načrtovalnik V/I</string>
     <string name="balanced_io_scheduler_desc">Načrtovalnik, uporabljen v uravnoteženem profilu</string>
     <string name="balanced_mali_gov">Uravnoteženi regulator Mali GPU</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Avtor</string>
     <string name="str_auto_mode">Samodejni način</string>
     <string name="str_available_nodes">Razpoložljiva ciljna vozlišča (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore je pripravljen!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore je pripravljen!</string>
     <string name="str_backup_configuration">Varnostno kopiranje konfiguracije</string>
     <string name="str_backup_content_detected_select">Zaznana je vsebina varnostne kopije. Izberi elemente za obnovitev:</string>
     <string name="str_backup_restore">Varnostno kopiranje in obnovitev</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Prosojnost preliva</string>
     <string name="str_installing_update">Nameščanje posodobitve…</string>
     <string name="str_interface">Vmesnik</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Zaženi aplikacijo</string>
     <string name="str_launch_compatibility_check">Zaženi preverjanje združljivosti</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Prilagodimo nekaj osnovnih nastavitev</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Prosim, dodeli NextCore root dovoljenja</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Prosim, dodeli NextCore root dovoljenja</string>
     <string name="str_load_a_previously_saved_backup">Naloži prej shranjeno varnostno kopijo</string>
     <string name="str_logs_diagnostics">Dnevniki in diagnostika</string>
     <string name="str_maintainer">Vzdrževalec</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Polnilnik ni zaznan. Prosim, priključite polnilnik in ponovno zaženite diagnostiko.</string>
     <string name="str_preview">Predogled</string>
     <string name="str_restore_configuration">Obnovi konfiguracijo</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root dostop zavrnjen. NextCore potrebuje root dostop za delovanje.</string>
     <string name="str_root_access_granted">Root dostop pridobljen, vse pripravljeno!</string>
     <string name="str_run_diagnostics_above_or_check">Zaženi zgornjo diagnostiko ali preveri, ali jedro vsebuje vozlišča za bypass polnjenje</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Različica %1$s</string>
     <string name="walt_tunes">Prilagoditve regulatorja WALT</string>
     <string name="walt_tunes_desc">Optimiziraj parametre regulatorja WALT za izboljšanje odzivnosti načrtovanja CPU</string>
-    <string name="welcome_azenith">Dobrodošli v NextCore</string>
+    <string name="welcome_nextcore">Dobrodošli v NextCore</string>
     <string name="yes">Da</string>
     <string name="str_use_scroll_animation">Uporabi animacijo pomikanja</string>
     <string name="str_use_scroll_animation_summary">Omogoči animacijo drsenja med stranmi</string>

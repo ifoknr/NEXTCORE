@@ -12,7 +12,7 @@ cd "$GITHUB_WORKSPACE" || {
 	exit 1
 }
 
-readonly HEADER_FILE="archdaemon/jni/include/AZenith.h"
+readonly HEADER_FILE="archdaemon/jni/include/NextCore.h"
 readonly GRADLE_FILE="manager/app/build.gradle.kts"
 
 [ -f "version" ] || { echo "❌ Error: 'version' file not found!"; exit 1; }

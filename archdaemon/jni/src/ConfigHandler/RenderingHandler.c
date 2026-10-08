@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <sys/system_properties.h>
 #include <time.h>
 
@@ -34,7 +34,7 @@ bool apply_smart_renderer(const char* target_type, char* saved_ref, char* saved_
     __system_property_get("debug.hwui.renderer", current_renderer);
 
     char current_sys_renderer[PROP_VALUE_MAX] = {0};
-    __system_property_get("persist.sys.azenithconf.renderer", current_sys_renderer);
+    __system_property_get("persist.sys.nextcoreconf.renderer", current_sys_renderer);
     
     if (strlen(current_renderer) == 0)
         strcpy(current_renderer, "default");
@@ -56,8 +56,8 @@ bool apply_smart_renderer(const char* target_type, char* saved_ref, char* saved_
     if (strcmp(current_renderer, target_type) != 0) {
         log_zenith(LOG_INFO, "RenderHandler: Renderer mismatch! Current: %s | Target: %s. Switching...",
                    current_renderer, target_type);
-        systemv("sys.azenith-utilityconf setrender %s", target_type);
-        __system_property_set("persist.sys.azenithconf.renderer", target_type);
+        systemv("sys.nextcore-utilityconf setrender %s", target_type);
+        __system_property_set("persist.sys.nextcoreconf.renderer", target_type);
         return true; 
     }
     return false;

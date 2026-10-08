@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief Thread worker function to run GamePreload asynchronously.
@@ -42,13 +42,13 @@ void apply_performance_profile(DaemonContext* ctx) {
     log_zenith(LOG_INFO, "Applying performance profile for %s", active_app_name ? active_app_name : gamestart);
 
     if (IS_TRUE(opts.perf_lite_mode)) {
-        __system_property_set("persist.sys.azenithconf.litemode", "1");
+        __system_property_set("persist.sys.nextcoreconf.litemode", "1");
     } else if (IS_FALSE(opts.perf_lite_mode)) {
-        __system_property_set("persist.sys.azenithconf.litemode", "0");
+        __system_property_set("persist.sys.nextcoreconf.litemode", "0");
     } else {
         char lite_prop[PROP_VALUE_MAX] = {0};
-        __system_property_get("persist.sys.azenithconf.cpulimit", lite_prop);
-        __system_property_set("persist.sys.azenithconf.litemode", (strcmp(lite_prop, "1") == 0) ? "1" : "0");
+        __system_property_get("persist.sys.nextcoreconf.cpulimit", lite_prop);
+        __system_property_set("persist.sys.nextcoreconf.litemode", (strcmp(lite_prop, "1") == 0) ? "1" : "0");
     }
 
     if (ctx->saved_zen_mode < 0) {
@@ -57,15 +57,15 @@ void apply_performance_profile(DaemonContext* ctx) {
 
     if (IS_TRUE(opts.dnd_on_gaming)) {
         if (ctx->saved_zen_mode == 0) {
-            systemv("sys.azenith-utilityconf enableDND");
+            systemv("sys.nextcore-utilityconf enableDND");
         }
         ctx->dnd_enabled = true;
     } else if (!IS_FALSE(opts.dnd_on_gaming)) {
         char dnd_state[PROP_VALUE_MAX] = {0};
-        __system_property_get("persist.sys.azenithconf.dnd", dnd_state);
+        __system_property_get("persist.sys.nextcoreconf.dnd", dnd_state);
         if (strcmp(dnd_state, "1") == 0) {
             if (ctx->saved_zen_mode == 0) {
-                systemv("sys.azenith-utilityconf enableDND");
+                systemv("sys.nextcore-utilityconf enableDND");
             }
             ctx->dnd_enabled = true;
         }
@@ -84,13 +84,13 @@ void apply_performance_profile(DaemonContext* ctx) {
     bool is_preload_active = false;
     if (!IS_FALSE(opts.game_preload)) {
         char preload_active[PROP_VALUE_MAX] = {0};
-        if (__system_property_get("persist.sys.azenithconf.APreload", preload_active) > 0) {
+        if (__system_property_get("persist.sys.nextcoreconf.APreload", preload_active) > 0) {
             is_preload_active = (strcmp(preload_active, "1") == 0);
         }
     }
 
     if (IS_TRUE(opts.game_preload) || is_preload_active) {
-        notify("AZenith Preload", "Preloading initiated for: %s", true, 10000, active_app_name ? active_app_name : gamestart);
+        notify("NextCore Preload", "Preloading initiated for: %s", true, 10000, active_app_name ? active_app_name : gamestart);
 
         PreloadArgs* p_args = malloc(sizeof(PreloadArgs));
         if (p_args) {
@@ -139,7 +139,7 @@ void apply_eco_profile(DaemonContext* ctx) {
 
     if (ctx->dnd_enabled) {
         if (ctx->saved_zen_mode == 0) {
-            systemv("sys.azenith-utilityconf disableDND");
+            systemv("sys.nextcore-utilityconf disableDND");
         }
         ctx->dnd_enabled = false;
     }
@@ -155,12 +155,12 @@ void apply_eco_profile(DaemonContext* ctx) {
         if (strcmp(current_now, ctx->saved_renderer) != 0) {
             log_zenith(LOG_INFO, "Restoring original system renderer: %s", ctx->saved_renderer);
             if (strcmp(ctx->saved_renderer, "default") == 0) {
-                systemv("sys.azenith-utilityconf setrender default");
-                __system_property_set("persist.sys.azenithconf.renderer", "default");
+                systemv("sys.nextcore-utilityconf setrender default");
+                __system_property_set("persist.sys.nextcoreconf.renderer", "default");
             } else {
                 if (is_shell_safe(ctx->saved_renderer))
-                    systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
-                __system_property_set("persist.sys.azenithconf.renderer", ctx->saved_sys_renderer);
+                    systemv("sys.nextcore-utilityconf setrender %s", ctx->saved_renderer);
+                __system_property_set("persist.sys.nextcoreconf.renderer", ctx->saved_sys_renderer);
             }
         }
         memset(ctx->saved_renderer, 0, sizeof(ctx->saved_renderer));
@@ -169,7 +169,7 @@ void apply_eco_profile(DaemonContext* ctx) {
     
     EXECUTE("ECO Mode", run_profiler(ECO_MODE));
     
-    systemv("rm -rf /data/adb/.config/AZenith/daemon_state");
+    systemv("rm -rf /data/adb/.config/NextCore/daemon_state");
 
 }
 
@@ -196,7 +196,7 @@ void apply_balanced_profile(DaemonContext* ctx) {
 
     if (ctx->dnd_enabled) {
         if (ctx->saved_zen_mode == 0) {
-            systemv("sys.azenith-utilityconf disableDND");
+            systemv("sys.nextcore-utilityconf disableDND");
         }
         ctx->dnd_enabled = false;
     }
@@ -212,12 +212,12 @@ void apply_balanced_profile(DaemonContext* ctx) {
         if (strcmp(current_now, ctx->saved_renderer) != 0) {
             log_zenith(LOG_INFO, "Restoring original system renderer: %s", ctx->saved_renderer);
             if (strcmp(ctx->saved_renderer, "default") == 0) {
-                systemv("sys.azenith-utilityconf setrender default");
-                __system_property_set("persist.sys.azenithconf.renderer", "default");
+                systemv("sys.nextcore-utilityconf setrender default");
+                __system_property_set("persist.sys.nextcoreconf.renderer", "default");
             } else {
                 if (is_shell_safe(ctx->saved_renderer))
-                    systemv("sys.azenith-utilityconf setrender %s", ctx->saved_renderer);
-                __system_property_set("persist.sys.azenithconf.renderer", ctx->saved_sys_renderer);
+                    systemv("sys.nextcore-utilityconf setrender %s", ctx->saved_renderer);
+                __system_property_set("persist.sys.nextcoreconf.renderer", ctx->saved_sys_renderer);
             }
         }
         memset(ctx->saved_renderer, 0, sizeof(ctx->saved_renderer));
@@ -227,10 +227,10 @@ void apply_balanced_profile(DaemonContext* ctx) {
     EXECUTE("Balanced Profile", run_profiler(BALANCED_PROFILE));
 
     if (!ctx->is_initialize_complete) {
-        notify("Daemon Info", "AZenith is running successfully", false, 60000);
+        notify("Daemon Info", "NextCore is running successfully", false, 60000);
         ctx->is_initialize_complete = true;
     }
     
-    systemv("rm -rf /data/adb/.config/AZenith/daemon_state");
+    systemv("rm -rf /data/adb/.config/NextCore/daemon_state");
     
 }

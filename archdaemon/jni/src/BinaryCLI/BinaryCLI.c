@@ -14,47 +14,47 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 
 /**
- * @brief Prints all available AZenith Daemon CLI commands, usage instructions, and examples to
+ * @brief Prints all available NextCore Daemon CLI commands, usage instructions, and examples to
  * stdout.
  */
 void print_help(void) {
-    printf("AZenith Daemon CLI (by @Zexshia)\n"
+    printf("NextCore Daemon CLI\n"
            "Version: %s\n"
            "\n"
-           "Usage: sys.azenith-service [options]\n"
+           "Usage: sys.nextcore-service [options]\n"
            "\n"
            "Options:\n"
-           "     -r,    --run              Start AZenith daemon service\n"
+           "     -r,    --run              Start NextCore daemon service\n"
            "\n"
-           "     -p,    --profile <1|2|3>  Apply AZenith profiles via CLI\n"
+           "     -p,    --profile <1|2|3>  Apply NextCore profiles via CLI\n"
            "                               1 : Performance\n"
            "                               2 : Balanced\n"
            "                               3 : Eco Mode\n"
            "\n"
            "     -l,    --log <TAG> <LVL> <MSG>\n"
-           "                               Write a log message via AZenith logging service\n"
+           "                               Write a log message via NextCore logging service\n"
            "                               LEVELs: 0=DEBUG, 1=INFO, 2=WARN, 3=ERROR, 4=FATAL\n"
            "\n"
            "     -vl,   --verboselog <TAG> <LVL> <MSG>\n"
-           "                               Write a verbose log message via AZenith logging service\n"
+           "                               Write a verbose log message via NextCore logging service\n"
            "\n"
-           "     -actv, --appactivity      Open AZenith App Main Activity\n"
+           "     -actv, --appactivity      Open NextCore App Main Activity\n"
            "\n"
            "     -cbc,  --checkbypasschg   Check bypass charge compatibility\n"
            "\n"
            "     -bpl,  --bypasspathlist   Show all embedded bypass charging paths\n"
            "\n"
-           "     -V,    --version          Show AZenith current version\n"
+           "     -V,    --version          Show NextCore current version\n"
            "\n"
            "     -h,    --help             Display this help message and exit\n"
            "\n"
            "Examples:\n"
-           "     sys.azenith-service --run\n"
-           "     sys.azenith-service --profile 2\n"
-           "     sys.azenith-service --bypasspathlist\n"
-           "     sys.azenith-service --help\n",
+           "     sys.nextcore-service --run\n"
+           "     sys.nextcore-service --profile 2\n"
+           "     sys.nextcore-service --bypasspathlist\n"
+           "     sys.nextcore-service --help\n",
            MODULE_VERSION);
 }

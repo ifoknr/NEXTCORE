@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Über NextCore</string>
+    <string name="about_nextcore">Über NextCore</string>
     <string name="about_source_code">Quellcode auf %1$s anzeigen&lt;br/&gt;Tritt unserem %2$s-Kanal bei</string>
     <string name="accent_color">Akzentfarbe</string>
     <string name="all_checks_finished">Alle Prüfungen abgeschlossen</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">App-Einstellungen</string>
     <string name="appearance">Erscheinungsbild</string>
     <string name="applist_title">App-Liste</string>
-    <string name="azenith_version">NextCore-Version</string>
+    <string name="nextcore_version">NextCore-Version</string>
     <string name="balanced_io_scheduler">Ausgeglichener I/O-Scheduler</string>
     <string name="balanced_io_scheduler_desc">Scheduler für das ausgeglichene Profil</string>
     <string name="balanced_mali_gov">Ausgeglichener Mali GPU-Governor</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Automatikmodus</string>
     <string name="str_available_nodes">Verfügbare Zielknoten (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ist bereit!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ist bereit!</string>
     <string name="str_backup_configuration">Konfiguration sichern</string>
     <string name="str_backup_content_detected_select">Sicherungsinhalt erkannt. Wähle aus, was wiederhergestellt werden soll:</string>
     <string name="str_backup_restore">Sichern und Wiederherstellen</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Verlaufstransparenz</string>
     <string name="str_installing_update">Update wird installiert…</string>
     <string name="str_interface">Oberfläche</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">App starten</string>
     <string name="str_launch_compatibility_check">Kompatibilitätsprüfung starten</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Wir passen ein paar grundlegende Einstellungen an</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Bitte gewähre NextCore Root-Zugriff</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Bitte gewähre NextCore Root-Zugriff</string>
     <string name="str_load_a_previously_saved_backup">Gespeicherte Sicherungsdatei laden</string>
     <string name="str_logs_diagnostics">Protokolle und Diagnose</string>
     <string name="str_maintainer">Betreuer</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Kein Ladegerät erkannt. Bitte schließe ein Ladegerät an, bevor du die Diagnose ausführst.</string>
     <string name="str_preview">Vorschau</string>
     <string name="str_restore_configuration">Konfiguration wiederherstellen</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root-Zugriff verweigert. NextCore benötigt Root-Zugriff, um zu funktionieren.</string>
     <string name="str_root_access_granted">Root-Zugriff erhalten, alles bereit!</string>
     <string name="str_run_diagnostics_above_or_check">Führe die obige Diagnose aus oder prüfe, ob der Kernel Bypass-Ladeknoten enthält</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Version %1$s</string>
     <string name="walt_tunes">WALT-Governor-Optimierung</string>
     <string name="walt_tunes_desc">Optimiert WALT-Governor-Parameter, um die CPU-Scheduling-Reaktionsgeschwindigkeit zu verbessern</string>
-    <string name="welcome_azenith">Willkommen bei NextCore</string>
+    <string name="welcome_nextcore">Willkommen bei NextCore</string>
     <string name="yes">Ja</string>
     <string name="str_use_scroll_animation">Scroll-Animation verwenden</string>
     <string name="str_use_scroll_animation_summary">Wisch-Animation zwischen Seiten aktivieren</string>

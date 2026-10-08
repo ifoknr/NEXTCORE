@@ -27,7 +27,7 @@ pub fn init_debugmode() {
 }
 
 pub fn get_debugmode() -> bool {
-    getprop("persist.sys.azenith.debugmode") == "true"
+    getprop("persist.sys.nextcore.debugmode") == "true"
 }
 
 pub fn debugmode() -> bool {
@@ -52,15 +52,15 @@ pub fn resetprop(key: &str, val: &str) {
 
 pub fn log_verbose(message: &str) {
     if debugmode() {
-        let _ = Command::new("sys.azenith-service")
-            .args(["--verboselog", "AZenith_Prefs", "0", message])
+        let _ = Command::new("sys.nextcore-service")
+            .args(["--verboselog", "NextCore_Prefs", "0", message])
             .status();
     }
 }
 
 pub fn log_info(message: &str) {
-    let _ = Command::new("sys.azenith-service")
-        .args(["--log", "AZenith_Prefs", "1", message])
+    let _ = Command::new("sys.nextcore-service")
+        .args(["--log", "NextCore_Prefs", "1", message])
         .status();
 }
 
@@ -69,16 +69,6 @@ pub fn chmod(path: &str, mode: u32) {
         let mut perms = metadata.permissions();
         perms.set_mode(mode);
         let _ = fs::set_permissions(path, perms);
-    }
-}
-
-pub fn chmod_glob(pattern: &str, mode: u32) {
-    if let Ok(paths) = glob::glob(pattern) {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                chmod(p_str, mode);
-            }
-        }
     }
 }
 
@@ -99,12 +89,12 @@ pub fn write_val(value: &str, path_str: &str, lock: bool) -> bool {
 
     if fs::write(path, val_with_newline).is_err() {
         log_verbose(&format!("Cannot write to /{} (permission denied)", pathname));
-        if lock { chmod(path_str, 0o444); }
+        if lock { chmod(path_str, 0o644); }
         return false;
     }
 
     log_verbose(&format!("Set /{} to {}", pathname, value));
-    if lock { chmod(path_str, 0o444); }
+    if lock { chmod(path_str, 0o644); }
     true
 }
 

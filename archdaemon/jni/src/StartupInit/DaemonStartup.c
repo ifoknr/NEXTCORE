@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief Validates crucial system files and module integrity before startup.
@@ -25,7 +25,7 @@ void verify_system_integrity(void) {
         exit(EXIT_FAILURE);
     }
     /* The app may not have created its API dir yet (fresh install / before first launch) */
-    systemv("mkdir -p /data/data/zx.azenith/API");
+    systemv("mkdir -p /data/data/zx.nextcore/API");
     systemv("touch %s", PROFILE_MODE_APP);
     systemv("touch %s", GAME_INFO_APP);
 
@@ -57,8 +57,8 @@ void wait_for_java_companion(DaemonContext* ctx) {
         if (++java_check_retries > MAX_JAVA_RETRIES) {
             log_zenith(LOG_FATAL, "Java companion daemon absent after %d checks, exiting", MAX_JAVA_RETRIES);
             notify("Daemon Error", "Java companion daemon crashed or failed to start.", false, 0);
-            __system_property_set("persist.sys.azenith.service", "");
-            __system_property_set("persist.sys.azenith.state", "stopped");
+            __system_property_set("persist.sys.nextcore.service", "");
+            __system_property_set("persist.sys.nextcore.state", "stopped");
             exit(EXIT_FAILURE);
         }
         if (java_check_retries <= 1) {

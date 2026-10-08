@@ -40,11 +40,11 @@ pub fn setprop(key: &str, val: &str) {
 }
 
 pub fn get_debugmode() -> bool {
-    getprop("persist.sys.azenith.debugmode") == "true"
+    getprop("persist.sys.nextcore.debugmode") == "true"
 }
 
 pub fn get_fstrim_state() -> String {
-    getprop("persist.sys.azenithconf.fstrim")
+    getprop("persist.sys.nextcoreconf.fstrim")
 }
 
 pub fn chmod(path: &str, mode: u32) {
@@ -108,7 +108,7 @@ pub fn setsgov(gov: &str) {
                     } else {
                         applied = true;
                     }
-                    chmod(p_str, 0o444);
+                    chmod(p_str, 0o644);
                 }
             }
             if applied {
@@ -132,7 +132,7 @@ pub fn sets_io(scheduler: &str) {
             } else {
                 applied = true;
             }
-            chmod(&path, 0o444);
+            chmod(&path, 0o644);
         }
     }
     if applied {
@@ -154,7 +154,7 @@ pub fn sets_mali_gov(gov: &str) {
                     } else {
                         applied = true;
                     }
-                    chmod(p_str, 0o444); 
+                    chmod(p_str, 0o644); 
                 }
             }
             if applied {
@@ -169,13 +169,13 @@ pub fn sets_mali_gov(gov: &str) {
 
 pub fn setthermalcore(state: &str) {
     if state == "1" {
-        if systemv("sys.azenith-rianixiathermalcore &") != 0 {
+        if systemv("sys.nextcore-thermalcore &") != 0 {
             log_error("Failed to spawn Thermalcore service");
             return;
         }
         thread::sleep(Duration::from_secs(1));
 
-        if let Some(pid) = execute_command("pgrep -f sys.azenith-rianixiathermalcore") {
+        if let Some(pid) = execute_command("pgrep -f sys.nextcore-thermalcore") {
             if !pid.is_empty() {
                 log_info(&format!("Starting Thermalcore Service with pid {}", pid));
             } else {
@@ -185,7 +185,7 @@ pub fn setthermalcore(state: &str) {
             log_error("Failed to execute pgrep for Thermalcore");
         }
     } else {
-        if systemv("pkill -9 -f sys.azenith-rianixiathermalcore") != 0 {
+        if systemv("pkill -9 -f sys.nextcore-thermalcore") != 0 {
             log_error("Failed to stop Thermalcore service");
         } else {
             log_info("Stopped Thermalcore service");
@@ -232,7 +232,7 @@ pub fn setrefreshrates(rate: &str) {
     let target_fps = rate.parse::<i32>().unwrap_or(60);
 
     let status = systemv(&format!(
-        "am broadcast -a zx.azenith.SET_FPS -n zx.azenith/.RefreshRateReceiver --ei fps {}", 
+        "am broadcast -a zx.nextcore.SET_FPS -n zx.nextcore/.RefreshRateReceiver --ei fps {}", 
         target_fps
     ));
 
@@ -244,16 +244,16 @@ pub fn setrefreshrates(rate: &str) {
 }
 
 pub fn restartservice() {
-    let _ = systemv("pkill -9 -f sys.azenith-rianixiathermalcore");
-    let _ = systemv("pkill -9 -f sys.azenith-service");
-    let _ = systemv("pkill -9 -f sys.azenith-appmonitoring");
+    let _ = systemv("pkill -9 -f sys.nextcore-thermalcore");
+    let _ = systemv("pkill -9 -f sys.nextcore-service");
+    let _ = systemv("pkill -9 -f sys.nextcore-appmonitoring");
     
-    setprop("persist.sys.azenith.state", "stopped");
+    setprop("persist.sys.nextcore.state", "stopped");
     
     if systemv("sh /data/adb/modules/nextcore/service.sh &") != 0 {
         log_error("Failed to restart service script");
     } else {
-        log_info("Restarted AZenith services");
+        log_info("Restarted NextCore services");
     }
 }
 

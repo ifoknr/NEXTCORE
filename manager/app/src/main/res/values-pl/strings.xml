@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">O NextCore</string>
+    <string name="about_nextcore">O NextCore</string>
     <string name="about_source_code">Zobacz kod źródłowy na %1$s&lt;br/&gt;Dołącz do naszego kanału %2$s</string>
     <string name="accent_color">Kolor akcentu</string>
     <string name="all_checks_finished">Wszystkie kontrole zakończone</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Ustawienia aplikacji</string>
     <string name="appearance">Wygląd</string>
     <string name="applist_title">Lista aplikacji</string>
-    <string name="azenith_version">Wersja NextCore</string>
+    <string name="nextcore_version">Wersja NextCore</string>
     <string name="balanced_io_scheduler">Zrównoważony planista I/O</string>
     <string name="balanced_io_scheduler_desc">Planista używany w zrównoważonym profilu</string>
     <string name="balanced_mali_gov">Zrównoważony regulator GPU Mali</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Tryb automatyczny</string>
     <string name="str_available_nodes">Dostępne węzły docelowe (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore jest gotowy!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore jest gotowy!</string>
     <string name="str_backup_configuration">Kopia zapasowa konfiguracji</string>
     <string name="str_backup_content_detected_select">Wykryto zawartość kopii zapasowej. Wybierz elementy do przywrócenia:</string>
     <string name="str_backup_restore">Kopia zapasowa i przywracanie</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Nieprzezroczystość gradientu</string>
     <string name="str_installing_update">Instalacja aktualizacji…</string>
     <string name="str_interface">Interfejs</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Uruchom aplikację</string>
     <string name="str_launch_compatibility_check">Uruchom sprawdzanie zgodności</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Dostosujmy kilka podstawowych ustawień</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Przyznaj uprawnienia root dla NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Przyznaj uprawnienia root dla NextCore</string>
     <string name="str_load_a_previously_saved_backup">Załaduj zapisany plik kopii zapasowej</string>
     <string name="str_logs_diagnostics">Logi i diagnostyka</string>
     <string name="str_maintainer">Opiekun</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Nie wykryto podłączenia ładowarki. Podłącz ładowarkę przed uruchomieniem diagnostyki.</string>
     <string name="str_preview">Podgląd</string>
     <string name="str_restore_configuration">Przywróć konfigurację</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Uprawnienia root odrzucone. NextCore wymaga uprawnień root do działania.</string>
     <string name="str_root_access_granted">Uprawnienia root uzyskane, wszystko gotowe!</string>
     <string name="str_run_diagnostics_above_or_check">Uruchom powyższą diagnostykę lub sprawdź, czy jądro zawiera węzły zasilania bypass</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Wersja %1$s</string>
     <string name="walt_tunes">Dostrojenie regulatora WALT</string>
     <string name="walt_tunes_desc">Optymalizuj parametry regulatora WALT, aby poprawić responsywność planowania CPU</string>
-    <string name="welcome_azenith">Witamy w NextCore</string>
+    <string name="welcome_nextcore">Witamy w NextCore</string>
     <string name="yes">Tak</string>
     <string name="str_use_scroll_animation">Użyj animacji przewijania</string>
     <string name="str_use_scroll_animation_summary">Włącz animację przesuwania między stronami</string>

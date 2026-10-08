@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore সম্পৰ্কে</string>
+    <string name="about_nextcore">NextCore সম্পৰ্কে</string>
     <string name="about_source_code">%1$s  ছ\'ৰ্ছ ক\'ড চাওক&lt;br/&gt;আমাৰ %2$s চেনেলত যোগ দিয়ক</string>
     <string name="accent_color">এক্সেণ্ট ৰং</string>
     <string name="all_checks_finished">সকলো পৰীক্ষা শেষ</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">এপ ছেটিংছ</string>
     <string name="appearance">দেখন</string>
     <string name="applist_title">এপ তালিকা</string>
-    <string name="azenith_version">NextCore সংস্কৰণ</string>
+    <string name="nextcore_version">NextCore সংস্কৰণ</string>
     <string name="balanced_io_scheduler">সুষম I/O শিডিউলাৰ</string>
     <string name="balanced_io_scheduler_desc">সুষম কনফিগাৰেশ্যনত ব্যৱহৃত শিডিউলাৰ</string>
     <string name="balanced_mali_gov">সুষম Mali GPU গৰ্ণৰ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">লেখক</string>
     <string name="str_auto_mode">স্বয়ংক্ৰিয় ম\'ড</string>
     <string name="str_available_nodes">উপলব্ধ লক্ষ্য ন\'ড (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore প্ৰস্তুত!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore প্ৰস্তুত!</string>
     <string name="str_backup_configuration">কনফিগাৰেচন বেকআপ</string>
     <string name="str_backup_content_detected_select">বেকআপ সমল চিহ্নিত কৰা হৈছে, অনুগ্ৰহ কৰি পুনৰুদ্ধাৰ কৰিবলৈ আইটেম নিৰ্বাচন কৰক:</string>
     <string name="str_backup_restore">বেকআপ আৰু পুনৰুদ্ধাৰ</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">গ্ৰেডিয়েণ্ট অপেচিটি</string>
     <string name="str_installing_update">আপডেট ইনষ্টল কৰি আছে…</string>
     <string name="str_interface">ইণ্টাৰফেচ</string>
-    <string name="str_kanaochar">কানাওচাৰ</string>
     <string name="str_launch_app">এপ লঞ্চ কৰক</string>
     <string name="str_launch_compatibility_check">সংগতি পৰীক্ষা লঞ্চ কৰক</string>
     <string name="str_let_s_adjust_a_few_basic_setti">আমি কেইটামান মৌলিক ছেটিংছ সামঞ্জস্য কৰোঁ</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">অনুগ্ৰহ কৰি NextCore ক Root অভিগম প্ৰদান কৰক</string>
-    <string name="str_liliya">লিলিয়া</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">অনুগ্ৰহ কৰি NextCore ক Root অভিগম প্ৰদান কৰক</string>
     <string name="str_load_a_previously_saved_backup">পূৰ্বে সংৰক্ষিত বেকআপ ফাইল ল\'ড কৰক</string>
     <string name="str_logs_diagnostics">লগ আৰু ডায়াগ্ন\'ষ্টিক</string>
     <string name="str_maintainer">ৰক্ষণাৱেক</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">চাৰ্জিং সংযোগ চিনাক্ত কৰা নহয়, অনুগ্ৰহ কৰি চাৰ্জাৰ সংযোগ কৰি ডায়াগ্ন\'ষ্টিক চলাওক</string>
     <string name="str_preview">পূৰ্বদৰ্শন</string>
     <string name="str_restore_configuration">কনফিগাৰেচন পুনৰুদ্ধাৰ কৰক</string>
-    <string name="str_rianixia">ৰিয়ানিচিয়া</string>
+    <string name="str_thermalcore">ৰিয়ানিচিয়া</string>
     <string name="str_root_access_denied">Root অভিগম অস্বীকাৰ কৰা হৈছে, NextCore চলিবলৈ Root অভিগমৰ প্ৰয়োজন</string>
     <string name="str_root_access_granted">Root অভিগম লাভ কৰা হৈছে, সকলো প্ৰস্তুত!</string>
     <string name="str_run_diagnostics_above_or_check">ওপৰৰ ডায়াগ্ন\'ষ্টিক চলাওক, বা কাৰ্ণেলত বাইপাছ চাৰ্জিং ন\'ড আছে নে নাই পৰীক্ষা কৰক</string>
@@ -368,7 +366,7 @@
     <string name="version_format">সংস্কৰণ %1$s</string>
     <string name="walt_tunes">WALT গৰ্ণৰ টিউনিং</string>
     <string name="walt_tunes_desc">WALT গৰ্ণৰ পেৰামিটাৰ অপ্টিমাইজ কৰক, CPU শিডিউলিং প্ৰতিক্ৰিয়া গতি বৃদ্ধি কৰক</string>
-    <string name="welcome_azenith">NextCore লৈ স্বাগতম</string>
+    <string name="welcome_nextcore">NextCore লৈ স্বাগতম</string>
     <string name="yes">হয়</string>
     <string name="str_use_scroll_animation">স্ক্ৰল এনিমেশ্যন ব্যৱহাৰ কৰক</string>
     <string name="str_use_scroll_animation_summary">পৃষ্ঠাসমূহৰ মাজত ছুইপ এনিমেশ্যন সক্ষম কৰক</string>

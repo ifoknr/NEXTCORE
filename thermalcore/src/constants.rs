@@ -1,5 +1,5 @@
-pub const PROP_BIGDATA_PATH: &str = "persist.sys.rianixia.thermalcore-bigdata.path";
-pub const DEFAULT_DATA_PATH: &str = "/data/vendor/rianixia_thermal_data";
+pub const PROP_BIGDATA_PATH: &str = "persist.sys.ncthermal.thermalcore-bigdata.path";
+pub const DEFAULT_DATA_PATH: &str = "/data/vendor/nextcore_thermal_data";
 pub const LEARNING_DATA_FILENAME: &str = "learning.dat";
 
 // ============================================================================
@@ -30,11 +30,11 @@ pub const SAVE_INTERVAL_EVENTS: usize = 50;
 pub const SAVE_INTERVAL_SECS: u64 = 600;
 pub const SMOOTHING_ALPHA: f32 = 0.3;
 
-pub const SYS_PROP_PATH: &str = "persist.sys.rianixia.thermal_path";
-pub const PROP_LEARNING_ENABLED: &str = "persist.sys.rianixia.learning_enabled";
-pub const PROP_THRESHOLD_FLOOR: &str = "persist.sys.rianixia.threshold_floor";
-pub const PROP_AUDIT_LOGS_ENABLED: &str = "persist.sys.rianixia.thermal-auditlogs";
-pub const PROP_GRADIENT_ALERT_THRESHOLD: &str = "persist.sys.rianixia.thermalcore.gradient_alert";
+pub const SYS_PROP_PATH: &str = "persist.sys.ncthermal.thermal_path";
+pub const PROP_LEARNING_ENABLED: &str = "persist.sys.ncthermal.learning_enabled";
+pub const PROP_THRESHOLD_FLOOR: &str = "persist.sys.ncthermal.threshold_floor";
+pub const PROP_AUDIT_LOGS_ENABLED: &str = "persist.sys.ncthermal.thermal-auditlogs";
+pub const PROP_GRADIENT_ALERT_THRESHOLD: &str = "persist.sys.ncthermal.thermalcore.gradient_alert";
 
 pub const COMFORT_MAX: i32 = 380;
 pub const ADAPTIVE_MAX: i32 = 420;

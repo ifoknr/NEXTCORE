@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 
 /**
  * @brief Executes a binary directly without spawning a shell and captures its standard output.

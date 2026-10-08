@@ -51,11 +51,12 @@
 
 ### 📱 التطبيق
 
-- **الرئيسية:** حالة الخدمة والجهاز، ملف الأداء، حرارة المعالج والرسوميات والبطارية.
-- **المراقبة:** تردد كل مجموعة أنوية، الرسوميات، الذاكرة، تيار البطارية برسم حي، الشاشة.
-- **الألعاب:** قائمة الألعاب، والملف اللي يشتغل مع كل لعبة.
-- **التعديلات والإعدادات:** الحاكم وFPSGO وعزل الشحن والأداء الأقصى والمظهر.
-- تخطيط خاص للتابلت، وثيم كحلي هادي، وتقدر تحط صورتك في بنر الرئيسية.
+- واجهة HUD سوداء وبرتقالية، صفحاتها تتحرك بالسحب، بشريط سفلي في الجوال وشريط جانبي في التابلت.
+- **الرئيسية:** حالة الخدمة، عدادات حية، اختيار الوضع، اللعبة الشغالة، رسم آخر 30 دقيقة، وإحصائيات اليوم.
+- **الألعاب:** بحث وفلاتر، وإعدادات خاصة لكل لعبة (الدقة، الإطارات، الرندر، معدل التحديث) مع سجل جلساتها.
+- **المحركات:** صفحة للمعالج، وصفحة للذاكرة، وصفحة للإطارات (المتوسط، أقل 1%، الثبات).
+- **الجلسات:** مدة كل جلسة لعب ومتوسط إطاراتها وحرارتها.
+- **التعديلات والإعدادات:** الحاكم وFPSGO وعزل الشحن والأداء الأقصى والنسخ الاحتياطي والسجلات.
 
 ### 📦 التثبيت
 
@@ -122,12 +123,6 @@ Updates arrive through your root manager. If something goes wrong at boot, creat
 
 ---
 
-## 🤝 Credits
-
-NextCore is maintained by **Turki ([@IFOKNR](https://t.me/IFOKNR1))** and is based on [AZenith](https://github.com/Liliya2727/AZenith) 5.2 by **@Zexshia** and collaborators (@rianixia, @kanaochar), under the Apache License 2.0. See [NOTICE.md](NOTICE.md).
-
-Tweak sources credited by AZenith: @Rem01Gaming, @MiAzami, @KanagawaYamadaVTeacher, @ShiraXblood, @Laynsb, @Koneko_dev. Game preload: @HoyoSlave, @KutuMoba, @Feravolt, @iamlooper. Fonts: Roboto and Noto Kufi Arabic (SIL OFL 1.1).
-
 ## 📢 Support
 
 <p align="left">
@@ -138,4 +133,8 @@ Bug reports: open an [issue](https://github.com/ifoknr/NEXTCORE/issues) and atta
 
 ## ⚖️ License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
+
+---
+
+<sub>Based on [AZenith](https://github.com/Liliya2727/AZenith) by Zexshia, under the Apache License 2.0.</sub>

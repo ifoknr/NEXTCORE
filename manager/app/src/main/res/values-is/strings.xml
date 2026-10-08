@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Um NextCore</string>
+    <string name="about_nextcore">Um NextCore</string>
     <string name="about_source_code">Skoða frumkóða á %1$s&lt;br/&gt;Vertu með í %2$s rásinni okkar</string>
     <string name="accent_color">Áherslulitur</string>
     <string name="all_checks_finished">Öll skoðun lokið</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Forritastillingar</string>
     <string name="appearance">Útlit</string>
     <string name="applist_title">Forritalisti</string>
-    <string name="azenith_version">NextCore útgáfa</string>
+    <string name="nextcore_version">NextCore útgáfa</string>
     <string name="balanced_io_scheduler">Jafnvægisskipuleggjandi I/O</string>
     <string name="balanced_io_scheduler_desc">Skipuleggjandi notaður í jafnvægisstillingu</string>
     <string name="balanced_mali_gov">Jafnvægisstjórnandi Mali GPU</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Höfundur</string>
     <string name="str_auto_mode">Sjálfvirk stilling</string>
     <string name="str_available_nodes">Tiltæk markhnút (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore er tilbúið!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore er tilbúið!</string>
     <string name="str_backup_configuration">Öryggisafrit stillinga</string>
     <string name="str_backup_content_detected_select">Fann innihald öryggisafrits, veldu atriði til að endurheimta:</string>
     <string name="str_backup_restore">Öryggisafrit og endurheimt</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Halla ógagnsæi</string>
     <string name="str_installing_update">Set upp uppfærslu…</string>
     <string name="str_interface">Viðmót</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Ræsa forrit</string>
     <string name="str_launch_compatibility_check">Ræsa samhæfisskoðun</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Við stillum nokkrar grunnstillingar</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Vinsamlegast veittu NextCore root heimild</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Vinsamlegast veittu NextCore root heimild</string>
     <string name="str_load_a_previously_saved_backup">Hlaða vistuðu öryggisafriti</string>
     <string name="str_logs_diagnostics">Annálar og greining</string>
     <string name="str_maintainer">Viðhaldsmaður</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Engin hleðslutenging greind, vinsamlegast tengdu hleðslutæki áður en greining er keyrð</string>
     <string name="str_preview">Forskoðun</string>
     <string name="str_restore_configuration">Endurheimta stillingu</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root heimild hafnað, NextCore þarf root heimild til að keyra</string>
     <string name="str_root_access_granted">Root heimild veitt, allt tilbúið!</string>
     <string name="str_run_diagnostics_above_or_check">Keyra greiningu hér að ofan, eða athuga hvort kjarni inniheldur hliðarhleðsluhnút</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Útgáfa %1$s</string>
     <string name="walt_tunes">WALT stjórnandi fínstilling</string>
     <string name="walt_tunes_desc">Fínstilla WALT stjórnandafæribreytur til að bæta CPU forgangsröðun viðbragðshraða</string>
-    <string name="welcome_azenith">Velkomin/nn til NextCore</string>
+    <string name="welcome_nextcore">Velkomin/nn til NextCore</string>
     <string name="yes">Já</string>
     <string name="str_use_scroll_animation">Nota skrununarmyndhreyfingu</string>
     <string name="str_use_scroll_animation_summary">Virkja strjúkmyndhreyfingu á milli síðna</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">За NextCore</string>
+    <string name="about_nextcore">За NextCore</string>
     <string name="about_source_code">Погледнете го изворниот код на %1$s&lt;br/&gt;Придружете се на нашиот %2$s канал</string>
     <string name="accent_color">Акцентна боја</string>
     <string name="all_checks_finished">Сите проверки завршени</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Поставки за апликација</string>
     <string name="appearance">Изглед</string>
     <string name="applist_title">Список на апликации</string>
-    <string name="azenith_version">NextCore верзија</string>
+    <string name="nextcore_version">NextCore верзија</string>
     <string name="balanced_io_scheduler">Балансиран I/O распоредувач</string>
     <string name="balanced_io_scheduler_desc">Распоредувачот што се користи во балансираниот профил</string>
     <string name="balanced_mali_gov">Балансиран Mali GPU управувач</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматски режим</string>
     <string name="str_available_nodes">Достапни целни јазли (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore е подготвен!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore е подготвен!</string>
     <string name="str_backup_configuration">Резервна копија на поставки</string>
     <string name="str_backup_content_detected_select">Откриена е содржина од резервната копија. Изберете што да се врати:</string>
     <string name="str_backup_restore">Резервна копија и враќање</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Непроѕирност на градиент</string>
     <string name="str_installing_update">Се инсталира ажурирањето…</string>
     <string name="str_interface">Интерфејс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Стартувај апликација</string>
     <string name="str_launch_compatibility_check">Стартувај проверка на компатибилност</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ајде да прилагодиме неколку основни поставки</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Ве молиме доделете Root пристап на NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Ве молиме доделете Root пристап на NextCore</string>
     <string name="str_load_a_previously_saved_backup">Вчитај претходно зачувана резервна датотека</string>
     <string name="str_logs_diagnostics">Дневници и дијагностика</string>
     <string name="str_maintainer">Одржувач</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Не е откриена врска за полнење. Ве молиме вклучете го полначот пред да ја извршите дијагностиката.</string>
     <string name="str_preview">Преглед</string>
     <string name="str_restore_configuration">Врати поставки</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root пристапот е одбиен. NextCore бара Root пристап за да работи.</string>
     <string name="str_root_access_granted">Root пристапот е добиен, сè е подготвено!</string>
     <string name="str_run_diagnostics_above_or_check">Стартувајте ја дијагностиката погоре или проверете дали кернелот содржи бајпас напојувачки јазол</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Верзија %1$s</string>
     <string name="walt_tunes">WALT оптимизација на управувач</string>
     <string name="walt_tunes_desc">Оптимизирајте ги параметрите на WALT управувачот за да ја зголемите брзината на одговор на CPU распоредувањето</string>
-    <string name="welcome_azenith">Добредојдовте во NextCore</string>
+    <string name="welcome_nextcore">Добредојдовте во NextCore</string>
     <string name="yes">Да</string>
     <string name="str_use_scroll_animation">Користи анимација за лизгање</string>
     <string name="str_use_scroll_animation_summary">Овозможи анимација со повлекување помеѓу страниците</string>

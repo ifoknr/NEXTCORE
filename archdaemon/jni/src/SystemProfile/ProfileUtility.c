@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <time.h>
 
 // Function pointers initialized to default handlers
@@ -56,8 +56,9 @@ void run_profiler(const int profile) {
 
     snprintf(time_str, sizeof(time_str), "%02d:%02d:%02d", tm.tm_hour, tm.tm_min, tm.tm_sec);
 
-    if (profile == 1) {
-        // Assuming game_pids and gamestart are still managed globally or passed correctly
+    // Performance picked by hand has no game behind it; gamestart is NULL then,
+    // and printing it would write "(null)" as the package name.
+    if (profile == 1 && gamestart && gamestart[0] != '\0') {
         pid_t main_pid = (game_pid_count > 0) ? game_pids[0] : 0;
         write2file(GAME_INFO, false, false, "%s %d %d\nTime: %s\n", gamestart, main_pid, uidof(main_pid), time_str);
         write2file(GAME_INFO_APP, false, false, "%s %d %d\nTime: %s\n", gamestart, main_pid, uidof(main_pid), time_str);
@@ -70,7 +71,7 @@ void run_profiler(const int profile) {
     write2file(PROFILE_MODE_APP, false, false, "%d\n", profile);
 
     // Suggestion for future: Replace systemv with native property setting for performance
-    (void)systemv("sys.azenith-profilesettings %d", profile);
+    (void)systemv("sys.nextcore-profilesettings %d", profile);
 }
 
 /**

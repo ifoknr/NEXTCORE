@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore-ի մասին</string>
+    <string name="about_nextcore">NextCore-ի մասին</string>
     <string name="about_source_code">Դիտել աղբյուրի կոդը %1$s&lt;br/&gt;Միանալ մեր %2$s ալիքին</string>
     <string name="accent_color">Աքսենտ գույն</string>
     <string name="all_checks_finished">Բոլոր ստուգումներն ավարտված են</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Հավելվածի կարգավորումներ</string>
     <string name="appearance">Արտաքին տեսք</string>
     <string name="applist_title">Հավելվածների ցանկ</string>
-    <string name="azenith_version">NextCore տարբերակ</string>
+    <string name="nextcore_version">NextCore տարբերակ</string>
     <string name="balanced_io_scheduler">Հավասարակշռված I/O պլանավորիչ</string>
     <string name="balanced_io_scheduler_desc">Հավասարակշռված պրոֆիլում օգտագործվող պլանավորիչ</string>
     <string name="balanced_mali_gov">Հավասարակշռված Mali GPU կարգավորիչ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Հեղինակ</string>
     <string name="str_auto_mode">Ավտոմատ ռեժիմ</string>
     <string name="str_available_nodes">Հասանելի թիրախային հանգույցներ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore-ը պատրաստ է աշխատելու:</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore-ը պատրաստ է աշխատելու:</string>
     <string name="str_backup_configuration">Պահուստավորել կոնֆիգուրացիան</string>
     <string name="str_backup_content_detected_select">Հայտնաբերվել է պահուստային բովանդակություն, խնդրում ենք ընտրել վերականգնվող տարրերը:</string>
     <string name="str_backup_restore">Պահուստավորում և վերականգնում</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Գրադիենտի անթափանցիկություն</string>
     <string name="str_installing_update">Տեղադրվում է թարմացումը…</string>
     <string name="str_interface">Ինտերֆեյս</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Բացել հավելվածը</string>
     <string name="str_launch_compatibility_check">Գործարկել համատեղելիության ստուգումը</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Եկեք կարգավորենք մի քանի հիմնական կարգավորումներ</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Խնդրում ենք տրամադրել NextCore-ին Root մուտք</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Խնդրում ենք տրամադրել NextCore-ին Root մուտք</string>
     <string name="str_load_a_previously_saved_backup">Բեռնել նախկինում պահպանված պահուստային ֆայլը</string>
     <string name="str_logs_diagnostics">Լոգեր և ախտորոշում</string>
     <string name="str_maintainer">Պահպանող</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Լիցքավորիչի միացում չի հայտնաբերվել, խնդրում ենք միացնել լիցքավորիչը և նորից գործարկել ախտորոշումը</string>
     <string name="str_preview">Նախադիտում</string>
     <string name="str_restore_configuration">Վերականգնել կոնֆիգուրացիան</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root մուտքը մերժվել է, NextCore-ին անհրաժեշտ է Root մուտք աշխատելու համար</string>
     <string name="str_root_access_granted">Root մուտքը ստացված է, ամեն ինչ պատրաստ է:</string>
     <string name="str_run_diagnostics_above_or_check">Գործարկել վերը նշված ախտորոշումը կամ ստուգել, արդյոք միջուկը պարունակում է շրջանցող սնուցման հանգույցներ</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Տարբերակ %1$s</string>
     <string name="walt_tunes">WALT կարգավորիչի կարգաբերում</string>
     <string name="walt_tunes_desc">Օպտիմալացնել WALT կարգավորիչի պարամետրերը՝ բարձրացնելով CPU-ի պլանավորման արձագանքման արագությունը</string>
-    <string name="welcome_azenith">Բարի գալուստ NextCore</string>
+    <string name="welcome_nextcore">Բարի գալուստ NextCore</string>
     <string name="yes">Այո</string>
     <string name="str_use_scroll_animation">Օգտագործել ոլորման անիմացիա</string>
     <string name="str_use_scroll_animation_summary">Միացնել էջերի միջև սահեցման անիմացիան</string>

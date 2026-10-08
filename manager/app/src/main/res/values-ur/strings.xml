@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore کے بارے میں</string>
+    <string name="about_nextcore">NextCore کے بارے میں</string>
     <string name="about_source_code">%1$s پر سورس کوڈ دیکھیں&lt;br/&gt;ہمارے %2$s چینل میں شامل ہوں</string>
     <string name="accent_color">اکسینٹ رنگ</string>
     <string name="all_checks_finished">تمام چیک مکمل</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ایپ کی ترتیبات</string>
     <string name="appearance">ظاہری شکل</string>
     <string name="applist_title">ایپ کی فہرست</string>
-    <string name="azenith_version">NextCore ورژن</string>
+    <string name="nextcore_version">NextCore ورژن</string>
     <string name="balanced_io_scheduler">متوازن I/O شیڈولر</string>
     <string name="balanced_io_scheduler_desc">متوازن کنفیگریشن پروفائل میں استعمال ہونے والا شیڈولر</string>
     <string name="balanced_mali_gov">متوازن Mali GPU گورنر</string>
@@ -253,7 +253,7 @@
     <string name="str_author">مصنف</string>
     <string name="str_auto_mode">آٹو موڈ</string>
     <string name="str_available_nodes">دستیاب ہدف نوڈس (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore تیار ہے!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore تیار ہے!</string>
     <string name="str_backup_configuration">کنفیگریشن بیک اپ</string>
     <string name="str_backup_content_detected_select">بیک اپ مواد پایا گیا، براہ کرم بحال کرنے کے لیے آئٹمز منتخب کریں:</string>
     <string name="str_backup_restore">بیک اپ اور بحالی</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">گریڈینٹ اوپیسٹی</string>
     <string name="str_installing_update">اپ ڈیٹ انسٹال ہو رہا ہے...</string>
     <string name="str_interface">انٹرفیس</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">ایپ شروع کریں</string>
     <string name="str_launch_compatibility_check">مطابقت چیک شروع کریں</string>
     <string name="str_let_s_adjust_a_few_basic_setti">آئیے کچھ بنیادی ترتیبات ایڈجسٹ کرتے ہیں</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">براہ کرم NextCore کو روٹ رسائی دیں</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">براہ کرم NextCore کو روٹ رسائی دیں</string>
     <string name="str_load_a_previously_saved_backup">پہلے سے محفوظ کردہ بیک اپ فائل لوڈ کریں</string>
     <string name="str_logs_diagnostics">لاگز اور تشخیص</string>
     <string name="str_maintainer">مینٹینر</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">چارجنگ کنکشن کا پتہ نہیں چلا، براہ کرم تشخیص چلانے سے پہلے چارجر لگائیں</string>
     <string name="str_preview">پیش نظارہ</string>
     <string name="str_restore_configuration">کنفیگریشن بحال کریں</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">روٹ رسائی مسترد کر دی گئی، NextCore کو روٹ رسائی کی ضرورت ہے</string>
     <string name="str_root_access_granted">روٹ رسائی مل گئی، سب تیار ہے!</string>
     <string name="str_run_diagnostics_above_or_check">اوپر والی تشخیص چلائیں، یا چیک کریں کہ کرنل میں بائی پاس چارجنگ نوڈ شامل ہے یا نہیں</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ورژن %1$s</string>
     <string name="walt_tunes">WALT گورنر ٹیوننگ</string>
     <string name="walt_tunes_desc">WALT گورنر پیرامیٹرز کو بہتر بنائیں، CPU شیڈولنگ رسپانس اسپیڈ بڑھائیں</string>
-    <string name="welcome_azenith">NextCore میں خوش آمدید</string>
+    <string name="welcome_nextcore">NextCore میں خوش آمدید</string>
     <string name="yes">ہاں</string>
     <string name="str_use_scroll_animation">اسکرول اینیمیشن استعمال کریں</string>
     <string name="str_use_scroll_animation_summary">صفحات کے درمیان سوائپ اینیمیشن فعال کریں</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Σχετικά με το NextCore</string>
+    <string name="about_nextcore">Σχετικά με το NextCore</string>
     <string name="about_source_code">Δείτε τον πηγαίο κώδικα στο %1$s&lt;br/&gt;Εγγραφείτε στο κανάλι μας %2$s</string>
     <string name="accent_color">Χρώμα έμφασης</string>
     <string name="all_checks_finished">Όλοι οι έλεγχοι ολοκληρώθηκαν</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Ρυθμίσεις εφαρμογής</string>
     <string name="appearance">Εμφάνιση</string>
     <string name="applist_title">Λίστα εφαρμογών</string>
-    <string name="azenith_version">Έκδοση NextCore</string>
+    <string name="nextcore_version">Έκδοση NextCore</string>
     <string name="balanced_io_scheduler">Ισορροπημένος χρονοπρογραμματιστής I/O</string>
     <string name="balanced_io_scheduler_desc">Χρονοπρογραμματιστής που χρησιμοποιείται στο ισορροπημένο προφίλ</string>
     <string name="balanced_mali_gov">Ισορροπημένος ρυθμιστής Mali GPU</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Συγγραφέας</string>
     <string name="str_auto_mode">Αυτόματη λειτουργία</string>
     <string name="str_available_nodes">Διαθέσιμοι κόμβοι στόχοι (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">Το NextCore είναι έτοιμο!</string>
+    <string name="str_nextcore_is_now_ready_to_go">Το NextCore είναι έτοιμο!</string>
     <string name="str_backup_configuration">Δημιουργία αντιγράφου ασφαλείας διαμόρφωσης</string>
     <string name="str_backup_content_detected_select">Ανιχνεύθηκε περιεχόμενο αντιγράφου ασφαλείας. Επιλέξτε στοιχεία προς επαναφορά:</string>
     <string name="str_backup_restore">Αντίγραφο ασφαλείας και επαναφορά</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Αδιαφάνεια κλίσης</string>
     <string name="str_installing_update">Εγκατάσταση ενημέρωσης…</string>
     <string name="str_interface">Διεπαφή</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Εκκίνηση εφαρμογής</string>
     <string name="str_launch_compatibility_check">Εκκίνηση ελέγχου συμβατότητας</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ας ρυθμίσουμε μερικές βασικές παραμέτρους</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Παρακαλώ χορηγήστε πρόσβαση Root στο NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Παρακαλώ χορηγήστε πρόσβαση Root στο NextCore</string>
     <string name="str_load_a_previously_saved_backup">Φόρτωση αποθηκευμένου αντιγράφου ασφαλείας</string>
     <string name="str_logs_diagnostics">Καταγραφή και διαγνωστικά</string>
     <string name="str_maintainer">Συντηρητής</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Δεν ανιχνεύθηκε σύνδεση φόρτισης. Συνδέστε τον φορτιστή πριν εκτελέσετε τη διάγνωση.</string>
     <string name="str_preview">Προεπισκόπηση</string>
     <string name="str_restore_configuration">Επαναφορά διαμόρφωσης</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Η πρόσβαση Root απορρίφθηκε. Το NextCore χρειάζεται πρόσβαση Root για να λειτουργήσει.</string>
     <string name="str_root_access_granted">Πρόσβαση Root αποκτήθηκε, όλα έτοιμα!</string>
     <string name="str_run_diagnostics_above_or_check">Εκτελέστε τη διάγνωση παραπάνω ή ελέγξτε αν ο πυρήνας περιλαμβάνει κόμβους παράκαμψης φόρτισης</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Έκδοση %1$s</string>
     <string name="walt_tunes">Βελτιστοποίηση ρυθμιστή WALT</string>
     <string name="walt_tunes_desc">Βελτιστοποίηση παραμέτρων ρυθμιστή WALT για βελτίωση απόκρισης χρονοπρογραμματισμού CPU</string>
-    <string name="welcome_azenith">Καλώς ορίσατε στο NextCore</string>
+    <string name="welcome_nextcore">Καλώς ορίσατε στο NextCore</string>
     <string name="yes">Ναι</string>
     <string name="str_use_scroll_animation">Χρήση κινούμενης εικόνας κύλισης</string>
     <string name="str_use_scroll_animation_summary">Ενεργοποίηση κίνησης σάρωσης μεταξύ σελίδων</string>

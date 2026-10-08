@@ -26,8 +26,8 @@ need_integrity=(
 	"mainfiles/module.prop"
     "mainfiles/module.banner.jpg"
 	"mainfiles/webui"
-	"mainfiles/azenithApplist.json"
-    "mainfiles/AZenith.apk"
+	"mainfiles/nextcoreApplist.json"
+    "mainfiles/NextCore.apk"
 )
 
 # Version info
@@ -56,20 +56,20 @@ mkdir -p mainfiles/system/bin
 [ -d "preloadbin/libs" ] && cp -r preloadbin/libs/* mainfiles/libs/ 2>/dev/null
 
 # Ambil binari Rust berdasarkan RUST_PROFILE (debug / release)
-cp thermalcore/target/aarch64-linux-android/$RUST_PROFILE/rianixia-thermalcore mainfiles/libs/arm64-v8a/sys.azenith-rianixiathermalcore 2>/dev/null || true
-cp binprofiles/target/aarch64-linux-android/$RUST_PROFILE/azenith-profilesettings mainfiles/libs/arm64-v8a/sys.azenith-profilesettings 2>/dev/null || true
-cp binutils/target/aarch64-linux-android/$RUST_PROFILE/azenith-utilityconf mainfiles/libs/arm64-v8a/sys.azenith-utilityconf 2>/dev/null || true
-cp binpreferenced/target/aarch64-linux-android/$RUST_PROFILE/azenith-preferencedtweaks mainfiles/libs/arm64-v8a/sys.azenith-preferencedtweaks 2>/dev/null || true
+cp thermalcore/target/aarch64-linux-android/$RUST_PROFILE/nextcore-thermalcore mainfiles/libs/arm64-v8a/sys.nextcore-thermalcore 2>/dev/null || true
+cp binprofiles/target/aarch64-linux-android/$RUST_PROFILE/nextcore-profilesettings mainfiles/libs/arm64-v8a/sys.nextcore-profilesettings 2>/dev/null || true
+cp binutils/target/aarch64-linux-android/$RUST_PROFILE/nextcore-utilityconf mainfiles/libs/arm64-v8a/sys.nextcore-utilityconf 2>/dev/null || true
+cp binpreferenced/target/aarch64-linux-android/$RUST_PROFILE/nextcore-preferencedtweaks mainfiles/libs/arm64-v8a/sys.nextcore-preferencedtweaks 2>/dev/null || true
 
-cp thermalcore/target/armv7-linux-androideabi/$RUST_PROFILE/rianixia-thermalcore mainfiles/libs/armeabi-v7a/sys.azenith-rianixiathermalcore 2>/dev/null || true
-cp binprofiles/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-profilesettings mainfiles/libs/armeabi-v7a/sys.azenith-profilesettings 2>/dev/null || true
-cp binutils/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-utilityconf mainfiles/libs/armeabi-v7a/sys.azenith-utilityconf 2>/dev/null || true
-cp binpreferenced/target/armv7-linux-androideabi/$RUST_PROFILE/azenith-preferencedtweaks mainfiles/libs/armeabi-v7a/sys.azenith-preferencedtweaks 2>/dev/null || true
+cp thermalcore/target/armv7-linux-androideabi/$RUST_PROFILE/nextcore-thermalcore mainfiles/libs/armeabi-v7a/sys.nextcore-thermalcore 2>/dev/null || true
+cp binprofiles/target/armv7-linux-androideabi/$RUST_PROFILE/nextcore-profilesettings mainfiles/libs/armeabi-v7a/sys.nextcore-profilesettings 2>/dev/null || true
+cp binutils/target/armv7-linux-androideabi/$RUST_PROFILE/nextcore-utilityconf mainfiles/libs/armeabi-v7a/sys.nextcore-utilityconf 2>/dev/null || true
+cp binpreferenced/target/armv7-linux-androideabi/$RUST_PROFILE/nextcore-preferencedtweaks mainfiles/libs/armeabi-v7a/sys.nextcore-preferencedtweaks 2>/dev/null || true
 
 # Fail the build if any required binary is missing (avoids shipping a broken zip)
 for abi in arm64-v8a armeabi-v7a; do
-	for bin in sys.azenith-service sys.azenith-preloadbin sys.azenith-rianixiathermalcore \
-		sys.azenith-profilesettings sys.azenith-utilityconf sys.azenith-preferencedtweaks; do
+	for bin in sys.nextcore-service sys.nextcore-preloadbin sys.nextcore-thermalcore \
+		sys.nextcore-profilesettings sys.nextcore-utilityconf sys.nextcore-preferencedtweaks; do
 		if [ ! -f "mainfiles/libs/$abi/$bin" ]; then
 			echo "ERROR: missing binary mainfiles/libs/$abi/$bin" >&2
 			exit 1
@@ -78,7 +78,7 @@ for abi in arm64-v8a armeabi-v7a; do
 done
 
 # Other Files
-cp azenithApplist.json mainfiles/
+cp nextcoreApplist.json mainfiles/
 cp LICENSE mainfiles/ 2>/dev/null
 cp NOTICE.md mainfiles/ 2>/dev/null
 
@@ -86,10 +86,10 @@ cp NOTICE.md mainfiles/ 2>/dev/null
 APK_PATH=$(find manager/app/build/outputs/apk/release -name "*.apk" | head -n 1)
 APK_PATH_DEBUG=$(find manager/app/build/outputs/apk/debug -name "*.apk" | head -n 1)
 if [ -n "$APK_PATH" ]; then
-    cp "$APK_PATH" "mainfiles/AZenith.apk"
+    cp "$APK_PATH" "mainfiles/NextCore.apk"
     echo "APK found at $APK_PATH and copied to mainfiles successfully."
 elif [ -n "$APK_PATH_DEBUG" ]; then
-    cp "$APK_PATH_DEBUG" "mainfiles/AZenith.apk"
+    cp "$APK_PATH_DEBUG" "mainfiles/NextCore.apk"
     echo "APK found at $APK_PATH_DEBUG and copied to mainfiles successfully."
 else
     echo "ERROR: No APK found!"

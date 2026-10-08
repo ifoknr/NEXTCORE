@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 
 /**
  * @brief Reads the currently visible (foreground) app from the cached state.

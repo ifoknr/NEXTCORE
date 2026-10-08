@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Apie NextCore</string>
+    <string name="about_nextcore">Apie NextCore</string>
     <string name="about_source_code">Peržiūrėti šaltinio kodą %1$s&lt;br/&gt;Prisijunkite prie mūsų %2$s kanalo</string>
     <string name="accent_color">Akcentinė spalva</string>
     <string name="all_checks_finished">Visi patikrinimai baigti</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Programos nustatymai</string>
     <string name="appearance">Išvaizda</string>
     <string name="applist_title">Programų sąrašas</string>
-    <string name="azenith_version">NextCore versija</string>
+    <string name="nextcore_version">NextCore versija</string>
     <string name="balanced_io_scheduler">Subalansuotas I/O planuoklis</string>
     <string name="balanced_io_scheduler_desc">Planuoklis, naudojamas subalansuotame profilyje</string>
     <string name="balanced_mali_gov">Subalansuotas Mali GPU valdiklis</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autorius</string>
     <string name="str_auto_mode">Automatinis režimas</string>
     <string name="str_available_nodes">Prieinami mazgai (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore paruoštas!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore paruoštas!</string>
     <string name="str_backup_configuration">Atsarginė konfigūracijos kopija</string>
     <string name="str_backup_content_detected_select">Aptiktas atsarginės kopijos turinys, pasirinkite, ką atkurti:</string>
     <string name="str_backup_restore">Atsarginė kopija ir atkūrimas</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradiento neskaidrumas</string>
     <string name="str_installing_update">Diegiamas naujinimas…</string>
     <string name="str_interface">Sąsaja</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Paleisti programą</string>
     <string name="str_launch_compatibility_check">Pradėti suderinamumo patikrinimą</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Pakoreguokime keletą pagrindinių nustatymų</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Suteikite NextCore Root teises</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Suteikite NextCore Root teises</string>
     <string name="str_load_a_previously_saved_backup">Įkelti išsaugotą atsarginės kopijos failą</string>
     <string name="str_logs_diagnostics">Žurnalai ir diagnostika</string>
     <string name="str_maintainer">Prižiūrėtojas</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Neaptikta įkrovimo jungtis, prieš paleisdami diagnostiką prijunkite įkroviklį</string>
     <string name="str_preview">Peržiūra</string>
     <string name="str_restore_configuration">Atkurti konfigūraciją</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root teisės atmestos, NextCore reikalingos Root teisės veikimui</string>
     <string name="str_root_access_granted">Root teisės gautos, viskas paruošta!</string>
     <string name="str_run_diagnostics_above_or_check">Paleiskite aukščiau esančią diagnostiką arba patikrinkite, ar branduolyje yra aplenkiamojo maitinimo mazgas</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versija %1$s</string>
     <string name="walt_tunes">WALT valdiklio koregavimas</string>
     <string name="walt_tunes_desc">Optimizuoti WALT valdiklio parametrus, pagerinti CPU planavimo reagavimo greitį</string>
-    <string name="welcome_azenith">Sveiki atvykę į NextCore</string>
+    <string name="welcome_nextcore">Sveiki atvykę į NextCore</string>
     <string name="yes">Taip</string>
     <string name="str_use_scroll_animation">Naudoti slinkties animaciją</string>
     <string name="str_use_scroll_animation_summary">Įjungti perbraukimo animaciją tarp puslapių</string>

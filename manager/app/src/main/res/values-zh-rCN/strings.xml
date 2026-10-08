@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">关于 NextCore</string>
+    <string name="about_nextcore">关于 NextCore</string>
     <string name="about_source_code">在 %1$s 查看源代码&lt;br/&gt;加入我们的 %2$s 频道</string>
     <string name="accent_color">主题色</string>
     <string name="all_checks_finished">全部检查完毕</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">应用设置</string>
     <string name="appearance">外观</string>
     <string name="applist_title">应用列表</string>
-    <string name="azenith_version">NextCore 版本</string>
+    <string name="nextcore_version">NextCore 版本</string>
     <string name="balanced_io_scheduler">均衡 I/O 调度器</string>
     <string name="balanced_io_scheduler_desc">均衡配置方案使用的调度器</string>
     <string name="balanced_mali_gov">均衡 Mali GPU 调速器</string>
@@ -253,7 +253,7 @@
     <string name="str_author">作者</string>
     <string name="str_auto_mode">自动模式</string>
     <string name="str_available_nodes">可用目标节点 (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore 已准备就绪!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore 已准备就绪!</string>
     <string name="str_backup_configuration">备份配置</string>
     <string name="str_backup_content_detected_select">检测到备份内容，请选择要恢复的项目：</string>
     <string name="str_backup_restore">备份与恢复</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">渐变不透明度</string>
     <string name="str_installing_update">正在安装更新…</string>
     <string name="str_interface">界面</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">启动应用</string>
     <string name="str_launch_compatibility_check">启动兼容性检查</string>
     <string name="str_let_s_adjust_a_few_basic_setti">我们调整几项基础设置</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">请授予 NextCore Root 权限</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">请授予 NextCore Root 权限</string>
     <string name="str_load_a_previously_saved_backup">加载已保存的备份文件</string>
     <string name="str_logs_diagnostics">日志与诊断</string>
     <string name="str_maintainer">维护者</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">未检测到充电连接，请插入充电器后再运行诊断</string>
     <string name="str_preview">预览</string>
     <string name="str_restore_configuration">恢复配置</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root 权限被拒绝，NextCore 需要 Root 权限方可运行</string>
     <string name="str_root_access_granted">Root 权限获取，一切就绪！</string>
     <string name="str_run_diagnostics_above_or_check">运行上方诊断，或检查内核是否包含旁路供电节点</string>
@@ -368,7 +366,7 @@
     <string name="version_format">版本 %1$s</string>
     <string name="walt_tunes">WALT 调速器调优</string>
     <string name="walt_tunes_desc">优化 WALT 调速器参数，提升 CPU 调度响应速度</string>
-    <string name="welcome_azenith">欢迎来到 NextCore</string>
+    <string name="welcome_nextcore">欢迎来到 NextCore</string>
     <string name="yes">是</string>
     <string name="str_use_scroll_animation">使用滑动动画</string>
     <string name="str_use_scroll_animation_summary">启用页面间的滑动切换动画</string>

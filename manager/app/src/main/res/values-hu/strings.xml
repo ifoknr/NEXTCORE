@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Az NextCore névjegye</string>
+    <string name="about_nextcore">Az NextCore névjegye</string>
     <string name="about_source_code">Tekintse meg a forráskódot a %1$s webhelyen&lt;br/&gt;Csatlakozzon a %2$s csatornánkhoz</string>
     <string name="accent_color">Kiemelő szín</string>
     <string name="all_checks_finished">Minden ellenőrzés befejeződött</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Alkalmazásbeállítások</string>
     <string name="appearance">Megjelenés</string>
     <string name="applist_title">Alkalmazáslista</string>
-    <string name="azenith_version">NextCore verzió</string>
+    <string name="nextcore_version">NextCore verzió</string>
     <string name="balanced_io_scheduler">Kiegyensúlyozott I/O ütemező</string>
     <string name="balanced_io_scheduler_desc">A kiegyensúlyozott profil által használt ütemező</string>
     <string name="balanced_mali_gov">Kiegyensúlyozott Mali GPU szabályzó</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Szerző</string>
     <string name="str_auto_mode">Automatikus mód</string>
     <string name="str_available_nodes">Elérhető célcsomópontok (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore készen áll!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore készen áll!</string>
     <string name="str_backup_configuration">Konfiguráció biztonsági mentése</string>
     <string name="str_backup_content_detected_select">Biztonsági mentés tartalma észlelve, válassza ki a visszaállítandó elemeket:</string>
     <string name="str_backup_restore">Biztonsági mentés és visszaállítás</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradiens átlátszatlansága</string>
     <string name="str_installing_update">Frissítés telepítése…</string>
     <string name="str_interface">Felület</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Alkalmazás indítása</string>
     <string name="str_launch_compatibility_check">Kompatibilitási ellenőrzés indítása</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Állítsunk be néhány alapvető beállítást</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Adjon root hozzáférést az NextCore számára</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Adjon root hozzáférést az NextCore számára</string>
     <string name="str_load_a_previously_saved_backup">Korábban elmentett biztonsági mentés betöltése</string>
     <string name="str_logs_diagnostics">Naplók és diagnosztika</string>
     <string name="str_maintainer">Karbantartó</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Nincs töltő csatlakoztatva. Kérjük, csatlakoztasson egy töltőt a diagnosztika futtatása előtt.</string>
     <string name="str_preview">Előnézet</string>
     <string name="str_restore_configuration">Konfiguráció visszaállítása</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root hozzáférés megtagadva. Az NextCore-nek root hozzáférésre van szüksége a működéshez.</string>
     <string name="str_root_access_granted">Root hozzáférés biztosított, minden készen áll!</string>
     <string name="str_run_diagnostics_above_or_check">Futtassa a fenti diagnosztikát, vagy ellenőrizze, hogy a kernel tartalmaz-e bypass töltési csomópontot</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Verzió %1$s</string>
     <string name="walt_tunes">WALT szabályzó hangolás</string>
     <string name="walt_tunes_desc">WALT szabályzó paramétereinek optimalizálása a CPU ütemezési válaszidő javítása érdekében</string>
-    <string name="welcome_azenith">Üdvözli az NextCore</string>
+    <string name="welcome_nextcore">Üdvözli az NextCore</string>
     <string name="yes">Igen</string>
     <string name="str_use_scroll_animation">Görgetési animáció használata</string>
     <string name="str_use_scroll_animation_summary">Oldalak közötti legyintési animáció engedélyezése</string>

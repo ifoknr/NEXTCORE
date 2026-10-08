@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <sys/system_properties.h>
 #include <time.h>
 
@@ -84,5 +84,5 @@ void apply_dynamic_refresh_rate(int target_rr) {
     }
 
     log_zenith(LOG_INFO, "RefreshRateHandler: Set refresh rates to %dHz", final_rr);
-    systemv("sys.azenith-utilityconf setrefreshrates %d", final_rr);
+    systemv("sys.nextcore-utilityconf setrefreshrates %d", final_rr);
 }

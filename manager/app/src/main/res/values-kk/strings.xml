@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore туралы</string>
+    <string name="about_nextcore">NextCore туралы</string>
     <string name="about_source_code">%1$s бастапқы кодты қарау&lt;br/&gt;%2$s арнамызға қосылыңыз</string>
     <string name="accent_color">Негізгі түс</string>
     <string name="all_checks_finished">Барлық тексерулер аяқталды</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Қолданба параметрлері</string>
     <string name="appearance">Сыртқы түрі</string>
     <string name="applist_title">Қолданбалар тізімі</string>
-    <string name="azenith_version">NextCore нұсқасы</string>
+    <string name="nextcore_version">NextCore нұсқасы</string>
     <string name="balanced_io_scheduler">Теңдестірілген I/O жоспарлаушысы</string>
     <string name="balanced_io_scheduler_desc">Теңдестірілген конфигурация схемасында қолданылатын жоспарлаушы</string>
     <string name="balanced_mali_gov">Теңдестірілген Mali GPU реттегіші</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматты режим</string>
     <string name="str_available_nodes">Қолжетімді мақсатты түйіндер (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore дайын!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore дайын!</string>
     <string name="str_backup_configuration">Конфигурацияны сақтық көшірмеге алу</string>
     <string name="str_backup_content_detected_select">Сақтық көшірме мазмұны анықталды, қалпына келтіретін элементтерді таңдаңыз:</string>
     <string name="str_backup_restore">Сақтық көшірме және қалпына келтіру</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Градиент мөлдірлігі</string>
     <string name="str_installing_update">Жаңарту орнатылуда…</string>
     <string name="str_interface">Интерфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Қолданбаны іске қосу</string>
     <string name="str_launch_compatibility_check">Үйлесімділікті тексеруді іске қосу</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Бірнеше негізгі параметрлерді реттейміз</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCore-ке Root рұқсатын беріңіз</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCore-ке Root рұқсатын беріңіз</string>
     <string name="str_load_a_previously_saved_backup">Сақталған сақтық көшірме файлын жүктеу</string>
     <string name="str_logs_diagnostics">Журналдар мен диагностика</string>
     <string name="str_maintainer">Қамқоршы</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Зарядтау қосылымы анықталмады, диагностиканы орындау үшін зарядтағышты қосыңыз</string>
     <string name="str_preview">Алдын ала қарау</string>
     <string name="str_restore_configuration">Конфигурацияны қалпына келтіру</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root рұқсаты қабылданбады, NextCore жұмыс істеу үшін Root рұқсаты қажет</string>
     <string name="str_root_access_granted">Root рұқсаты алынды, бәрі дайын!</string>
     <string name="str_run_diagnostics_above_or_check">Жоғарыдағы диагностиканы орындаңыз немесе ядрода айналма қуаттандыру түйінінің бар-жоғын тексеріңіз</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Нұсқа %1$s</string>
     <string name="walt_tunes">WALT реттегішін оңтайландыру</string>
     <string name="walt_tunes_desc">WALT реттегішінің параметрлерін оңтайландырып, CPU жоспарлау жауап беру жылдамдығын арттыру</string>
-    <string name="welcome_azenith">NextCore-ке қош келдіңіз</string>
+    <string name="welcome_nextcore">NextCore-ке қош келдіңіз</string>
     <string name="yes">Иә</string>
     <string name="str_use_scroll_animation">Айналдыру анимациясын пайдалану</string>
     <string name="str_use_scroll_animation_summary">Беттер арасында сырғыту анимациясын қосу</string>

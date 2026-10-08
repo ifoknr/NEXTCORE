@@ -23,7 +23,7 @@ on:
       - "binprofiles/**"
       - "binutils/**"
       - "binpreferenced/**"
-      - "azenithApplist.json"
+      - "nextcoreApplist.json"
       - "version"
       - "version_type"
 
@@ -89,7 +89,7 @@ jobs:
       - name: Install cargo-ndk
         run: cargo install cargo-ndk
 
-      - name: Build AZenith Thermalcore
+      - name: Build NextCore Thermalcore
         working-directory: ./thermalcore
         run: |
           if [ "$V_TYPE" == "experimental" ]; then
@@ -98,7 +98,7 @@ jobs:
             cargo ndk -t arm64-v8a -t armeabi-v7a build --release
           fi
 
-      - name: Compile AZenith Profilesettings
+      - name: Compile NextCore Profilesettings
         working-directory: ./binprofiles
         run: |
           if [ "$V_TYPE" == "experimental" ]; then
@@ -107,7 +107,7 @@ jobs:
             cargo ndk -t arm64-v8a -t armeabi-v7a build --release
           fi
 
-      - name: Compile AZenith Utility
+      - name: Compile NextCore Utility
         working-directory: ./binutils
         run: |
           if [ "$V_TYPE" == "experimental" ]; then
@@ -116,7 +116,7 @@ jobs:
             cargo ndk -t arm64-v8a -t armeabi-v7a build --release
           fi
           
-      - name: Compile AZenith Preferenced
+      - name: Compile NextCore Preferenced
         working-directory: ./binpreferenced
         run: |
           if [ "$V_TYPE" == "experimental" ]; then

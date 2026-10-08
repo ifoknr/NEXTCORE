@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 /**
  * @brief Processes PID adjustments when background_apps event is triggered.
@@ -28,7 +28,7 @@ static void handle_background_apps_event(DaemonContext* ctx) {
 
     if (new_count == 0 && game_pid_count > 0) {
         struct stat st;
-        if (stat("/data/adb/.config/AZenith/background_apps", &st) == 0 && st.st_size == 0) {
+        if (stat("/data/adb/.config/NextCore/background_apps", &st) == 0 && st.st_size == 0) {
             new_count = game_pid_count;
             for (int i = 0; i < game_pid_count; i++) {
                 new_pids[i] = game_pids[i];
@@ -70,7 +70,7 @@ static void handle_background_apps_event(DaemonContext* ctx) {
                 set_priority(game_pids[i]);
             } else if (!IS_FALSE(opts.app_priority)) {
                 char val[PROP_VALUE_MAX] = {0};
-                if (__system_property_get("persist.sys.azenithconf.iosched", val) > 0 && val[0] == '1') {
+                if (__system_property_get("persist.sys.nextcoreconf.iosched", val) > 0 && val[0] == '1') {
                     set_priority(game_pids[i]);
                 }
             }
@@ -109,10 +109,10 @@ int setup_inotify_watchers(void) {
     struct WatchTarget {
         const char* path;
         uint32_t mask;
-    } targets[] = {{"/data/adb/.config/AZenith/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
-                   {"/data/adb/.config/AZenith/API/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
-                   {"/data/adb/.config/AZenith/gamelist/", IN_MODIFY | IN_CLOSE_WRITE | IN_MOVED_TO | IN_CREATE},
-                   {"/data/adb/.config/AZenith/bypasschgconfig/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
+    } targets[] = {{"/data/adb/.config/NextCore/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
+                   {"/data/adb/.config/NextCore/API/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
+                   {"/data/adb/.config/NextCore/gamelist/", IN_MODIFY | IN_CLOSE_WRITE | IN_MOVED_TO | IN_CREATE},
+                   {"/data/adb/.config/NextCore/bypasschgconfig/", IN_MODIFY | IN_CREATE | IN_MOVED_TO},
                    {"/data/adb/modules/nextcore/", IN_MODIFY | IN_CREATE | IN_MOVED_TO | IN_DELETE}};
 
     for (size_t i = 0; i < sizeof(targets) / sizeof(targets[0]); i++) {
@@ -152,7 +152,7 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                     struct inotify_event* event = (struct inotify_event*)ptr;
                     if (event->len > 0) {
                         if (event->mask & (IN_CLOSE_WRITE | IN_MOVED_TO | IN_CREATE)) {
-                            if (strstr(event->name, "azenithApplist.json")) {
+                            if (strstr(event->name, "nextcoreApplist.json")) {
                                 usleep(50000);
                                 reload_gamelist_cache(ctx);
                                 ctx->need_profile_checkup = true;
@@ -205,8 +205,8 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                         } else if (strcmp(event->name, "update") == 0) {
                             log_zenith(LOG_INFO, "InotifyHandler: Module update detected, exiting.");
                             notify("Module Update", "Please reboot your device to complete module update.", false, 0);
-                            __system_property_set("persist.sys.azenith.service", "");
-                            __system_property_set("persist.sys.azenith.state", "stopped");
+                            __system_property_set("persist.sys.nextcore.service", "");
+                            __system_property_set("persist.sys.nextcore.state", "stopped");
                             return true;
                         } else if (strcmp(event->name, "remove") == 0) {
                             log_zenith(LOG_INFO, "InotifyHandler: Module is removed, exiting.");
@@ -220,7 +220,7 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                             notify("Daemon Info", "Configuration updated. Please reboot your device to take full effect.", false, 0);
                         } else if (strcmp(event->name, "freqoffset") == 0) {
                             char path[PATH_MAX];
-                            snprintf(path, sizeof(path), "/data/adb/.config/AZenith/freqoffset");
+                            snprintf(path, sizeof(path), "/data/adb/.config/NextCore/freqoffset");
                             FILE* fp = fopen(path, "r");
                             if (fp) {
                                 if (fgets(ctx->config_freqoffset, sizeof(ctx->config_freqoffset), fp)) {
@@ -231,7 +231,7 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                             }
                         } else if (strcmp(event->name, "bypasspath") == 0) {
                             char path[PATH_MAX];
-                            snprintf(path, sizeof(path), "/data/adb/.config/AZenith/bypasschgconfig/bypasspath");
+                            snprintf(path, sizeof(path), "/data/adb/.config/NextCore/bypasschgconfig/bypasspath");
                             FILE* fp = fopen(path, "r");
                             if (fp) {
                                 if (fgets(ctx->config_bypasspath, sizeof(ctx->config_bypasspath), fp))
@@ -240,7 +240,7 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                             }
                         } else if (strcmp(event->name, "bypasschg") == 0) {
                             char path[PATH_MAX], val[16] = {0};
-                            snprintf(path, sizeof(path), "/data/adb/.config/AZenith/bypasschgconfig/bypasschg");
+                            snprintf(path, sizeof(path), "/data/adb/.config/NextCore/bypasschgconfig/bypasschg");
                             FILE* fp = fopen(path, "r");
                             if (fp) {
                                 if (fgets(val, sizeof(val), fp))
@@ -249,7 +249,7 @@ bool process_inotify_events(int inotify_fd, DaemonContext* ctx, int timeout_ms) 
                             }
                         } else if (strcmp(event->name, "bypasschgthreshold") == 0) {
                             char path[PATH_MAX], val[16] = {0};
-                            snprintf(path, sizeof(path), "/data/adb/.config/AZenith/bypasschgconfig/bypasschgthreshold");
+                            snprintf(path, sizeof(path), "/data/adb/.config/NextCore/bypasschgconfig/bypasschgthreshold");
                             FILE* fp = fopen(path, "r");
                             if (fp) {
                                 if (fgets(val, sizeof(val), fp))

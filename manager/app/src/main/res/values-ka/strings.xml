@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore-ის შესახებ</string>
+    <string name="about_nextcore">NextCore-ის შესახებ</string>
     <string name="about_source_code">წყარო კოდის ნახვა %1$s-ზე&lt;br/&gt;შემოგვიერთდით ჩვენს %2$s არხზე</string>
     <string name="accent_color">აქცენტის ფერი</string>
     <string name="all_checks_finished">ყველა შემოწმება დასრულებულია</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">აპლიკაციის პარამეტრები</string>
     <string name="appearance">გარეგნობა</string>
     <string name="applist_title">აპლიკაციების სია</string>
-    <string name="azenith_version">NextCore ვერსია</string>
+    <string name="nextcore_version">NextCore ვერსია</string>
     <string name="balanced_io_scheduler">დაბალანსებული I/O განრიგი</string>
     <string name="balanced_io_scheduler_desc">განრიგი, რომელსაც იყენებს დაბალანსებული კონფიგურაცია</string>
     <string name="balanced_mali_gov">დაბალანსებული Mali GPU მართველი</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ავტორი</string>
     <string name="str_auto_mode">ავტომატური რეჟიმი</string>
     <string name="str_available_nodes">ხელმისაწვდომი სამიზნე კვანძები (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore მზად არის!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore მზად არის!</string>
     <string name="str_backup_configuration">კონფიგურაციის სარეზერვო ასლი</string>
     <string name="str_backup_content_detected_select">აღმოჩენილია სარეზერვო შინაარსი, გთხოვთ აირჩიოთ აღსადგენი ელემენტები:</string>
     <string name="str_backup_restore">სარეზერვო ასლი და აღდგენა</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">გრადიენტის გაუმჭვირვალობა</string>
     <string name="str_installing_update">განახლების დაყენება მიმდინარეობს...</string>
     <string name="str_interface">ინტერფეისი</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">აპლიკაციის გაშვება</string>
     <string name="str_launch_compatibility_check">თავსებადობის შემოწმების გაშვება</string>
     <string name="str_let_s_adjust_a_few_basic_setti">მოდით, შევცვალოთ რამდენიმე ძირითადი პარამეტრი</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">გთხოვთ, მიანიჭოთ NextCore-ს Root უფლებები</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">გთხოვთ, მიანიჭოთ NextCore-ს Root უფლებები</string>
     <string name="str_load_a_previously_saved_backup">შენახული სარეზერვო ფაილის ჩატვირთვა</string>
     <string name="str_logs_diagnostics">ჟურნალი და დიაგნოსტიკა</string>
     <string name="str_maintainer">მხარდამჭერი</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">დატენვის კავშირი არ არის აღმოჩენილი, გთხოვთ, ჩართოთ დამტენი და შემდეგ გაუშვათ დიაგნოსტიკა</string>
     <string name="str_preview">წინასწარი ნახვა</string>
     <string name="str_restore_configuration">კონფიგურაციის აღდგენა</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root უფლებები უარყოფილია, NextCore-ს სჭირდება Root უფლებები მუშაობისთვის</string>
     <string name="str_root_access_granted">Root უფლებები მიღებულია, ყველაფერი მზად არის!</string>
     <string name="str_run_diagnostics_above_or_check">გაუშვით ზემოთ მოცემული დიაგნოსტიკა, ან შეამოწმეთ, შეიცავს თუ არა ბირთვი შემოვლებითი კვების კვანძებს</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ვერსია %1$s</string>
     <string name="walt_tunes">WALT მართველის ოპტიმიზაცია</string>
     <string name="walt_tunes_desc">WALT მართველის პარამეტრების ოპტიმიზაცია, CPU განრიგის რეაგირების სიჩქარის გაზრდა</string>
-    <string name="welcome_azenith">მოგესალმებით NextCore-ში</string>
+    <string name="welcome_nextcore">მოგესალმებით NextCore-ში</string>
     <string name="yes">დიახ</string>
     <string name="str_use_scroll_animation">გადახვევის ანიმაციის გამოყენება</string>
     <string name="str_use_scroll_animation_summary">გვერდებს შორის გადაფურცვლის ანიმაციის ჩართვა</string>

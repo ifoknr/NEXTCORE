@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class zx.azenith.AppMonitor {
+-keep class zx.nextcore.AppMonitor {
     public static void main(java.lang.String[]);
 }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <android/log.h>
 #include <sys/system_properties.h>
 
@@ -62,7 +62,7 @@ void log_zenith(LogLevel level, const char* message, ...) {
  */
 void log_preload(LogLevel level, const char* message, ...) {
     char val[PROP_VALUE_MAX] = {0};
-    if (__system_property_get("persist.sys.azenith.debugmode", val) > 0) {
+    if (__system_property_get("persist.sys.nextcore.debugmode", val) > 0) {
         if (strcmp(val, "true") == 0) {
             char* timestamp = timern();
             char logMesg[MAX_OUTPUT_LENGTH];
@@ -101,7 +101,7 @@ void log_preload(LogLevel level, const char* message, ...) {
  */
 void log_verbose(LogLevel level, const char* message, ...) {
     char val[PROP_VALUE_MAX] = {0};
-    if (__system_property_get("persist.sys.azenith.debugmode", val) > 0) {
+    if (__system_property_get("persist.sys.nextcore.debugmode", val) > 0) {
         if (strcmp(val, "true") == 0) {
             char* timestamp = timern();
             char logMesg[MAX_OUTPUT_LENGTH];

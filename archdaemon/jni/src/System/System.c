@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
 int main_daemon(void) {
     verify_system_integrity();
 
     if (daemon(0, 0)) {
         log_zenith(LOG_FATAL, "Unable to daemonize service");
-        __system_property_set("persist.sys.azenith.service", "");
-        __system_property_set("persist.sys.azenith.state", "stopped");
+        __system_property_set("persist.sys.nextcore.service", "");
+        __system_property_set("persist.sys.nextcore.state", "stopped");
         return 1;
     }
 
@@ -52,9 +52,9 @@ int main_daemon(void) {
 
     // Initiate PID
     log_zenith(LOG_INFO, "Daemon started as PID %d", getpid());
-    __system_property_set("persist.sys.rianixia.learning_enabled", "true");
-    __system_property_set("persist.sys.azenith.state", "running");
-    notify("Initializing...", "Starting AZenith service...", false, 0);
+    __system_property_set("persist.sys.ncthermal.learning_enabled", "true");
+    __system_property_set("persist.sys.nextcore.state", "running");
+    notify("Initializing...", "Starting NextCore service...", false, 0);
     setspid();
 
     FILE* fp_ai_init = fopen(DAEMON_MODES, "r");
@@ -107,9 +107,9 @@ int main_daemon(void) {
 
         if (java_daemon_died) {
             log_zenith(LOG_FATAL, "Java daemon lock released, companion daemon exited, stopping daemon");
-            notify("Daemon Error", "Java companion daemon crashed. Stopping AZenith.", false, 0);
-            __system_property_set("persist.sys.azenith.service", "");
-            __system_property_set("persist.sys.azenith.state", "stopped");
+            notify("Daemon Error", "Java companion daemon crashed. Stopping NextCore.", false, 0);
+            __system_property_set("persist.sys.nextcore.service", "");
+            __system_property_set("persist.sys.nextcore.state", "stopped");
             break;
         }
 
@@ -120,10 +120,10 @@ int main_daemon(void) {
 
         if (strcmp(ctx.config_freqoffset, "Disabled") == 0) {
             if (strcmp(ctx.last_freqoffset, "Disabled") != 0) {
-                systemv("sys.azenith-profilesettings applyfreqbalance");
+                systemv("sys.nextcore-profilesettings applyfreqbalance");
             }
         } else if (real_screen_state && (ctx.cur_mode == BALANCED_PROFILE || ctx.cur_mode == ECO_MODE)) {
-            systemv("sys.azenith-profilesettings applyfreqbalance");
+            systemv("sys.nextcore-profilesettings applyfreqbalance");
         }
         strcpy(ctx.last_freqoffset, ctx.config_freqoffset);
 
@@ -193,7 +193,7 @@ int main_daemon(void) {
         
         if (gamestart && ctx.cur_mode == PERFORMANCE_PROFILE) {
             char dropfg_val[PROP_VALUE_MAX] = {0};
-            bool dropforeground_enabled = (__system_property_get("persist.sys.azenith.dropforeground", dropfg_val) > 0 &&
+            bool dropforeground_enabled = (__system_property_get("persist.sys.nextcore.dropforeground", dropfg_val) > 0 &&
                                             dropfg_val[0] == '1');
         
             if (dropforeground_enabled) {
@@ -300,7 +300,7 @@ int main_daemon(void) {
                         set_priority(game_pids[i]);
                     else if (!IS_FALSE(opts.app_priority)) {
                         char val[PROP_VALUE_MAX] = {0};
-                        if (__system_property_get("persist.sys.azenithconf.iosched", val) > 0 && val[0] == '1')
+                        if (__system_property_get("persist.sys.nextcoreconf.iosched", val) > 0 && val[0] == '1')
                             set_priority(game_pids[i]);
                     }
                 }

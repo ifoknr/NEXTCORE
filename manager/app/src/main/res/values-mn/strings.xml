@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore-ийн тухай</string>
+    <string name="about_nextcore">NextCore-ийн тухай</string>
     <string name="about_source_code">%1$s-ээр эх кодыг үзэх&lt;br/&gt;манай %2$s сувагт нэгдэх</string>
     <string name="accent_color">Өнгөний схем</string>
     <string name="all_checks_finished">Бүх шалгалт дууссан</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Програмын тохиргоо</string>
     <string name="appearance">Гадаад байдал</string>
     <string name="applist_title">Програмын жагсаалт</string>
-    <string name="azenith_version">NextCore хувилбар</string>
+    <string name="nextcore_version">NextCore хувилбар</string>
     <string name="balanced_io_scheduler">Тэнцвэртэй I/O хуваарьлагч</string>
     <string name="balanced_io_scheduler_desc">Тэнцвэртэй тохиргоонд ашиглах хуваарьлагч</string>
     <string name="balanced_mali_gov">Тэнцвэртэй Mali GPU зохицуулагч</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Зохиогч</string>
     <string name="str_auto_mode">Автомат горим</string>
     <string name="str_available_nodes">Боломжтой зорилтот цэгүүд (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore бэлэн боллоо!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore бэлэн боллоо!</string>
     <string name="str_backup_configuration">Тохиргоог нөөцлөх</string>
     <string name="str_backup_content_detected_select">Нөөц агуулга илэрсэн. Сэргээх зүйлээ сонгоно уу:</string>
     <string name="str_backup_restore">Нөөц ба сэргээлт</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Градиентийн тунгалаг байдал</string>
     <string name="str_installing_update">Шинэчлэлт суулгаж байна…</string>
     <string name="str_interface">Интерфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Програмыг ажиллуулах</string>
     <string name="str_launch_compatibility_check">Тохирох шалгалтыг эхлүүлэх</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Цөөн хэдэн үндсэн тохиргоог тохируулъя</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">NextCore-д Root эрх олгоно уу</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">NextCore-д Root эрх олгоно уу</string>
     <string name="str_load_a_previously_saved_backup">Өмнө хадгалсан нөөц файлыг ачаалах</string>
     <string name="str_logs_diagnostics">Бүртгэл ба оношлогоо</string>
     <string name="str_maintainer">Засварлагч</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Цэнэглэгч холбогдоогүй байна. Оношлогоо явуулахын тулд цэнэглэгчээ холбоно уу</string>
     <string name="str_preview">Харах</string>
     <string name="str_restore_configuration">Тохиргоог сэргээх</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root эрх татгалзсан. NextCore ажиллахад Root эрх шаардлагатай</string>
     <string name="str_root_access_granted">Root эрх олгогдлоо, бүх зүйл бэлэн!</string>
     <string name="str_run_diagnostics_above_or_check">Дээрх оношлогоог ажиллуулах, эсвэл цөм нь давхар цахилгаан хангамжийн цэгийг агуулж байгаа эсэхийг шалгах</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Хувилбар %1$s</string>
     <string name="walt_tunes">WALT зохицуулагчийн тохируулга</string>
     <string name="walt_tunes_desc">WALT зохицуулагчийн параметрүүдийг оновчтой болгож, CPU хуваарийн хариу үйлдлийн хурдыг сайжруулах</string>
-    <string name="welcome_azenith">NextCore-д тавтай морилно уу</string>
+    <string name="welcome_nextcore">NextCore-д тавтай морилно уу</string>
     <string name="yes">Тийм</string>
     <string name="str_use_scroll_animation">Гүйлгэх хөдөлгөөнт дүрсийг ашиглах</string>
     <string name="str_use_scroll_animation_summary">Хуудас хооронд шудрах хөдөлгөөнт дүрсийг идэвхжүүлэх</string>

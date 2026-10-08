@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Mayelana ne-NextCore</string>
+    <string name="about_nextcore">Mayelana ne-NextCore</string>
     <string name="about_source_code">Buka ikhodi yomthombo ku-%1$s&lt;br/&gt;Joyina isiteshi sethu %2$s</string>
     <string name="accent_color">Umbala ogqamile</string>
     <string name="all_checks_finished">Zonke izihloko seziqediwe</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Izilungiselelo zesicelo</string>
     <string name="appearance">Ukubukeka</string>
     <string name="applist_title">Uhlu lwezicelo</string>
-    <string name="azenith_version">Inguqulo ye-NextCore</string>
+    <string name="nextcore_version">Inguqulo ye-NextCore</string>
     <string name="balanced_io_scheduler">Isihleli se-I/O esilinganiselwe</string>
     <string name="balanced_io_scheduler_desc">Isihleli esisetshenziswa ngohlelo olulinganiselwe</string>
     <string name="balanced_mali_gov">Umqondisi we-Mali GPU olinganiselwe</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Umbhali</string>
     <string name="str_auto_mode">Imodi ezenzakalelayo</string>
     <string name="str_available_nodes">Amanodi atholakalayo (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">I-NextCore isilungile!</string>
+    <string name="str_nextcore_is_now_ready_to_go">I-NextCore isilungile!</string>
     <string name="str_backup_configuration">Gcina izilungiselelo</string>
     <string name="str_backup_content_detected_select">Kutholwe okuqukethwe kwe-backup, sicela ukhethe izinto ozifuna ukuzibuyisela:</string>
     <string name="str_backup_restore">I-backup nokubuyisela</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Ukungabonakali kwe-gradient</string>
     <string name="str_installing_update">Kufakwa isibuyekezo…</string>
     <string name="str_interface">Isixhumi esibonakalayo</string>
-    <string name="str_kanaochar">I-Kanaochar</string>
     <string name="str_launch_app">Qala isicelo</string>
     <string name="str_launch_compatibility_check">Qala ukuhlola ukuhambisana</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ake silungise izilungiselelo ezimbalwa eziyisisekelo</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Sicela unikeze i-NextCore amandla e-Root</string>
-    <string name="str_liliya">I-Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Sicela unikeze i-NextCore amandla e-Root</string>
     <string name="str_load_a_previously_saved_backup">Layisha ifayela le-backup eligciniwe</string>
     <string name="str_logs_diagnostics">Amalogi nokuxilonga</string>
     <string name="str_maintainer">Umgcini</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Akutholakali ukuxhumeka kwecharger, sicela ufake i-charger bese uqala ukuxilonga</string>
     <string name="str_preview">Isibonelo</string>
     <string name="str_restore_configuration">Buyisela izilungiselelo</string>
-    <string name="str_rianixia">I-Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Amandla e-Root anqatshiwe, i-NextCore izidinga amandla e-Root ukuze isebenze</string>
     <string name="str_root_access_granted">Amandla e-Root atholiwe, konke kulungile!</string>
     <string name="str_run_diagnostics_above_or_check">Sebenzisa ukuxilonga ngenhla, noma hlola ukuthi i-kernel iqukethe yini inodi ye-bypass power supply</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Inguqulo %1$s</string>
     <string name="walt_tunes">Ukuhlelwa kwe-WALT governor</string>
     <string name="walt_tunes_desc">Thuthukisa amapharamitha e-WALT governor, thuthukisa ijubane lokuphendula kokuhlela kwe-CPU</string>
-    <string name="welcome_azenith">Uyemukelwa ku-NextCore</string>
+    <string name="welcome_nextcore">Uyemukelwa ku-NextCore</string>
     <string name="yes">Yebo</string>
     <string name="str_use_scroll_animation">Sebenzisa ukugqwayiza kokuskrola</string>
     <string name="str_use_scroll_animation_summary">Nika amandla ukugqwayiza kokuswayipha phakathi kwamakhasi</string>

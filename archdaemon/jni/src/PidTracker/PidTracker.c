@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <sys/system_properties.h>
 
 /**
@@ -28,7 +28,7 @@ int get_pids_of(const char* name, pid_t* pids, int max_pids) {
     if (!name || !name[0] || max_pids < 1)
         return 0;
 
-    FILE* fp = fopen("/data/adb/.config/AZenith/background_apps", "r");
+    FILE* fp = fopen("/data/adb/.config/NextCore/background_apps", "r");
     if (!fp)
         return 0;
 
@@ -61,7 +61,7 @@ int uidof(pid_t pid) {
     if (pid <= 0)
         return -1;
 
-    FILE* fp = fopen("/data/adb/.config/AZenith/background_apps", "r");
+    FILE* fp = fopen("/data/adb/.config/NextCore/background_apps", "r");
     if (!fp)
         return -1;
 
@@ -90,6 +90,6 @@ void setspid(void) {
     char cmd[128];
     pid_t pid = getpid();
 
-    snprintf(cmd, sizeof(cmd), "setprop persist.sys.azenith.service %d", pid);
+    snprintf(cmd, sizeof(cmd), "setprop persist.sys.nextcore.service %d", pid);
     systemv(cmd);
 }

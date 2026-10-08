@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">Acerca de NextCore</string>
+    <string name="about_nextcore">Acerca de NextCore</string>
     <string name="about_source_code">Ver código fuente en %1$s&lt;br/&gt;Únete a nuestro canal %2$s</string>
     <string name="accent_color">Color de acento</string>
     <string name="all_checks_finished">Todas las comprobaciones finalizadas</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Configuración de la aplicación</string>
     <string name="appearance">Apariencia</string>
     <string name="applist_title">Lista de aplicaciones</string>
-    <string name="azenith_version">Versión de NextCore</string>
+    <string name="nextcore_version">Versión de NextCore</string>
     <string name="balanced_io_scheduler">Planificador de E/S equilibrado</string>
     <string name="balanced_io_scheduler_desc">Planificador utilizado en el perfil equilibrado</string>
     <string name="balanced_mali_gov">Gobernador de GPU Mali equilibrado</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Modo automático</string>
     <string name="str_available_nodes">Nodos objetivo disponibles (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">¡NextCore está listo!</string>
+    <string name="str_nextcore_is_now_ready_to_go">¡NextCore está listo!</string>
     <string name="str_backup_configuration">Configuración de copia de seguridad</string>
     <string name="str_backup_content_detected_select">Se detectó contenido de copia de seguridad, seleccione los elementos a restaurar:</string>
     <string name="str_backup_restore">Copia de seguridad y restauración</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Opacidad del degradado</string>
     <string name="str_installing_update">Instalando actualización...</string>
     <string name="str_interface">Interfaz</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Iniciar aplicación</string>
     <string name="str_launch_compatibility_check">Iniciar verificación de compatibilidad</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Ajustemos algunas configuraciones básicas</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Conceda permisos Root a NextCore</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Conceda permisos Root a NextCore</string>
     <string name="str_load_a_previously_saved_backup">Cargar archivo de copia de seguridad guardado</string>
     <string name="str_logs_diagnostics">Registros y diagnóstico</string>
     <string name="str_maintainer">Mantenedor</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">No se detectó conexión de carga, inserte el cargador antes de ejecutar el diagnóstico</string>
     <string name="str_preview">Vista previa</string>
     <string name="str_restore_configuration">Restaurar configuración</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Permisos Root denegados, NextCore necesita permisos Root para funcionar</string>
     <string name="str_root_access_granted">Permisos Root obtenidos, ¡todo listo!</string>
     <string name="str_run_diagnostics_above_or_check">Ejecute el diagnóstico anterior o verifique si el kernel incluye un nodo de carga por bypass</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versión %1$s</string>
     <string name="walt_tunes">Ajuste del gobernador WALT</string>
     <string name="walt_tunes_desc">Optimiza los parámetros del gobernador WALT para mejorar la velocidad de respuesta de la programación de la CPU</string>
-    <string name="welcome_azenith">Bienvenido a NextCore</string>
+    <string name="welcome_nextcore">Bienvenido a NextCore</string>
     <string name="yes">Sí</string>
     <string name="str_use_scroll_animation">Usar animación de desplazamiento</string>
     <string name="str_use_scroll_animation_summary">Habilitar animación de deslizamiento entre páginas</string>

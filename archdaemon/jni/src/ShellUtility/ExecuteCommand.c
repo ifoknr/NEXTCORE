@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 
 /**
  * @brief Executes a shell command via Android standard shell and captures its standard output.

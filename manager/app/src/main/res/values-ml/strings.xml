@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore-നെ കുറിച്ച്</string>
+    <string name="about_nextcore">NextCore-നെ കുറിച്ച്</string>
     <string name="about_source_code">%1$s-ൽ സോഴ്‌സ് കോഡ് കാണുക&lt;br/&gt;ഞങ്ങളുടെ %2$s ചാനലിൽ ചേരുക</string>
     <string name="accent_color">ആക്സന്റ് നിറം</string>
     <string name="all_checks_finished">എല്ലാ പരിശോധനകളും പൂർത്തിയായി</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ആപ്പ് ക്രമീകരണങ്ങൾ</string>
     <string name="appearance">രൂപം</string>
     <string name="applist_title">ആപ്പ് ലിസ്റ്റ്</string>
-    <string name="azenith_version">NextCore പതിപ്പ്</string>
+    <string name="nextcore_version">NextCore പതിപ്പ്</string>
     <string name="balanced_io_scheduler">ബാലൻസ്ഡ് I/O ഷെഡ്യൂളർ</string>
     <string name="balanced_io_scheduler_desc">ബാലൻസ്ഡ് പ്രൊഫൈലിൽ ഉപയോഗിക്കുന്ന ഷെഡ്യൂളർ</string>
     <string name="balanced_mali_gov">ബാലൻസ്ഡ് Mali GPU ഗവർണർ</string>
@@ -253,7 +253,7 @@
     <string name="str_author">രചയിതാവ്</string>
     <string name="str_auto_mode">ഓട്ടോ മോഡ്</string>
     <string name="str_available_nodes">ലഭ്യമായ ടാർഗറ്റ് നോഡുകൾ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore തയ്യാറാണ്!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore തയ്യാറാണ്!</string>
     <string name="str_backup_configuration">കോൺഫിഗറേഷൻ ബാക്കപ്പ് ചെയ്യുക</string>
     <string name="str_backup_content_detected_select">ബാക്കപ്പ് ഉള്ളടക്കം കണ്ടെത്തി. പുനഃസ്ഥാപിക്കേണ്ട ഇനങ്ങൾ തിരഞ്ഞെടുക്കുക:</string>
     <string name="str_backup_restore">ബാക്കപ്പും പുനഃസ്ഥാപനവും</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ഗ്രേഡിയന്റ് അതാര്യത</string>
     <string name="str_installing_update">അപ്ഡേറ്റ് ഇൻസ്റ്റാൾ ചെയ്യുന്നു…</string>
     <string name="str_interface">ഇന്റർഫേസ്</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">ആപ്പ് സമാരംഭിക്കുക</string>
     <string name="str_launch_compatibility_check">അനുയോജ്യത പരിശോധന സമാരംഭിക്കുക</string>
     <string name="str_let_s_adjust_a_few_basic_setti">നമുക്ക് കുറച്ച് അടിസ്ഥാന ക്രമീകരണങ്ങൾ ക്രമീകരിക്കാം</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">ദയവായി NextCore-ന് Root ആക്സസ് അനുവദിക്കുക</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">ദയവായി NextCore-ന് Root ആക്സസ് അനുവദിക്കുക</string>
     <string name="str_load_a_previously_saved_backup">സംരക്ഷിച്ച ബാക്കപ്പ് ഫയൽ ലോഡ് ചെയ്യുക</string>
     <string name="str_logs_diagnostics">ലോഗുകളും ഡയഗ്നോസ്റ്റിക്സും</string>
     <string name="str_maintainer">പരിപാലകൻ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ചാർജർ കണ്ടെത്തിയില്ല. ഡയഗ്നോസ്റ്റിക് പ്രവർത്തിപ്പിക്കുന്നതിന് മുമ്പ് ചാർജർ ബന്ധിപ്പിക്കുക</string>
     <string name="str_preview">പ്രിവ്യൂ</string>
     <string name="str_restore_configuration">കോൺഫിഗറേഷൻ പുനഃസ്ഥാപിക്കുക</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root ആക്സസ് നിഷേധിച്ചു, NextCore-ന് പ്രവർത്തിക്കാൻ Root ആവശ്യമാണ്</string>
     <string name="str_root_access_granted">Root ആക്സസ് ലഭിച്ചു, എല്ലാം തയ്യാറാണ്!</string>
     <string name="str_run_diagnostics_above_or_check">മുകളിലുള്ള ഡയഗ്നോസ്റ്റിക് പ്രവർത്തിപ്പിക്കുക, അല്ലെങ്കിൽ കേർണലിൽ ബൈപാസ് ചാർജിംഗ് നോഡുകൾ ഉണ്ടോ എന്ന് പരിശോധിക്കുക</string>
@@ -368,7 +366,7 @@
     <string name="version_format">പതിപ്പ് %1$s</string>
     <string name="walt_tunes">WALT ഗവർണർ ട്യൂണിംഗ്</string>
     <string name="walt_tunes_desc">WALT ഗവർണർ പാരാമീറ്ററുകൾ ഒപ്റ്റിമൈസ് ചെയ്യുക, CPU ഷെഡ്യൂളിംഗ് പ്രതികരണശേഷി മെച്ചപ്പെടുത്തുക</string>
-    <string name="welcome_azenith">NextCore-ലേക്ക് സ്വാഗതം</string>
+    <string name="welcome_nextcore">NextCore-ലേക്ക് സ്വാഗതം</string>
     <string name="yes">അതെ</string>
     <string name="str_use_scroll_animation">സ്ക്രോൾ ആനിമേഷൻ ഉപയോഗിക്കുക</string>
     <string name="str_use_scroll_animation_summary">പേജുകൾക്കിടയിൽ സ്വൈപ്പ് ആനിമേഷൻ പ്രവർത്തനക്ഷമമാക്കുക</string>

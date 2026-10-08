@@ -14,70 +14,69 @@
  * limitations under the License.
  */
 
-#include "AZenith.h"
+#include "NextCore.h"
 
-const char* VALID_AZENITH_PROPS[] = {
-    "persist.sys.azenith.custom_default_balanced_IO",
-    "persist.sys.azenith.custom_default_cpu_gov",
-    "persist.sys.azenith.custom_default_maligpu_gov",
-    "persist.sys.azenith.custom_performance_IO",
-    "persist.sys.azenith.custom_performance_cpu_gov",
-    "persist.sys.azenith.custom_performance_maligpu_gov",
-    "persist.sys.azenith.custom_powersave_IO",
-    "persist.sys.azenith.custom_powersave_cpu_gov",
-    "persist.sys.azenith.custom_powersave_maligpu_gov",
-    "persist.sys.azenith.debugmode",
-    "persist.sys.azenith.default_balanced_IO",
-    "persist.sys.azenith.default_cpu_gov",
-    "persist.sys.azenith.default_maligpu_gov",
-    "persist.sys.azenith.disabletweak",
-    "persist.sys.azenith.service",
-    "persist.sys.azenith.soctype",
-    "persist.sys.azenith.state",
-    "persist.sys.azenith.profilenotifications",
-    "persist.sys.azenith.dropforeground",
-    "persist.sys.azenithconf.AIenabled",
-    "persist.sys.azenithconf.APreload",
-    "persist.sys.azenithconf.DThermal",
-    "persist.sys.azenithconf.SFL",
-    "persist.sys.azenithconf.bypasschg",
-    "persist.sys.azenithconf.bypasschgthreshold",
-    "persist.sys.azenithconf.renderer",
-    "persist.sys.azenithconf.bypasspath",
-    "persist.sys.azenithconf.clearbg",
-    "persist.sys.azenithconf.cpulimit",
-    "persist.sys.azenithconf.disabletrace",
-    "persist.sys.azenithconf.dnd",
-    "persist.sys.azenithconf.fpsged",
-    "persist.sys.azenithconf.freqoffset",
-    "persist.sys.azenithconf.fstrim",
-    "persist.sys.azenithconf.iosched",
-    "persist.sys.azenithconf.justintime",
-    "persist.sys.azenithconf.litemode",
-    "persist.sys.azenithconf.logd",
-    "persist.sys.azenithconf.perfmax",
-    "persist.sys.azenithconf.malisched",
-    "persist.sys.azenithconf.preloadbudget",
-    "persist.sys.azenithconf.renderer",
-    "persist.sys.azenithconf.schedtunes",
-    "persist.sys.azenithconf.schemeconfig",
-    "persist.sys.azenithconf.showtoast",
-    "persist.sys.azenithconf.thermalcore",
-    "persist.sys.azenithconf.usefpsgo",
-    "persist.sys.azenithconf.walttunes",
+const char* VALID_NEXTCORE_PROPS[] = {
+    "persist.sys.nextcore.custom_default_balanced_IO",
+    "persist.sys.nextcore.custom_default_cpu_gov",
+    "persist.sys.nextcore.custom_default_maligpu_gov",
+    "persist.sys.nextcore.custom_performance_IO",
+    "persist.sys.nextcore.custom_performance_cpu_gov",
+    "persist.sys.nextcore.custom_performance_maligpu_gov",
+    "persist.sys.nextcore.custom_powersave_IO",
+    "persist.sys.nextcore.custom_powersave_cpu_gov",
+    "persist.sys.nextcore.custom_powersave_maligpu_gov",
+    "persist.sys.nextcore.debugmode",
+    "persist.sys.nextcore.default_balanced_IO",
+    "persist.sys.nextcore.default_cpu_gov",
+    "persist.sys.nextcore.default_maligpu_gov",
+    "persist.sys.nextcore.disabletweak",
+    "persist.sys.nextcore.service",
+    "persist.sys.nextcore.soctype",
+    "persist.sys.nextcore.state",
+    "persist.sys.nextcore.profilenotifications",
+    "persist.sys.nextcore.dropforeground",
+    "persist.sys.nextcoreconf.AIenabled",
+    "persist.sys.nextcoreconf.APreload",
+    "persist.sys.nextcoreconf.SFL",
+    "persist.sys.nextcoreconf.bypasschg",
+    "persist.sys.nextcoreconf.bypasschgthreshold",
+    "persist.sys.nextcoreconf.renderer",
+    "persist.sys.nextcoreconf.bypasspath",
+    "persist.sys.nextcoreconf.clearbg",
+    "persist.sys.nextcoreconf.cpulimit",
+    "persist.sys.nextcoreconf.disabletrace",
+    "persist.sys.nextcoreconf.dnd",
+    "persist.sys.nextcoreconf.fpsged",
+    "persist.sys.nextcoreconf.freqoffset",
+    "persist.sys.nextcoreconf.fstrim",
+    "persist.sys.nextcoreconf.iosched",
+    "persist.sys.nextcoreconf.justintime",
+    "persist.sys.nextcoreconf.litemode",
+    "persist.sys.nextcoreconf.logd",
+    "persist.sys.nextcoreconf.perfmax",
+    "persist.sys.nextcoreconf.malisched",
+    "persist.sys.nextcoreconf.preloadbudget",
+    "persist.sys.nextcoreconf.renderer",
+    "persist.sys.nextcoreconf.schedtunes",
+    "persist.sys.nextcoreconf.schemeconfig",
+    "persist.sys.nextcoreconf.showtoast",
+    "persist.sys.nextcoreconf.thermalcore",
+    "persist.sys.nextcoreconf.usefpsgo",
+    "persist.sys.nextcoreconf.walttunes",
 };
-const size_t VALID_AZENITH_PROPS_COUNT = sizeof(VALID_AZENITH_PROPS) / sizeof(VALID_AZENITH_PROPS[0]);
+const size_t VALID_NEXTCORE_PROPS_COUNT = sizeof(VALID_NEXTCORE_PROPS) / sizeof(VALID_NEXTCORE_PROPS[0]);
 
 /**
  * @brief Checks whether a given property name belongs to the known/whitelisted
- *        set of AZenith properties currently in use.
+ *        set of NextCore properties currently in use.
  *
  * @param name Null-terminated property name to check.
  * @return true if the property is recognized as valid, false otherwise.
  */
-static bool is_known_azenith_prop(const char *name) {
-    for (size_t i = 0; i < VALID_AZENITH_PROPS_COUNT; i++) {
-        if (strcmp(name, VALID_AZENITH_PROPS[i]) == 0)
+static bool is_known_nextcore_prop(const char *name) {
+    for (size_t i = 0; i < VALID_NEXTCORE_PROPS_COUNT; i++) {
+        if (strcmp(name, VALID_NEXTCORE_PROPS[i]) == 0)
             return true;
     }
     return false;
@@ -103,10 +102,10 @@ static void read_prop_cb(void *cookie, const char *name, const char *value, uint
     (void)serial;
     StalePropList *pending = (StalePropList *)cookie;
 
-    if (strncmp(name, AZENITH_PROPERTIES, AZENITH_PROPERTIES_LEN) != 0)
+    if (strncmp(name, NEXTCORE_PROPERTIES, NEXTCORE_PROPERTIES_LEN) != 0)
         return;
 
-    if (is_known_azenith_prop(name))
+    if (is_known_nextcore_prop(name))
         return;
 
     if (pending->count < MAX_PENDING_DELETE) {

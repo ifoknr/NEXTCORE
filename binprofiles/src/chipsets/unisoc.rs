@@ -1,32 +1,25 @@
 use crate::utils::*;
 
-pub fn unisoc_balance() {
+// Unisoc: GPU devfreq only. Floor or ceiling moves; pinned only in max mode.
+
+fn gpu(apply: fn(&str)) {
     if let Ok(mut paths) = glob::glob("/sys/class/devfreq/**/*.gpu") {
         if let Some(Ok(path)) = paths.next() {
-            if let Some(p_str) = path.to_str() {
-                devfreq_unlock(p_str);
-            }
+            apply(&path.to_string_lossy());
         }
     }
+}
+
+pub fn unisoc_balance() {
+    gpu(devfreq_unlock);
 }
 
 pub fn unisoc_performance() {
-    let lite_mode = get_litemode();
-    if let Ok(mut paths) = glob::glob("/sys/class/devfreq/**/*.gpu") {
-        if let Some(Ok(path)) = paths.next() {
-            if let Some(p_str) = path.to_str() {
-                if lite_mode { devfreq_mid_perf(p_str); } else { devfreq_max_perf(p_str); }
-            }
-        }
-    }
+    let max = get_perfmax();
+    let lite = get_litemode();
+    gpu(if max { devfreq_max_perf } else if lite { devfreq_unlock } else { devfreq_mid_perf });
 }
 
 pub fn unisoc_powersave() {
-    if let Ok(mut paths) = glob::glob("/sys/class/devfreq/**/*.gpu") {
-        if let Some(Ok(path)) = paths.next() {
-            if let Some(p_str) = path.to_str() {
-                devfreq_min_perf(p_str);
-            }
-        }
-    }
+    gpu(devfreq_cap_mid);
 }

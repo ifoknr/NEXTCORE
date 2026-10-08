@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">O NextCore</string>
+    <string name="about_nextcore">O NextCore</string>
     <string name="about_source_code">Zobraziť zdrojový kód na %1$s&lt;br/&gt;Pripojte sa k nášmu kanálu %2$s</string>
     <string name="accent_color">Akcentová farba</string>
     <string name="all_checks_finished">Všetky kontroly dokončené</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Nastavenia aplikácie</string>
     <string name="appearance">Vzhľad</string>
     <string name="applist_title">Zoznam aplikácií</string>
-    <string name="azenith_version">Verzia NextCore</string>
+    <string name="nextcore_version">Verzia NextCore</string>
     <string name="balanced_io_scheduler">Vyvážený I/O plánovač</string>
     <string name="balanced_io_scheduler_desc">Plánovač používaný vyváženým profilom</string>
     <string name="balanced_mali_gov">Vyvážený Mali GPU governor</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Automatický režim</string>
     <string name="str_available_nodes">Dostupné cieľové uzly (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore je pripravený!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore je pripravený!</string>
     <string name="str_backup_configuration">Zálohovať nastavenia</string>
     <string name="str_backup_content_detected_select">Zistený obsah zálohy. Vyberte položky na obnovenie:</string>
     <string name="str_backup_restore">Zálohovanie a obnova</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Nepriehľadnosť gradientu</string>
     <string name="str_installing_update">Inštaluje sa aktualizácia…</string>
     <string name="str_interface">Rozhranie</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Spustiť aplikáciu</string>
     <string name="str_launch_compatibility_check">Spustiť kontrolu kompatibility</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Upravme niekoľko základných nastavení</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Udeľte NextCore root prístup</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Udeľte NextCore root prístup</string>
     <string name="str_load_a_previously_saved_backup">Načítať predtým uložený súbor zálohy</string>
     <string name="str_logs_diagnostics">Logy a diagnostika</string>
     <string name="str_maintainer">Správca</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Nezistené pripojenie nabíjačky. Pred spustením diagnostiky pripojte nabíjačku.</string>
     <string name="str_preview">Náhľad</string>
     <string name="str_restore_configuration">Obnoviť nastavenia</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root prístup zamietnutý. NextCore vyžaduje root prístup na spustenie.</string>
     <string name="str_root_access_granted">Root prístup udelený, všetko pripravené!</string>
     <string name="str_run_diagnostics_above_or_check">Spustite diagnostiku vyššie alebo skontrolujte, či jadro obsahuje uzly bypass nabíjania.</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Verzia %1$s</string>
     <string name="walt_tunes">Ladenie WALT governora</string>
     <string name="walt_tunes_desc">Optimalizovať parametre WALT governora pre rýchlejšiu odozvu plánovača CPU.</string>
-    <string name="welcome_azenith">Vitajte v NextCore</string>
+    <string name="welcome_nextcore">Vitajte v NextCore</string>
     <string name="yes">Áno</string>
     <string name="str_use_scroll_animation">Použiť animáciu posúvania</string>
     <string name="str_use_scroll_animation_summary">Povoliť animáciu potiahnutia medzi stránkami</string>

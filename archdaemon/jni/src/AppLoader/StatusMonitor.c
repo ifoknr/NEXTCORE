@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <AZenith.h>
+#include <NextCore.h>
 #include <string.h>
 
 /**
@@ -25,7 +25,7 @@ void read_app_status(SystemStateCache* cache) {
     if (!cache)
         return;
 
-    FILE* fp = fopen("/data/adb/.config/AZenith/app_status", "r");
+    FILE* fp = fopen("/data/adb/.config/NextCore/app_status", "r");
     if (!fp)
         return;
 

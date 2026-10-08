@@ -33,9 +33,9 @@ pub struct Logger {
 
 impl Logger {
     pub fn new() -> Self {
-        let tag = CString::new("RianixiaThermalCore").unwrap();
+        let tag = CString::new("ThermalCore").unwrap();
         let debug_enabled = Self::check_bool_property(
-            "persist.sys.rianixia.thermalcore-debug",
+            "persist.sys.ncthermal.thermalcore-debug",
             false
         );
         let audit_logs_enabled = Self::check_bool_property(PROP_AUDIT_LOGS_ENABLED, false);

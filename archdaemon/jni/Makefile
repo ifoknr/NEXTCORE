@@ -1,5 +1,5 @@
 CC     = clang
-TARGET = sys.azenith-service
+TARGET = sys.nextcore-service
 TARGET_TRIPLE = aarch64-unknown-linux-android26
 
 SRCS = Main.c $(wildcard src/*/*.c)

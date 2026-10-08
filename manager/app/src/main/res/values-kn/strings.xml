@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore ಕುರಿತು</string>
+    <string name="about_nextcore">NextCore ಕುರಿತು</string>
     <string name="about_source_code">%1$s ನಲ್ಲಿ ಮೂಲ ಕೋಡ್ ವೀಕ್ಷಿಸಿ&lt;br/&gt;ನಮ್ಮ %2$s ಚಾನೆಲ್‌ಗೆ ಸೇರಿ</string>
     <string name="accent_color">ಮುಖ್ಯ ಬಣ್ಣ</string>
     <string name="all_checks_finished">ಎಲ್ಲಾ ಪರಿಶೀಲನೆಗಳು ಮುಗಿದವು</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ಅಪ್ಲಿಕೇಶನ್ ಸೆಟ್ಟಿಂಗ್ಗಳು</string>
     <string name="appearance">ಗೋಚರತೆ</string>
     <string name="applist_title">ಅಪ್ಲಿಕೇಶನ್ ಪಟ್ಟಿ</string>
-    <string name="azenith_version">NextCore ಆವೃತ್ತಿ</string>
+    <string name="nextcore_version">NextCore ಆವೃತ್ತಿ</string>
     <string name="balanced_io_scheduler">ಸಮತೋಲಿತ I/O ಶೆಡ್ಯೂಲರ್</string>
     <string name="balanced_io_scheduler_desc">ಸಮತೋಲಿತ ಸಂರಚನೆಯಲ್ಲಿ ಬಳಸಲಾಗುವ ಶೆಡ್ಯೂಲರ್</string>
     <string name="balanced_mali_gov">ಸಮತೋಲಿತ Mali GPU ಗವರ್ನರ್</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ಲೇಖಕ</string>
     <string name="str_auto_mode">ಸ್ವಯಂ ಮೋಡ್</string>
     <string name="str_available_nodes">ಲಭ್ಯವಿರುವ ಗುರಿ ನೋಡ್‌ಗಳು (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ಸಿದ್ಧವಾಗಿದೆ!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ಸಿದ್ಧವಾಗಿದೆ!</string>
     <string name="str_backup_configuration">ಸಂರಚನೆಯನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ</string>
     <string name="str_backup_content_detected_select">ಬ್ಯಾಕಪ್ ವಿಷಯ ಪತ್ತೆಯಾಗಿದೆ, ದಯವಿಟ್ಟು ಮರುಸ್ಥಾಪಿಸಬೇಕಾದ ಐಟಂಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ:</string>
     <string name="str_backup_restore">ಬ್ಯಾಕಪ್ ಮತ್ತು ಮರುಸ್ಥಾಪನೆ</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ಗ್ರೇಡಿಯಂಟ್ ಅಪಾರದರ್ಶಕತೆ</string>
     <string name="str_installing_update">ನವೀಕರಣವನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ…</string>
     <string name="str_interface">ಇಂಟರ್ಫೇಸ್</string>
-    <string name="str_kanaochar">ಕನಾವೊಚರ್</string>
     <string name="str_launch_app">ಅಪ್ಲಿಕೇಶನ್ ಪ್ರಾರಂಭಿಸಿ</string>
     <string name="str_launch_compatibility_check">ಹೊಂದಾಣಿಕೆ ಪರಿಶೀಲನೆ ಪ್ರಾರಂಭಿಸಿ</string>
     <string name="str_let_s_adjust_a_few_basic_setti">ನಾವು ಕೆಲವು ಮೂಲ ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಸರಿಹೊಂದಿಸೋಣ</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">ದಯವಿಟ್ಟು NextCore ಗೆ ರೂಟ್ ಪ್ರವೇಶವನ್ನು ನೀಡಿ</string>
-    <string name="str_liliya">ಲಿಲಿಯಾ</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">ದಯವಿಟ್ಟು NextCore ಗೆ ರೂಟ್ ಪ್ರವೇಶವನ್ನು ನೀಡಿ</string>
     <string name="str_load_a_previously_saved_backup">ಹಿಂದೆ ಉಳಿಸಿದ ಬ್ಯಾಕಪ್ ಫೈಲ್ ಅನ್ನು ಲೋಡ್ ಮಾಡಿ</string>
     <string name="str_logs_diagnostics">ಲಾಗ್‌ಗಳು ಮತ್ತು ರೋಗನಿರ್ಣಯ</string>
     <string name="str_maintainer">ನಿರ್ವಾಹಕ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ಚಾರ್ಜರ್ ಸಂಪರ್ಕ ಪತ್ತೆಯಾಗಿಲ್ಲ, ದಯವಿಟ್ಟು ಚಾರ್ಜರ್ ಅನ್ನು ಸೇರಿಸಿ ನಂತರ ರೋಗನಿರ್ಣಯವನ್ನು ರನ್ ಮಾಡಿ</string>
     <string name="str_preview">ಪೂರ್ವವೀಕ್ಷಣೆ</string>
     <string name="str_restore_configuration">ಸಂರಚನೆಯನ್ನು ಮರುಸ್ಥಾಪಿಸಿ</string>
-    <string name="str_rianixia">ರಿಯಾನಿಕ್ಸಿಯಾ</string>
+    <string name="str_thermalcore">ರಿಯಾನಿಕ್ಸಿಯಾ</string>
     <string name="str_root_access_denied">ರೂಟ್ ಪ್ರವೇಶವನ್ನು ನಿರಾಕರಿಸಲಾಗಿದೆ, NextCore ಚಾಲನೆಯಾಗಲು ರೂಟ್ ಪ್ರವೇಶ ಅಗತ್ಯವಿದೆ</string>
     <string name="str_root_access_granted">ರೂಟ್ ಪ್ರವೇಶ ಪಡೆಯಲಾಗಿದೆ, ಎಲ್ಲವೂ ಸಿದ್ಧವಾಗಿದೆ!</string>
     <string name="str_run_diagnostics_above_or_check">ಮೇಲಿನ ರೋಗನಿರ್ಣಯವನ್ನು ರನ್ ಮಾಡಿ, ಅಥವಾ ಕರ್ನಲ್ ಬೈಪಾಸ್ ಚಾರ್ಜಿಂಗ್ ನೋಡ್‌ಗಳನ್ನು ಹೊಂದಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ಆವೃತ್ತಿ %1$s</string>
     <string name="walt_tunes">WALT ಗವರ್ನರ್ ಟ್ಯೂನ್</string>
     <string name="walt_tunes_desc">WALT ಗವರ್ನರ್ ಪ್ಯಾರಾಮೀಟರ್‌ಗಳನ್ನು ಆಪ್ಟಿಮೈಸ್ ಮಾಡಿ, CPU ಶೆಡ್ಯೂಲಿಂಗ್ ಪ್ರತಿಕ್ರಿಯೆ ವೇಗವನ್ನು ಹೆಚ್ಚಿಸಿ</string>
-    <string name="welcome_azenith">NextCore ಗೆ ಸ್ವಾಗತ</string>
+    <string name="welcome_nextcore">NextCore ಗೆ ಸ್ವಾಗತ</string>
     <string name="yes">ಹೌದು</string>
     <string name="str_use_scroll_animation">ಸ್ಕ್ರೋಲ್ ಅನಿಮೇಷನ್ ಬಳಸಿ</string>
     <string name="str_use_scroll_animation_summary">ಪುಟಗಳ ನಡುವೆ ಸ್ವೈಪ್ ಅನಿಮೇಷನ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</string>

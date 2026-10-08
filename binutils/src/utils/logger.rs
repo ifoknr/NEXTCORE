@@ -21,9 +21,9 @@ use std::io::Write;
 use std::process::Command;
 use crate::utils::get_debugmode;
 
-pub const LOG_FILE:     &str = "/data/adb/.config/AZenith/debug/AZenith.log";
-pub const VERBOSE_FILE: &str = "/data/adb/.config/AZenith/debug/AZenithVerbose.log";
-const     LOG_DIR:      &str = "/data/adb/.config/AZenith/debug";
+pub const LOG_FILE:     &str = "/data/adb/.config/NextCore/debug/NextCore.log";
+pub const VERBOSE_FILE: &str = "/data/adb/.config/NextCore/debug/NextCoreVerbose.log";
+const     LOG_DIR:      &str = "/data/adb/.config/NextCore/debug";
 
 const ANDROID_LOG_DEBUG: i32 = 3;
 const ANDROID_LOG_INFO:  i32 = 4;
@@ -101,19 +101,19 @@ pub fn write_error(tag: &str, message: &str) {
 }
 
 pub fn log_info(message: &str) {
-    write_log("AZenith_Utility", message);
+    write_log("NextCore_Utility", message);
 }
 
 pub fn verbose(message: &str) {
     if get_debugmode() {
-        write_verbose("AZenith_Utility", message);
+        write_verbose("NextCore_Utility", message);
     }
 }
 
 pub fn log_warn(message: &str) {
-    write_warn("AZenith_Utility", message);
+    write_warn("NextCore_Utility", message);
 }
 
 pub fn log_error(message: &str) {
-    write_error("AZenith_Utility", message);
+    write_error("NextCore_Utility", message);
 }

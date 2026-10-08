@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore ବିଷୟରେ</string>
+    <string name="about_nextcore">NextCore ବିଷୟରେ</string>
     <string name="about_source_code">%1$s ରେ ସୋର୍ସ କୋଡ୍ ଦେଖନ୍ତୁ&lt;br/&gt;ଆମ %2$s ଚ୍ୟାନେଲରେ ଯୋଗ ଦିଅନ୍ତୁ</string>
     <string name="accent_color">ଆକ୍ସେଣ୍ଟ ରଙ୍ଗ</string>
     <string name="all_checks_finished">ସମସ୍ତ ଯାଞ୍ଚ ସମାପ୍ତ</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">ଆପ୍ଲିକେସନ ସେଟିଂ</string>
     <string name="appearance">ଦୃଶ୍ୟ</string>
     <string name="applist_title">ଆପ୍ଲିକେସନ ତାଲିକା</string>
-    <string name="azenith_version">NextCore ସଂସ୍କରଣ</string>
+    <string name="nextcore_version">NextCore ସଂସ୍କରଣ</string>
     <string name="balanced_io_scheduler">ସନ୍ତୁଳିତ I/O ନିର୍ଦ୍ଧାରକ</string>
     <string name="balanced_io_scheduler_desc">ସନ୍ତୁଳିତ ବିନ୍ୟାସରେ ବ୍ୟବହୃତ ନିର୍ଦ୍ଧାରକ</string>
     <string name="balanced_mali_gov">ସନ୍ତୁଳିତ Mali GPU ଗଭର୍ନର</string>
@@ -253,7 +253,7 @@
     <string name="str_author">ଲେଖକ</string>
     <string name="str_auto_mode">ସ୍ୱୟଂଚାଳିତ ମୋଡ୍</string>
     <string name="str_available_nodes">ଉପଲବ୍ଧ ଲକ୍ଷ୍ୟ ନୋଡ୍ (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore ପ୍ରସ୍ତୁତ!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore ପ୍ରସ୍ତୁତ!</string>
     <string name="str_backup_configuration">ବ୍ୟାକଅପ୍ ବିନ୍ୟାସ</string>
     <string name="str_backup_content_detected_select">ବ୍ୟାକଅପ୍ ବିଷୟ ଚିହ୍ନଟ ହୋଇଛି, ପୁନରୁଦ୍ଧାର କରିବାକୁ ଆଇଟମ୍ ଚୟନ କରନ୍ତୁ:</string>
     <string name="str_backup_restore">ବ୍ୟାକଅପ୍ ଏବଂ ପୁନରୁଦ୍ଧାର</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ଗ୍ରେଡିଏଣ୍ଟ ଅପାସିଟି</string>
     <string name="str_installing_update">ଅପଡେଟ୍ ସଂସ୍ଥାପିତ ହେଉଛି…</string>
     <string name="str_interface">ଇଣ୍ଟରଫେସ୍</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">ଆପ୍ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="str_launch_compatibility_check">ସୁସଙ୍ଗତତା ଯାଞ୍ଚ ଆରମ୍ଭ କରନ୍ତୁ</string>
     <string name="str_let_s_adjust_a_few_basic_setti">ଆମେ କିଛି ମୌଳିକ ସେଟିଂ ଆଡଜଷ୍ଟ କରିବା</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">ଦୟାକରି NextCore କୁ Root ଅଧିକାର ଦିଅନ୍ତୁ</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">ଦୟାକରି NextCore କୁ Root ଅଧିକାର ଦିଅନ୍ତୁ</string>
     <string name="str_load_a_previously_saved_backup">ପୂର୍ବରୁ ସଞ୍ଚିତ ବ୍ୟାକଅପ୍ ଫାଇଲ୍ ଲୋଡ୍ କରନ୍ତୁ</string>
     <string name="str_logs_diagnostics">ଲଗ୍ ଏବଂ ଡାଇଗ୍ନୋସିସ୍</string>
     <string name="str_maintainer">ରକ୍ଷକ</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">ଚାର୍ଜର ଚିହ୍ନଟ ହୋଇନାହିଁ, ଦୟାକରି ଡାଇଗ୍ନୋସିସ୍ ଚଲାଇବା ପୂର୍ବରୁ ଚାର୍ଜର ଲଗାନ୍ତୁ</string>
     <string name="str_preview">ପୂର୍ବାବଲୋକନ</string>
     <string name="str_restore_configuration">ବିନ୍ୟାସ ପୁନରୁଦ୍ଧାର କରନ୍ତୁ</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root ଅଧିକାର ପ୍ରତ୍ୟାଖ୍ୟାନ ହୋଇଛି, NextCore ଚାଲିବା ପାଇଁ Root ଅଧିକାର ଆବଶ୍ୟକ</string>
     <string name="str_root_access_granted">Root ଅଧିକାର ମିଳିଛି, ସବୁ ପ୍ରସ୍ତୁତ!</string>
     <string name="str_run_diagnostics_above_or_check">ଉପରେ ଡାଇଗ୍ନୋସିସ୍ ଚଲାନ୍ତୁ, କିମ୍ବା କର୍ନେଲରେ ବାଇପାସ୍ ଚାର୍ଜିଂ ନୋଡ୍ ଅଛି କି ନାହିଁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
@@ -368,7 +366,7 @@
     <string name="version_format">ସଂସ୍କରଣ %1$s</string>
     <string name="walt_tunes">WALT ଗଭର୍ନର ଟ୍ୟୁନିଂ</string>
     <string name="walt_tunes_desc">WALT ଗଭର୍ନର ପାରାମିଟର ଅପ୍ଟିମାଇଜ୍ କରନ୍ତୁ, CPU ଶେଡ୍ୟୁଲିଂ ପ୍ରତିକ୍ରିୟା ଗତି ବୃଦ୍ଧି କରନ୍ତୁ</string>
-    <string name="welcome_azenith">NextCore କୁ ସ୍ୱାଗତ</string>
+    <string name="welcome_nextcore">NextCore କୁ ସ୍ୱାଗତ</string>
     <string name="yes">ହଁ</string>
     <string name="str_use_scroll_animation">ସ୍କ୍ରୋଲ୍ ଆନିମେସନ୍ ବ୍ୟବହାର କରନ୍ତୁ</string>
     <string name="str_use_scroll_animation_summary">ପୃଷ୍ଠାଗୁଡ଼ିକ ମଧ୍ୟରେ ସ୍ୱାଇପ୍ ଆନିମେସନ୍ ସକ୍ଷମ କରନ୍ତୁ</string>

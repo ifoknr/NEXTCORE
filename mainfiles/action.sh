@@ -19,13 +19,13 @@
 MODDIR="${0%/*}"
 { [ -z "$MODDIR" ] || [ "$MODDIR" = "." ] || [ ! -f "$MODDIR/module.prop" ]; } && MODDIR="/data/adb/modules/nextcore"
 readonly MODDIR
-readonly BIN_SVC="$MODDIR/system/bin/sys.azenith-service"
-readonly APK_COMP="$MODDIR/AZenith.apk"
+readonly BIN_SVC="$MODDIR/system/bin/sys.nextcore-service"
+readonly APK_COMP="$MODDIR/NextCore.apk"
 readonly TMP_DIR="/data/local/tmp"
-readonly TMP_APK="$TMP_DIR/AZenith_install.apk"
+readonly TMP_APK="$TMP_DIR/NextCore_install.apk"
 
-readonly BIN_UTIL="$MODDIR/system/bin/sys.azenith-utilityconf"
-readonly MODULE_CONFIG="/data/adb/.config/AZenith"
+readonly BIN_UTIL="$MODDIR/system/bin/sys.nextcore-utilityconf"
+readonly MODULE_CONFIG="/data/adb/.config/NextCore"
 readonly CPUFREQ="/sys/devices/system/cpu/cpu0/cpufreq"
 
 # ---------------------------------------------------------------------------
@@ -62,12 +62,12 @@ _get_status() {
 	profile="$(cat "$MODULE_CONFIG/API/current_profile" 2>/dev/null)"
 	gov="$(cat "$CPUFREQ/scaling_governor" 2>/dev/null)"
 	govs="$(cat "$CPUFREQ/scaling_available_governors" 2>/dev/null)"
-	custom_gov="$(getprop persist.sys.azenith.custom_default_cpu_gov)"
-	bypass="$(getprop persist.sys.azenithconf.bypasschg)"
-	bypass_path="$(getprop persist.sys.azenithconf.bypasspath)"
-	auto="$(getprop persist.sys.azenithconf.AIenabled)"
+	custom_gov="$(getprop persist.sys.nextcore.custom_default_cpu_gov)"
+	bypass="$(getprop persist.sys.nextcoreconf.bypasschg)"
+	bypass_path="$(getprop persist.sys.nextcoreconf.bypasspath)"
+	auto="$(getprop persist.sys.nextcoreconf.AIenabled)"
 	running=0
-	[ -n "$(/system/bin/toybox pidof sys.azenith-service)" ] && running=1
+	[ -n "$(/system/bin/toybox pidof sys.nextcore-service)" ] && running=1
 	support="$(grep '^support=' "$MODULE_CONFIG/device_profile" 2>/dev/null | cut -d= -f2-)"
 	soc_vendor="$(grep '^soc_vendor=' "$MODULE_CONFIG/device_profile" 2>/dev/null | cut -d= -f2-)"
 	printf '{"support":"%s","soc_vendor":"%s","device":"%s","soc":"%s","temp":"%s","profile":"%s","governor":"%s","governors":"%s","custom_gov":"%s","bypass":"%s","bypass_path":"%s","auto":"%s","daemon":%s,"version":"%s"}\n' \
@@ -81,7 +81,7 @@ _get_status() {
 _set_bypass() {
 	case "$1" in
 	0 | 1)
-		setprop persist.sys.azenithconf.bypasschg "$1"
+		setprop persist.sys.nextcoreconf.bypasschg "$1"
 		mkdir -p "$MODULE_CONFIG/bypasschgconfig"
 		echo "$1" >"$MODULE_CONFIG/bypasschgconfig/bypasschg"
 		;;
@@ -96,10 +96,10 @@ _set_global() {
 		echo "OK"
 		return 0
 	elif [ "$gov" = "auto" ]; then
-		setprop persist.sys.azenith.custom_default_cpu_gov ""
-		gov="$(getprop persist.sys.azenith.default_cpu_gov)"
+		setprop persist.sys.nextcore.custom_default_cpu_gov ""
+		gov="$(getprop persist.sys.nextcore.default_cpu_gov)"
 	elif _is_valid_gov "$gov"; then
-		setprop persist.sys.azenith.custom_default_cpu_gov "$gov"
+		setprop persist.sys.nextcore.custom_default_cpu_gov "$gov"
 	else
 		echo "ERROR: unsupported governor: $gov" >&2
 		return 1
@@ -114,18 +114,18 @@ _set_global() {
 }
 
 _doctor() {
-	echo "== state: $(getprop persist.sys.azenith.state)"
-	echo "== service pid: $(/system/bin/toybox pidof sys.azenith-service)"
-	echo "== appmonitor pid: $(/system/bin/toybox pidof sys.azenith-appmonitoring)"
-	echo "== soc: $(getprop ro.soc.manufacturer) $(getprop ro.soc.model) (soctype=$(getprop persist.sys.azenith.soctype))"
+	echo "== state: $(getprop persist.sys.nextcore.state)"
+	echo "== service pid: $(/system/bin/toybox pidof sys.nextcore-service)"
+	echo "== appmonitor pid: $(/system/bin/toybox pidof sys.nextcore-appmonitoring)"
+	echo "== soc: $(getprop ro.soc.manufacturer) $(getprop ro.soc.model) (soctype=$(getprop persist.sys.nextcore.soctype))"
 	echo "== profile: $(cat "$MODULE_CONFIG/API/current_profile" 2>/dev/null)"
 	[ -d /data/adb/modules/AZenith ] && echo "== WARNING: AZenith module folder still exists"
 	echo "== device_profile"
 	cat "$MODULE_CONFIG/device_profile" 2>/dev/null || echo "(missing)"
 	echo "== boot.log"
 	cat "$MODULE_CONFIG/debug/boot.log" 2>/dev/null
-	echo "== AZenith.log (last 30)"
-	tail -n 30 "$MODULE_CONFIG/debug/AZenith.log" 2>/dev/null
+	echo "== NextCore.log (last 30)"
+	tail -n 30 "$MODULE_CONFIG/debug/NextCore.log" 2>/dev/null
 }
 
 case "$1" in
@@ -155,7 +155,7 @@ set_profile)
 set_auto)
 	case "$2" in
 	0 | 1)
-		setprop persist.sys.azenithconf.AIenabled "$2"
+		setprop persist.sys.nextcoreconf.AIenabled "$2"
 		echo "$2" >"$MODULE_CONFIG/API/current_modes"
 		echo "OK"
 		exit 0
@@ -167,7 +167,7 @@ esac
 
 # Check if app is installed
 _app_installed() {
-	pm path zx.azenith >/dev/null 2>&1
+	pm path zx.nextcore >/dev/null 2>&1
 }
 
 # Check if service binary exists
@@ -237,10 +237,10 @@ install_manager() {
 	if echo "$result" | grep -iq "Success"; then
 		printf "[✓] NextCore Manager installed successfully\n"
 
-		pm enable --user 0 zx.azenith/.Launcher >/dev/null 2>&1
-		pm grant zx.azenith android.permission.READ_EXTERNAL_STORAGE >/dev/null 2>&1
-		pm grant zx.azenith android.permission.POST_NOTIFICATIONS >/dev/null 2>&1
-		pm grant zx.azenith android.permission.READ_MEDIA_IMAGES >/dev/null 2>&1
+		pm enable --user 0 zx.nextcore/.Launcher >/dev/null 2>&1
+		pm grant zx.nextcore android.permission.READ_EXTERNAL_STORAGE >/dev/null 2>&1
+		pm grant zx.nextcore android.permission.POST_NOTIFICATIONS >/dev/null 2>&1
+		pm grant zx.nextcore android.permission.READ_MEDIA_IMAGES >/dev/null 2>&1
 
 		echo "- Launching manager..."
 		sleep 1
@@ -253,7 +253,7 @@ install_manager() {
 		else
 			echo "  Log: $result"
 		fi
-		echo "  Please install AZenith.apk manually."
+		echo "  Please install NextCore.apk manually."
 		sleep 3
 		return 1
 	fi

@@ -1,5 +1,36 @@
 use crate::utils::*; use std::fs; use std::path::Path;
 
+/// DVFSRC (memory/vcore) governor nodes. The vendor value is saved at boot
+/// (see initialize) and restored outside max mode.
+pub const DVFSRC_GOVERNORS: [&str; 2] = [
+    "/sys/class/devfreq/mtk-dvfsrc-devfreq/governor",
+    "/sys/devices/platform/soc/*.dvfsrc/mtk-dvfsrc-devfreq/devfreq/mtk-dvfsrc-devfreq/governor",
+];
+
+/// `Some(gov)` sets the DVFSRC governor, `None` restores the vendor one.
+fn dvfsrc_governor(gov: Option<&str>) {
+    for pattern in DVFSRC_GOVERNORS {
+        if let Ok(paths) = glob::glob(pattern) {
+            for path in paths.flatten() {
+                let p = path.to_string_lossy();
+                match gov {
+                    Some(g) => write_unlock(g, &p),
+                    None => restore_node(&p),
+                }
+            }
+        }
+    }
+}
+
+fn dvfsrc_ddr_opp(opp: &str) {
+    write_unlock(opp, "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
+    if let Ok(paths) = glob::glob("/sys/devices/platform/*.dvfsrc") {
+        for path in paths.flatten() {
+            write_unlock(opp, &format!("{}/helio-dvfsrc/dvfsrc_req_ddr_opp", path.display()));
+        }
+    }
+}
+
 pub fn mediatek_balance() {
     if Path::new("/proc/ppm/policy_status").exists() {
         let content = fs::read_to_string("/proc/ppm/policy_status").unwrap_or_default();
@@ -52,29 +83,8 @@ pub fn mediatek_balance() {
     write_lock("stop 0", "/proc/mtk_batoc_throttling/battery_oc_protect_stop");
     write_lock("1", "/sys/kernel/eara_thermal/enable");
 
-    write_lock("-1", "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
-    write_lock("userspace", "/sys/class/devfreq/mtk-dvfsrc-devfreq/governor");
-    
-        // 1. Eksekusi statis untuk path /sys/kernel dan /sys/class (karena ini symlink global, tidak berubah)
-    write_lock("-1", "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
-    write_lock("userspace", "/sys/class/devfreq/mtk-dvfsrc-devfreq/governor");
-
-    if let Ok(paths) = glob::glob("/sys/devices/platform/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("-1", &format!("{}/helio-dvfsrc/dvfsrc_req_ddr_opp", p_str));
-            }
-        }
-    }
-
-    if let Ok(paths) = glob::glob("/sys/devices/platform/soc/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("userspace", &format!("{}/mtk-dvfsrc-devfreq/devfreq/mtk-dvfsrc-devfreq/governor", p_str));
-            }
-        }
-    }
-    
+    dvfsrc_ddr_opp("-1");
+    dvfsrc_governor(None);
 
     if let Ok(mut paths) = glob::glob("/sys/devices/platform/*.mali") {
         if let Some(Ok(path)) = paths.next() {
@@ -109,7 +119,7 @@ pub fn mediatek_performance(max: bool) {
     
     // ppm_fix_freq("0"); 
 
-    let use_fpsgo = getprop("persist.sys.azenithconf.usefpsgo");
+    let use_fpsgo = getprop("persist.sys.nextcoreconf.usefpsgo");
     if use_fpsgo == "0" {
         write_lock("0", "/sys/kernel/fpsgo/common/force_onoff");
     }
@@ -155,28 +165,20 @@ pub fn mediatek_performance(max: bool) {
     // EARA keeps the frame rate steady as the chip warms up; only max mode turns it off.
     write_lock(if max { "0" } else { "1" }, "/sys/kernel/eara_thermal/enable");
 
-    write_lock("0", "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
-    write_lock("performance", "/sys/class/devfreq/mtk-dvfsrc-devfreq/governor");
-    
-    if let Ok(paths) = glob::glob("/sys/devices/platform/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("0", &format!("{}/helio-dvfsrc/dvfsrc_req_ddr_opp", p_str));
-            }
-        }
-    }
-
-    if let Ok(paths) = glob::glob("/sys/devices/platform/soc/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("performance", &format!("{}/mtk-dvfsrc-devfreq/devfreq/mtk-dvfsrc-devfreq/governor", p_str));
-            }
-        }
+    // Memory clock: pinned at its top OPP only in max mode; sustained mode
+    // leaves it to the vendor governor, which already ramps for games.
+    if max {
+        dvfsrc_ddr_opp("0");
+        dvfsrc_governor(Some("performance"));
+    } else {
+        dvfsrc_ddr_opp("-1");
+        dvfsrc_governor(None);
     }
 
     if let Ok(mut paths) = glob::glob("/sys/devices/platform/*.mali") {
         if let Some(Ok(path)) = paths.next() {
-            write_lock("always_on", &format!("{}/power_policy", path.display()));
+            // always_on keeps every shader core powered: only worth it in max mode.
+            write_unlock(if max { "always_on" } else { "coarse_demand" }, &format!("{}/power_policy", path.display()));
         }
     }
 }
@@ -207,24 +209,8 @@ pub fn mediatek_powersave() {
     
     write_lock("1", "/sys/kernel/eara_thermal/enable");
 
-    write_lock("-1", "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
-    write_lock("powersave", "/sys/class/devfreq/mtk-dvfsrc-devfreq/governor");
-    
-    if let Ok(paths) = glob::glob("/sys/devices/platform/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("-1", &format!("{}/helio-dvfsrc/dvfsrc_req_ddr_opp", p_str));
-            }
-        }
-    }
-
-    if let Ok(paths) = glob::glob("/sys/devices/platform/soc/*.dvfsrc") {
-        for path in paths.flatten() {
-            if let Some(p_str) = path.to_str() {
-                write_lock("powersave", &format!("{}/mtk-dvfsrc-devfreq/devfreq/mtk-dvfsrc-devfreq/governor", p_str));
-            }
-        }
-    }
+    dvfsrc_ddr_opp("-1");
+    dvfsrc_governor(None);
 
     if Path::new("/proc/gpufreq/gpufreq_power_limited").exists() {
         let settings = [

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCoreist</string>
+    <string name="about_nextcore">NextCoreist</string>
     <string name="about_source_code">Vaata lähtekoodi %1$s&lt;br/&gt;Liitu meie %2$s kanaliga</string>
     <string name="accent_color">Aktsentvärv</string>
     <string name="all_checks_finished">Kõik kontrollid lõpetatud</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Rakenduse seaded</string>
     <string name="appearance">Välimus</string>
     <string name="applist_title">Rakenduste loend</string>
-    <string name="azenith_version">NextCorei versioon</string>
+    <string name="nextcore_version">NextCorei versioon</string>
     <string name="balanced_io_scheduler">Tasakaalustatud I/O planeerija</string>
     <string name="balanced_io_scheduler_desc">Tasakaalustatud profiili planeerija</string>
     <string name="balanced_mali_gov">Tasakaalustatud Mali GPU juht</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Autor</string>
     <string name="str_auto_mode">Automaatrežiim</string>
     <string name="str_available_nodes">Saadaval olevad sihtsõlmed (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore on nüüd valmis!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore on nüüd valmis!</string>
     <string name="str_backup_configuration">Varunda konfiguratsioon</string>
     <string name="str_backup_content_detected_select">Tuvastati varukoopia sisu. Palun vali, mida taastada:</string>
     <string name="str_backup_restore">Varundamine ja taastamine</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Gradiendi läbipaistmatus</string>
     <string name="str_installing_update">Uuenduse installimine…</string>
     <string name="str_interface">Liides</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Käivita rakendus</string>
     <string name="str_launch_compatibility_check">Käivita ühilduvuse kontroll</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Kohandame mõned põhiseaded</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Palun anna NextCoreile Root õigused</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Palun anna NextCoreile Root õigused</string>
     <string name="str_load_a_previously_saved_backup">Laadi eelnevalt salvestatud varukoopiafail</string>
     <string name="str_logs_diagnostics">Logid ja diagnostika</string>
     <string name="str_maintainer">Haldaja</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Laadijat ei tuvastatud. Palun ühenda laadija ja seejärel käivita diagnostika uuesti.</string>
     <string name="str_preview">Eelvaade</string>
     <string name="str_restore_configuration">Taasta konfiguratsioon</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root õigused keelati; NextCore vajab töötamiseks Root õigusi</string>
     <string name="str_root_access_granted">Root õigused saadud; kõik on valmis!</string>
     <string name="str_run_diagnostics_above_or_check">Käivita ülaltoodud diagnostika või kontrolli, kas kernel sisaldab möödaviiklaadimise sõlme</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Versioon %1$s</string>
     <string name="walt_tunes">WALT juhtimise häälestamine</string>
     <string name="walt_tunes_desc">Optimeeri WALT-juhtimise parameetreid CPU ajastuse reageerimisaja parandamiseks</string>
-    <string name="welcome_azenith">Tere tulemast NextCorei</string>
+    <string name="welcome_nextcore">Tere tulemast NextCorei</string>
     <string name="yes">Jah</string>
     <string name="str_use_scroll_animation">Kasuta kerimisanimatsiooni</string>
     <string name="str_use_scroll_animation_summary">Luba lehtede vahel libistamise animatsioon</string>

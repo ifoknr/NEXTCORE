@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">О NextCore</string>
+    <string name="about_nextcore">О NextCore</string>
     <string name="about_source_code">Просмотреть исходный код на %1$s&lt;br/&gt;Присоединиться к нашему каналу %2$s</string>
     <string name="accent_color">Акцентный цвет</string>
     <string name="all_checks_finished">Все проверки завершены</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">Настройки приложения</string>
     <string name="appearance">Внешний вид</string>
     <string name="applist_title">Список приложений</string>
-    <string name="azenith_version">Версия NextCore</string>
+    <string name="nextcore_version">Версия NextCore</string>
     <string name="balanced_io_scheduler">Сбалансированный планировщик I/O</string>
     <string name="balanced_io_scheduler_desc">Планировщик, используемый в сбалансированном профиле</string>
     <string name="balanced_mali_gov">Регулятор GPU Mali для сбалансированного режима</string>
@@ -253,7 +253,7 @@
     <string name="str_author">Автор</string>
     <string name="str_auto_mode">Автоматический режим</string>
     <string name="str_available_nodes">Доступные целевые узлы (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore готов к работе!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore готов к работе!</string>
     <string name="str_backup_configuration">Резервное копирование конфигурации</string>
     <string name="str_backup_content_detected_select">Обнаружено содержимое резервной копии. Выберите элементы для восстановления:</string>
     <string name="str_backup_restore">Резервное копирование и восстановление</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">Непрозрачность градиента</string>
     <string name="str_installing_update">Установка обновления…</string>
     <string name="str_interface">Интерфейс</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">Запустить приложение</string>
     <string name="str_launch_compatibility_check">Запустить проверку совместимости</string>
     <string name="str_let_s_adjust_a_few_basic_setti">Давайте настроим несколько основных параметров</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">Пожалуйста, предоставьте NextCore Root-доступ</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">Пожалуйста, предоставьте NextCore Root-доступ</string>
     <string name="str_load_a_previously_saved_backup">Загрузить ранее сохранённый файл резервной копии</string>
     <string name="str_logs_diagnostics">Журналы и диагностика</string>
     <string name="str_maintainer">Модератор</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">Не обнаружено подключение зарядного устройства. Подключите зарядное устройство перед запуском диагностики.</string>
     <string name="str_preview">Предпросмотр</string>
     <string name="str_restore_configuration">Восстановление конфигурации</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">Root-доступ отклонён. Для работы NextCore необходим Root-доступ.</string>
     <string name="str_root_access_granted">Root-доступ получен. Всё готово!</string>
     <string name="str_run_diagnostics_above_or_check">Запустите диагностику выше или проверьте, содержит ли ядро узлы байпасного питания</string>
@@ -368,7 +366,7 @@
     <string name="version_format">Версия %1$s</string>
     <string name="walt_tunes">Настройка регулятора WALT</string>
     <string name="walt_tunes_desc">Оптимизация параметров регулятора WALT для повышения скорости реагирования планировщика CPU</string>
-    <string name="welcome_azenith">Добро пожаловать в NextCore</string>
+    <string name="welcome_nextcore">Добро пожаловать в NextCore</string>
     <string name="yes">Да</string>
     <string name="str_use_scroll_animation">Использовать анимацию прокрутки</string>
     <string name="str_use_scroll_animation_summary">Включить анимацию свайпа между страницами</string>

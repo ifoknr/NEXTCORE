@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about_azenith">NextCore बद्दल</string>
+    <string name="about_nextcore">NextCore बद्दल</string>
     <string name="about_source_code">%1$s वर स्रोत कोड पहा&lt;br/&gt;आमच्या %2$s वाहिनीत सामील व्हा</string>
     <string name="accent_color">अ‍ॅक्सेंट रंग</string>
     <string name="all_checks_finished">सर्व तपासण्या पूर्ण</string>
@@ -16,7 +16,7 @@
     <string name="app_settings_title">अ‍ॅप सेटिंग्ज</string>
     <string name="appearance">दिसणे</string>
     <string name="applist_title">अ‍ॅप यादी</string>
-    <string name="azenith_version">NextCore आवृत्ती</string>
+    <string name="nextcore_version">NextCore आवृत्ती</string>
     <string name="balanced_io_scheduler">संतुलित I/O शेड्यूलर</string>
     <string name="balanced_io_scheduler_desc">संतुलित योजनेत वापरलेले शेड्यूलर</string>
     <string name="balanced_mali_gov">संतुलित Mali GPU गव्हर्नर</string>
@@ -253,7 +253,7 @@
     <string name="str_author">लेखक</string>
     <string name="str_auto_mode">स्वयं मोड</string>
     <string name="str_available_nodes">उपलब्ध लक्ष्य नोड्स (%1$d)</string>
-    <string name="str_azenith_is_now_ready_to_go">NextCore तयार आहे!</string>
+    <string name="str_nextcore_is_now_ready_to_go">NextCore तयार आहे!</string>
     <string name="str_backup_configuration">रचना बॅकअप</string>
     <string name="str_backup_content_detected_select">बॅकअप सामग्री आढळली, पुनर्संचयित करण्यासाठी आयटम निवडा:</string>
     <string name="str_backup_restore">बॅकअप आणि पुनर्संचय</string>
@@ -290,12 +290,10 @@
     <string name="str_gradient_opacity">ग्रेडियंट अपारदर्शकता</string>
     <string name="str_installing_update">अद्यतन स्थापित केले जात आहे…</string>
     <string name="str_interface">इंटरफेस</string>
-    <string name="str_kanaochar">Kanaochar</string>
     <string name="str_launch_app">अ‍ॅप लाँच करा</string>
     <string name="str_launch_compatibility_check">सुसंगतता तपासणी सुरू करा</string>
     <string name="str_let_s_adjust_a_few_basic_setti">चला काही मूलभूत सेटिंग्ज समायोजित करूया</string>
-    <string name="str_let_s_grant_azenith_a_root_acc">कृपया NextCore ला रूट प्रवेश द्या</string>
-    <string name="str_liliya">Liliya</string>
+    <string name="str_let_s_grant_nextcore_a_root_acc">कृपया NextCore ला रूट प्रवेश द्या</string>
     <string name="str_load_a_previously_saved_backup">जतन केलेली बॅकअप फाइल लोड करा</string>
     <string name="str_logs_diagnostics">लॉग आणि निदान</string>
     <string name="str_maintainer">देखभालक</string>
@@ -315,7 +313,7 @@
     <string name="str_plug_in_charger">चार्जर कनेक्शन आढळले नाही, कृपया निदान चालविण्यापूर्वी चार्जर प्लग करा</string>
     <string name="str_preview">पूर्वावलोकन</string>
     <string name="str_restore_configuration">रचना पुनर्संचयित करा</string>
-    <string name="str_rianixia">Rianixia</string>
+    <string name="str_thermalcore">ThermalCore</string>
     <string name="str_root_access_denied">रूट प्रवेश नाकारला, NextCore चालविण्यासाठी रूट प्रवेश आवश्यक आहे</string>
     <string name="str_root_access_granted">रूट प्रवेश प्राप्त, सर्व काही तयार!</string>
     <string name="str_run_diagnostics_above_or_check">वरील निदान चालवा, किंवा कर्नलमध्ये बायपास पॉवर नोड आहे का तपासा</string>
@@ -368,7 +366,7 @@
     <string name="version_format">आवृत्ती %1$s</string>
     <string name="walt_tunes">WALT गव्हर्नर ट्यूनिंग</string>
     <string name="walt_tunes_desc">WALT गव्हर्नर पॅरामीटर्स ऑप्टिमायझ करा, CPU शेड्युलिंग प्रतिसाद गती वाढवा</string>
-    <string name="welcome_azenith">NextCore मध्ये स्वागत आहे</string>
+    <string name="welcome_nextcore">NextCore मध्ये स्वागत आहे</string>
     <string name="yes">होय</string>
     <string name="str_use_scroll_animation">स्क्रोल ॲनिमेशन वापरा</string>
     <string name="str_use_scroll_animation_summary">पृष्ठांमध्ये स्वाइप ॲनिमेशन सक्षम करा</string>

@@ -4,7 +4,7 @@
 #
 # Detects the SoC, CPU clusters and the sysfs nodes the manager app reads for
 # live monitoring, then writes them as key=value lines to
-#   /data/adb/.config/AZenith/device_profile
+#   /data/adb/.config/NextCore/device_profile
 #
 # Sourced by customize.sh at install time and run by service.sh at boot, so the
 # profile follows kernel or ROM changes. Only reads sysfs; writes nothing else.
@@ -12,7 +12,7 @@
 # Usage: devprobe_run [quiet]
 #
 
-DEVPROBE_OUT="/data/adb/.config/AZenith/device_profile"
+DEVPROBE_OUT="/data/adb/.config/NextCore/device_profile"
 
 _dp_say() {
 	[ "$_DP_QUIET" = "1" ] && return 0
