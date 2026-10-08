@@ -61,7 +61,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
 
         item(key = "h_perf") { HudSectionTitle(stringResource(R.string.hud_section_perf)) }
         item(key = "perf") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 {
                     HudRow(stringResource(R.string.hud_lite), icon = Icons.Rounded.Bolt, subtitle = stringResource(R.string.hud_lite_sub), trailing = {
                         vm.liteState?.let { HudSwitch(it, vm::updateLiteMode) }
@@ -111,7 +111,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
 
         item(key = "h_extra") { HudSectionTitle(stringResource(R.string.hud_section_extra)) }
         item(key = "extra") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_preload), icon = Icons.Rounded.Download, subtitle = stringResource(R.string.hud_preload_sub), trailing = { vm.preloadState?.let { HudSwitch(it, vm::updatePreloadMode) } }) },
                 { HudRow(stringResource(R.string.hud_dnd), icon = Icons.Rounded.DoNotDisturbOn, trailing = { vm.dndState?.let { HudSwitch(it, vm::updateDndMode) } }) },
                 { HudRow(stringResource(R.string.hud_cleaner), icon = Icons.Rounded.CleaningServices, subtitle = stringResource(R.string.hud_cleaner_sub), trailing = { vm.memKillerState?.let { HudSwitch(it, vm::updateMemoryKiller) } }) },
@@ -121,7 +121,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
 
         item(key = "h_power") { HudSectionTitle(stringResource(R.string.hud_section_power)) }
         item(key = "power") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_bypass_game), icon = Icons.Rounded.BatteryChargingFull, subtitle = stringResource(R.string.hud_bypass_sub), onClick = { navController.navigate("bypasschg") }) },
                 { HudRow(stringResource(R.string.hud_thermalcore), icon = Icons.Rounded.AcUnit, subtitle = stringResource(R.string.hud_thermal_sub), trailing = { vm.thermalState?.let { HudSwitch(it, vm::updateThermalCore) } }) },
             ))
@@ -129,7 +129,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
 
         item(key = "h_engines") { HudSectionTitle(stringResource(R.string.hud_engines)) }
         item(key = "engines") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_cpu_engine), icon = Icons.Rounded.DeveloperBoard, onClick = { navController.navigate("engine_cpu") }) },
                 { HudRow(stringResource(R.string.hud_mem_engine), icon = Icons.Rounded.Memory, onClick = { navController.navigate("engine_mem") }) },
                 { HudRow(stringResource(R.string.hud_fps_engine), icon = Icons.Rounded.Insights, onClick = { navController.navigate("engine_fps") }) },
@@ -138,7 +138,7 @@ fun HudTweaksScreen(navController: NavController, isVisible: Boolean, vm: TweakV
 
         item(key = "h_more") { HudSectionTitle(stringResource(R.string.hud_section_more)) }
         item(key = "more") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_preferenced), icon = Icons.Rounded.Tune, subtitle = stringResource(R.string.hud_preferenced_sub), onClick = { navController.navigate("preferenced") }) },
                 { HudRow(stringResource(R.string.hud_color_scheme), icon = Icons.Rounded.Palette, onClick = { navController.navigate("colorscheme") }) },
                 { HudRow(stringResource(R.string.hud_fas), icon = Icons.Rounded.Layers, onClick = { navController.navigate("FasScreen") }) },

@@ -93,7 +93,7 @@ fun HudGameSettingsScreen(navController: NavController, pkg: String?, vm: AppSet
             }
         }
         item(key = "master") {
-            HudGroup(rows = listOf({
+            HudGroup(rows = listOf<@Composable () -> Unit>({
                 HudRow(
                     stringResource(R.string.hud_master), icon = Icons.Rounded.PowerSettingsNew,
                     subtitle = stringResource(R.string.hud_master_sub),
@@ -105,7 +105,7 @@ fun HudGameSettingsScreen(navController: NavController, pkg: String?, vm: AppSet
 
         item(key = "h_perf") { HudSectionTitle(stringResource(R.string.hud_section_perf)) }
         item(key = "perf") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { tri("perf_lite_mode", cfg.perf_lite_mode, Icons.Rounded.Bolt, R.string.hud_lite) },
                 { tri("bypass_charging", cfg.bypass_charging, Icons.Rounded.BatteryChargingFull, R.string.hud_bypass_game) },
                 { tri("game_preload", cfg.game_preload, Icons.Rounded.Download, R.string.hud_preload) },
@@ -120,7 +120,7 @@ fun HudGameSettingsScreen(navController: NavController, pkg: String?, vm: AppSet
             val rIdx = RENDERER_VALUES.indexOfFirst { it.equals(cfg.renderer, ignoreCase = true) }.coerceAtLeast(0)
             val refreshLabels = refreshValues.map { if (it == "default") defaultLabel else "$it Hz" }
             val hIdx = refreshValues.indexOfFirst { it.equals(cfg.refresh_rate, ignoreCase = true) }.coerceAtLeast(0)
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 {
                     HudRow(stringResource(R.string.hud_renderer), icon = Icons.Rounded.Layers, enabled = enabled, trailing = {
                         HudDropdownChip(rendererLabels, rIdx, { if (enabled) vm.updateSetting(pkg, "renderer", RENDERER_VALUES[it]) }, active = rIdx != 0)

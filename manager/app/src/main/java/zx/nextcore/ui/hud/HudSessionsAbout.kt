@@ -132,7 +132,7 @@ fun HudAboutScreen(navController: NavController) {
             }
         }
         item(key = "links") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_channel), icon = Icons.AutoMirrored.Rounded.Send, subtitle = stringResource(R.string.hud_channel_sub), onClick = { openUrl(context, CHANNEL_URL) }) },
                 { HudRow(stringResource(R.string.hud_source), icon = Icons.Rounded.Code, subtitle = stringResource(R.string.hud_source_sub), onClick = { openUrl(context, SOURCE_URL) }) },
                 { HudRow(stringResource(R.string.hud_licenses), icon = Icons.Rounded.Description, onClick = { showLicenses = !showLicenses }) },

@@ -98,7 +98,7 @@ fun HudSettingsScreen(
         if (message != null) item(key = "msg") { HudNote(message!!) }
 
         item(key = "theme") {
-            HudGroup(rows = listOf({
+            HudGroup(rows = listOf<@Composable () -> Unit>({
                 HudRow(
                     stringResource(R.string.hud_theme), icon = Icons.Rounded.Palette,
                     subtitle = stringResource(R.string.hud_theme_sub),
@@ -110,7 +110,7 @@ fun HudSettingsScreen(
         item(key = "h_features") { HudSectionTitle(stringResource(R.string.hud_features)) }
         item(key = "features") {
             // SettingsUiState.autoMode is true when auto mode is OFF (AIenabled == 0).
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 { HudRow(stringResource(R.string.hud_auto), icon = Icons.Rounded.AutoMode, subtitle = stringResource(R.string.hud_auto_sub), trailing = { HudSwitch(!ui.autoMode, { vm.setAutoMode(!it); homeVm.refreshAiMode() }) }) },
                 { HudRow(stringResource(R.string.hud_grace), icon = Icons.Rounded.Timer, subtitle = stringResource(R.string.hud_grace_sub), trailing = { HudSwitch(ui.profileTimeout, vm::setProfileTimeout) }) },
                 { HudRow(stringResource(R.string.hud_toast), icon = Icons.Rounded.Mail, trailing = { HudSwitch(ui.stateToast, vm::setShowToast) }) },
@@ -121,7 +121,7 @@ fun HudSettingsScreen(
 
         item(key = "h_tools") { HudSectionTitle(stringResource(R.string.hud_tools)) }
         item(key = "tools") {
-            HudGroup(rows = listOf(
+            HudGroup(rows = listOf<@Composable () -> Unit>(
                 {
                     HudRow(stringResource(R.string.hud_restart), icon = Icons.Rounded.RestartAlt, onClick = {
                         message = context.getString(R.string.hud_restarting)

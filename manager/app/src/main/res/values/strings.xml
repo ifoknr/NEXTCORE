@@ -703,7 +703,7 @@
     <string name="hud_floor">Floor</string>
     <string name="hud_ceiling">Ceiling</string>
     <string name="hud_governor">Governor</string>
-    <string name="hud_profile_perf_explain">Sustained performance: the floor sits at 70% of max on the big clusters and 50% on the smallest, the ceiling stays open, and thermal protection stays on.</string>
+    <string name="hud_profile_perf_explain" formatted="false">Sustained performance: the floor sits at 70% of max on the big clusters and 50% on the smallest, the ceiling stays open, and thermal protection stays on.</string>
     <string name="hud_profile_max_explain">Max performance is on: every core and the GPU are pinned at their top clock and thermal limits are relaxed. The device gets hot.</string>
     <string name="hud_profile_bal_explain">Balanced: the full range is open and the device governor decides.</string>
     <string name="hud_profile_eco_explain">Eco: the floor is the lowest step and the ceiling is lowered to save battery.</string>

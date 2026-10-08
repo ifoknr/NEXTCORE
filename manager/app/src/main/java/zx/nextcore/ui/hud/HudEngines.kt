@@ -195,7 +195,7 @@ fun HudMemoryEngineScreen(navController: NavController, vm: HomeViewModel = view
             ))
         }
         item(key = "trim") {
-            HudGroup(rows = listOf({
+            HudGroup(rows = listOf<@Composable () -> Unit>({
                 HudRow(
                     stringResource(R.string.hud_trim_now), icon = Icons.Rounded.CleaningServices,
                     subtitle = stringResource(R.string.hud_trim_now_sub),

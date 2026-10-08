@@ -703,7 +703,7 @@
     <string name="hud_floor">الحد الأدنى</string>
     <string name="hud_ceiling">الحد الأعلى</string>
     <string name="hud_governor">الحاكم</string>
-    <string name="hud_profile_perf_explain">أداء مستدام: الحد الأدنى 70% من الأقصى للأنوية الكبيرة و50% للصغيرة، والحد الأعلى مفتوح، وحماية الحرارة شغالة.</string>
+    <string name="hud_profile_perf_explain" formatted="false">أداء مستدام: الحد الأدنى 70% من الأقصى للأنوية الكبيرة و50% للصغيرة، والحد الأعلى مفتوح، وحماية الحرارة شغالة.</string>
     <string name="hud_profile_max_explain">الأداء الأقصى شغال: كل الأنوية وكرت الرسوميات على أعلى تردد، وحماية الحرارة مخففة. الجهاز بيسخن.</string>
     <string name="hud_profile_bal_explain">التوازن: المدى كامل مفتوح، وحاكم الجهاز يقرر.</string>
     <string name="hud_profile_eco_explain">التوفير: الحد الأدنى أقل خطوة، والحد الأعلى منخفض لتوفير البطارية.</string>

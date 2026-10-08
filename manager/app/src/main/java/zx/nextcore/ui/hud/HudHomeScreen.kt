@@ -96,7 +96,7 @@ fun HudHomeScreen(
             selinux = getSELinuxStatus(context)
         }
     }
-    val appVm: ApplistViewmodel = viewModel()
+    val appVm: ApplistViewmodel = androidx.lifecycle.viewmodel.compose.viewModel()
     LaunchedEffect(Unit) { appVm.loadApps(context) }
     val enabledGames = ApplistViewmodel.apps.filter { it.isEnabledInConfig }
 
@@ -503,7 +503,7 @@ private fun DeviceBlock(rows: List<Pair<String, String>>, selinuxKey: String) {
 private fun LinksBlock() {
     val context = LocalContext.current
     HudSectionTitle(stringResource(R.string.hud_links))
-    HudGroup(rows = listOf(
+    HudGroup(rows = listOf<@Composable () -> Unit>(
         { HudRow(stringResource(R.string.hud_channel), icon = Icons.AutoMirrored.Rounded.Send, subtitle = stringResource(R.string.hud_channel_sub), onClick = { openUrl(context, CHANNEL_URL) }) },
         { HudRow(stringResource(R.string.hud_source), icon = Icons.Rounded.Code, subtitle = stringResource(R.string.hud_source_sub), onClick = { openUrl(context, SOURCE_URL) }) },
     ))
