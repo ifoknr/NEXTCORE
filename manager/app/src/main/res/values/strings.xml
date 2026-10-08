@@ -807,7 +807,7 @@
     <string name="th_light">Light</string>
     <string name="th_dark">Dark</string>
     <string name="th_amoled">AMOLED</string>
-    <string name="th_mode_note">System follows your phone's dark mode. AMOLED uses true black, which saves battery on OLED screens.</string>
+    <string name="th_mode_note">System follows your phone\'s dark mode. AMOLED uses true black, which saves battery on OLED screens.</string>
     <string name="th_accent">Accent color</string>
     <string name="th_wallpaper">The first circle takes the color from your wallpaper.</string>
     <string name="th_preview">Live preview of the current theme</string>
