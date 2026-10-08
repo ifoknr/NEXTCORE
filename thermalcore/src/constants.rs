@@ -1,5 +1,5 @@
 pub const PROP_BIGDATA_PATH: &str = "persist.sys.ncthermal.thermalcore-bigdata.path";
-pub const DEFAULT_DATA_PATH: &str = "/data/vendor/thermal_data";
+pub const DEFAULT_DATA_PATH: &str = "/data/vendor/nextcore_thermal_data";
 pub const LEARNING_DATA_FILENAME: &str = "learning.dat";
 
 // ============================================================================

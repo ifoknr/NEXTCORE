@@ -1,5 +1,5 @@
 use std::sync::{ atomic::{ AtomicBool }, Arc };
-use thermalcore::monitor::ThermalMonitor;
+use nextcore_thermalcore::monitor::ThermalMonitor;
 
 fn main() {
     #[cfg(feature = "simulator")]
@@ -10,7 +10,7 @@ fn main() {
                 eprintln!("Usage: {} --simulate <trace_file.json>", args[0]);
                 std::process::exit(1);
             }
-            match thermalcore::simulator::ThermalSimulator::new(&args[2]) {
+            match nextcore_thermalcore::simulator::ThermalSimulator::new(&args[2]) {
                 Ok(mut sim) => {
                     sim.run_simulation();
                     return;
