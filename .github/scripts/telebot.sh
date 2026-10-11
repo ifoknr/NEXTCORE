@@ -27,8 +27,10 @@ SINCE=""
 from=""
 to="HEAD"
 if [ "$KIND" = release ]; then
+	# A manual release creates its tag on GitHub only; the checkout has HEAD.
 	to="$TAG"
-	from="$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || true)"
+	git rev-parse -q --verify "refs/tags/$TAG" >/dev/null || to="HEAD"
+	from="$(git describe --tags --abbrev=0 "$to^" 2>/dev/null || true)"
 	SINCE="$from"
 	COMPARE_URL="https://github.com/$REPO/compare/${from:-main}...$TAG"
 elif [ -n "${BEFORE:-}" ] && ! [[ "$BEFORE" =~ ^0+$ ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
