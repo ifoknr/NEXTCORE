@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NextCore</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='bgnc' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FDBA74'/%3E%3Cstop offset='1' stop-color='%23F43F5E'/%3E%3C/linearGradient%3E%3ClinearGradient id='shnc' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.30'/%3E%3Cstop offset='.55' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='116' fill='url%28%23bgnc%29'/%3E%3Crect width='512' height='512' rx='116' fill='url%28%23shnc%29'/%3E%3Cpath d='M256 112 a144 144 0 1 1 -0.1 0' fill='none' stroke='%23fff' stroke-opacity='.3' stroke-width='30' stroke-linecap='round'/%3E%3Cpath d='M150 354 A144 144 0 0 1 372 186' fill='none' stroke='%23fff' stroke-width='30' stroke-linecap='round'/%3E%3Cpath d='M272 166 L208 268 H254 L236 350 L306 240 H260 Z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
   :root {
     --bg: #f4f5f8; --card: #ffffff; --text: #16181d; --muted: #646b78;
@@ -23,6 +24,8 @@
     font-family: system-ui, "Noto Sans Arabic", sans-serif; font-size: 15px;
   }
   h1 { font-size: 22px; margin: 4px 0 2px; }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand svg { width: 36px; height: 36px; flex: none; }
   .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 16px;
@@ -61,7 +64,10 @@
 </style>
 </head>
 <body>
-  <h1>NextCore</h1>
+  <div class="brand">
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="bgnc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FDBA74"/><stop offset="1" stop-color="#F43F5E"/></linearGradient><linearGradient id="shnc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".30"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="512" height="512" rx="116" fill="url(#bgnc)"/><rect width="512" height="512" rx="116" fill="url(#shnc)"/><path d="M256 112 a144 144 0 1 1 -0.1 0" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="30" stroke-linecap="round"/><path d="M150 354 A144 144 0 0 1 372 186" fill="none" stroke="#fff" stroke-width="30" stroke-linecap="round"/><path d="M272 166 L208 268 H254 L236 350 L306 240 H260 Z" fill="#fff"/></svg>
+    <h1>NextCore</h1>
+  </div>
   <div class="sub" id="version">—</div>
   <div class="badge" id="support" style="display:none"></div>
 
