@@ -1,6 +1,6 @@
 id=nextcore
 name=NextCore
-version=v2.0.0
+version=v2.0.1
 versionCode=2000
 author=NextCore
 description=Sustained performance engine for any Android SoC. Full support for MediaTek, Snapdragon, Exynos, Tensor and Unisoc.
