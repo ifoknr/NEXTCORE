@@ -78,6 +78,8 @@ int main_daemon(void) {
     runthermalcore();
     run_profiler(PERFCOMMON);
     update_module_description(getpid());
+    /* Drop the post-fs-data lock so it runs again after a soft reboot */
+    unlink("/dev/.nextcoreSingleInstance");
 
     /* Main Daemon Loop */
     while (1) {

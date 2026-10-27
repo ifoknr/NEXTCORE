@@ -23,7 +23,9 @@ fn dvfsrc_governor(gov: Option<&str>) {
 }
 
 fn dvfsrc_ddr_opp(opp: &str) {
-    write_unlock(opp, "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
+    // The force node takes 255 as "release"; it rejects -1, which left Vcore/DDR pinned.
+    let force = if opp == "-1" { "255" } else { opp };
+    write_unlock(force, "/sys/kernel/helio-dvfsrc/dvfsrc_force_vcore_dvfs_opp");
     if let Ok(paths) = glob::glob("/sys/devices/platform/*.dvfsrc") {
         for path in paths.flatten() {
             write_unlock(opp, &format!("{}/helio-dvfsrc/dvfsrc_req_ddr_opp", path.display()));
@@ -31,24 +33,22 @@ fn dvfsrc_ddr_opp(opp: &str) {
     }
 }
 
-pub fn mediatek_balance() {
-    if Path::new("/proc/ppm/policy_status").exists() {
-        let content = fs::read_to_string("/proc/ppm/policy_status").unwrap_or_default();
-        for line in content.lines() {
-            let is_target_1 = line.contains("FORCE_LIMIT") || line.contains("PWR_THRO") || line.contains("THERMAL") || line.contains("USER_LIMIT");
-            let is_target_2 = line.contains("SYS_BOOST");
-            if is_target_1 || is_target_2 {
-                if let Some(idx_str) = line.split('[').nth(1).and_then(|s| s.split(']').next()) {
-                    if is_target_1 {
-                        write_lock(&format!("{} 1", idx_str), "/proc/ppm/policy_status");
-                    }
-                    if is_target_2 {
-                        write_lock(&format!("{} 0", idx_str), "/proc/ppm/policy_status");
-                    }
-                }
-            }
+/// PPM limiters: `1` keeps them on, `0` lifts them (max mode only). USER_LIMIT and
+/// FORCE_LIMIT are left alone, since turning them off drops the hard user limits.
+fn ppm_limits(state: &str) {
+    let Ok(content) = fs::read_to_string("/proc/ppm/policy_status") else { return };
+    for line in content.lines() {
+        if !(line.contains("PWR_THRO") || line.contains("THERMAL")) {
+            continue;
+        }
+        if let Some(idx) = line.split('[').nth(1).and_then(|s| s.split(']').next()) {
+            write_lock(&format!("{} {}", idx, state), "/proc/ppm/policy_status");
         }
     }
+}
+
+pub fn mediatek_balance() {
+    ppm_limits("1");
     
     // ppm_fix_freq("-1"); 
     
@@ -97,24 +97,7 @@ pub fn mediatek_balance() {
 /// GPU pinned at its top OPP and the PPM, thermal and battery limits relaxed.
 /// Sustained mode keeps those protections and lets FPSGO/GED pace the GPU.
 pub fn mediatek_performance(max: bool) {
-    if Path::new("/proc/ppm/policy_status").exists() {
-        let content = fs::read_to_string("/proc/ppm/policy_status").unwrap_or_default();
-        for line in content.lines() {
-            let is_target_1 = line.contains("FORCE_LIMIT") || line.contains("PWR_THRO") || line.contains("THERMAL") || line.contains("USER_LIMIT");
-            let is_target_2 = line.contains("SYS_BOOST");
-            if is_target_1 || is_target_2 {
-                if let Some(idx_str) = line.split('[').nth(1).and_then(|s| s.split(']').next()) {
-                    if is_target_1 {
-                        let state = if max { "0" } else { "1" };
-                        write_lock(&format!("{} {}", idx_str, state), "/proc/ppm/policy_status");
-                    }
-                    if is_target_2 {
-                        write_lock(&format!("{} 1", idx_str), "/proc/ppm/policy_status");
-                    }
-                }
-            }
-        }
-    }
+    ppm_limits(if max { "0" } else { "1" });
 
     
     // ppm_fix_freq("0"); 
@@ -184,23 +167,7 @@ pub fn mediatek_performance(max: bool) {
 }
 
 pub fn mediatek_powersave() {
-    if Path::new("/proc/ppm/policy_status").exists() {
-        let content = fs::read_to_string("/proc/ppm/policy_status").unwrap_or_default();
-        for line in content.lines() {
-            let is_target_1 = line.contains("FORCE_LIMIT") || line.contains("PWR_THRO") || line.contains("THERMAL") || line.contains("USER_LIMIT");
-            let is_target_2 = line.contains("SYS_BOOST");
-            if is_target_1 || is_target_2 {
-                if let Some(idx_str) = line.split('[').nth(1).and_then(|s| s.split(']').next()) {
-                    if is_target_1 {
-                        write_lock(&format!("{} 1", idx_str), "/proc/ppm/policy_status");
-                    }
-                    if is_target_2 {
-                        write_lock(&format!("{} 0", idx_str), "/proc/ppm/policy_status");
-                    }
-                }
-            }
-        }
-    }
+    ppm_limits("1");
     
     // ppm_fix_freq("-1"); 
     write_lock("0", "/sys/devices/platform/boot_dramboost/dramboost/dramboost");
