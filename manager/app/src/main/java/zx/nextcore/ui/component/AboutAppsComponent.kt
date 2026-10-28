@@ -110,10 +110,11 @@ private fun AboutCardContent() {
 
             Column {
 
-                Text(
-                    stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp
+                Image(
+                    painter = painterResource(R.drawable.nextcore_name),
+                    contentDescription = stringResource(id = R.string.app_name),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                    modifier = Modifier.height(18.dp)
                 )
                 Text(
                     BuildConfig.VERSION_NAME,
