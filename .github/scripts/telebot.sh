@@ -65,9 +65,12 @@ since = os.environ.get("SINCE", "")
 
 lines = []
 for rec in os.environ.get("CHANGES", "").split("\x1e"):
-    if "\x1f" not in rec:
+    # str.strip() would also drop \x1f (Python counts it as whitespace), which
+    # leaves a commit with an empty body as one field.
+    subject, sep, body = rec.lstrip("\r\n").partition("\x1f")
+    if not sep:
         continue
-    subject, body = rec.strip().split("\x1f", 1)
+    subject = subject.strip()
     m = re.match(r"Merge pull request #(\d+)", subject)
     if m:
         title = next((l.strip() for l in body.splitlines() if l.strip()), "")
