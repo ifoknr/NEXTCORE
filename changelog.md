@@ -1,3 +1,10 @@
+## NextCore v2.0.1
+### • Changelog
+- MediaTek: the DDR/Vcore lock from max mode is now released in Balanced and Eco (the driver rejected -1, so it stayed pinned and warm)
+- MediaTek: only the power and thermal PPM limiters are toggled; USER_LIMIT and FORCE_LIMIT stay on, and SYS_BOOST is no longer forced
+- The service starts again after a soft reboot (the startup lock is cleared once the daemon runs)
+- Removing the module from the root manager now also removes the app, its settings and helper binaries after the next boot
+
 ## NextCore v2.0.0
 ### • Changelog
 - First NextCore release, based on AZenith 5.2 (uninstall AZenith before installing)

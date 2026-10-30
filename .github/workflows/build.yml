@@ -191,12 +191,12 @@ jobs:
             ${{ steps.compileZip.outputs.zipName }}
             dist/update.json
 
-      # Telegram channel: releases (a v* tag, pushed or typed into a manual run) and betas (every push to
-      # main). A manual run can post a beta too, to test the bot. Pull
-      # requests never post. Needs the TELEGRAM_TOKEN and TELEGRAM_TO secrets
+      # Telegram channel: releases (a v* tag, pushed or typed into a manual run) only.
+      # Pushes to main stay private test builds (the workflow artifact); a manual run
+      # with "telegram" ticked posts one as a beta. Pull requests never post. Needs the TELEGRAM_TOKEN and TELEGRAM_TO secrets
       # (TELEGRAM_TOPIC optional, for a topic in a forum group).
       - name: Post To Telegram
-        if: env.RELEASE_TAG != '' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.telegram)
+        if: env.RELEASE_TAG != '' || (github.event_name == 'workflow_dispatch' && inputs.telegram)
         env:
           # Same secret names as the other repositories posting to the channel;
           # BOT_TOKEN / CHAT_ID still work as a fallback.
