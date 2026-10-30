@@ -1,5 +1,6 @@
 ## NextCore v2.0.1
 ### • Changelog
+- New look: a calm grey icon (launcher, in the app, the WebUI), the NextCore name in new lettering on Home and About, and IFOKNR's signature on About
 - MediaTek: the DDR/Vcore lock from max mode is now released in Balanced and Eco (the driver rejected -1, so it stayed pinned and warm)
 - MediaTek: only the power and thermal PPM limiters are toggled; USER_LIMIT and FORCE_LIMIT stay on, and SYS_BOOST is no longer forced
 - The service starts again after a soft reboot (the startup lock is cleared once the daemon runs)

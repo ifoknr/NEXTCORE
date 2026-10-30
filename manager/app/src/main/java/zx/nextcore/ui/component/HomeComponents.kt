@@ -67,6 +67,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -273,7 +274,14 @@ fun HomeTopAppBar(scrollBehavior: TopAppBarScrollBehavior, onRebootClick: () -> 
                     )
                 }
             },
-            title = { Text(text = stringResource(R.string.app_name), fontWeight = FontWeight.Bold) },
+            title = {
+                Image(
+                    painter = painterResource(R.drawable.nextcore_name),
+                    contentDescription = stringResource(R.string.app_name),
+                    colorFilter = ColorFilter.tint(colorScheme.onSurface),
+                    modifier = Modifier.height(20.dp)
+                )
+            },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color.Transparent,
                 scrolledContainerColor = Color.Transparent,

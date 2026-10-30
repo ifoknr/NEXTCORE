@@ -40,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -109,16 +110,26 @@ private fun AboutCardContent() {
 
             Column {
 
-                Text(
-                    stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 18.sp
+                Image(
+                    painter = painterResource(R.drawable.nextcore_name),
+                    contentDescription = stringResource(id = R.string.app_name),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                    modifier = Modifier.height(18.dp)
                 )
                 Text(
                     BuildConfig.VERSION_NAME,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.outline,
                     fontSize = 14.sp
+                )
+
+                Image(
+                    painter = painterResource(R.drawable.ifoknr_signature),
+                    contentDescription = "IFOKNR",
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .height(16.dp)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
