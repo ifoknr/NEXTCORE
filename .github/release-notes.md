@@ -1,8 +1,9 @@
 ## NextCore v2.0.1
 
-تحديث إصلاحات صغير، فيه تعديلات من AZenith الأصلي تخص أجهزة MediaTek والحذف.
+تحديث صغير بشكل جديد وإصلاحات، فيه تعديلات من AZenith الأصلي تخص أجهزة MediaTek والحذف.
 
 ### 🛠️ الإصلاحات
+- **شكل جديد:** أيقونة رمادية هادية مثل باقي أدوات IFOKNR (الشاشة الرئيسية، داخل التطبيق، الـ WebUI)، واسم NextCore بخط جديد في الرئيسية و«حول»، وتوقيع IFOKNR في «حول».
 - **MediaTek:** الذاكرة والـ Vcore ترجع لوضعها الطبيعي في التوازن والتوفير بعد الأداء الأقصى. قبل كانت تبقى مثبتة على الأعلى، والجهاز يسخن.
 - **MediaTek:** صار يغيّر بس حدود الطاقة والحرارة في PPM. حدود `USER_LIMIT` و `FORCE_LIMIT` تبقى شغالة، وما عاد يفرض `SYS_BOOST`.
 - الخدمة ترجع تشتغل بعد الـ soft reboot.
@@ -15,9 +16,10 @@
 
 ## NextCore v2.0.1
 
-A small fix update, with changes taken from the original AZenith for MediaTek devices and uninstalling.
+A small update with a new look and fixes, with changes taken from the original AZenith for MediaTek devices and uninstalling.
 
 ### 🛠️ Fixes
+- **New look:** a calm grey icon like the other IFOKNR tools (launcher, in the app, the WebUI), the NextCore name in new lettering on Home and About, and IFOKNR's signature on About.
 - **MediaTek:** memory and Vcore return to normal in Balanced and Eco after max performance. Before, they stayed pinned at the top and the phone ran warm.
 - **MediaTek:** only the PPM power and thermal limits are changed now. `USER_LIMIT` and `FORCE_LIMIT` stay on, and `SYS_BOOST` is no longer forced.
 - The service starts again after a soft reboot.
